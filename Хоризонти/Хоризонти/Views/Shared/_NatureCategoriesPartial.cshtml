@@ -1,0 +1,119 @@
+﻿
+<style>
+    .nature-categories-shell {
+        margin-bottom: 2.4rem;
+        animation: fadeUpCategories .6s ease-out;
+    }
+
+    .nature-categories-inner {
+        background: radial-gradient(circle at 0 0, #e3f9e5 0, transparent 60%), radial-gradient(circle at 100% 0, #e0f2ff 0, transparent 55%), #ffffff;
+        border-radius: 28px;
+        padding: 1.6rem 2rem;
+        box-shadow: 0 22px 45px rgba(15, 81, 40, 0.12);
+    }
+
+    .nature-categories-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .8rem 1rem;
+    }
+
+    .nature-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: .45rem 1.4rem;
+        border-radius: 999px;
+        border: 1px solid #1976d2;
+        background: rgba(255, 255, 255, 0.95);
+        font-size: .9rem;
+        color: #1565c0;
+        text-decoration: none;
+        box-shadow: 0 8px 20px rgba(25, 118, 210, 0.12);
+        transition: background-color .15s ease-out, color .15s ease-out, box-shadow .15s ease-out, transform .15s ease-out;
+    }
+
+        .nature-pill:hover {
+            background: linear-gradient(135deg, #1b5e20, #43a047);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 16px 32px rgba(27, 94, 32, 0.45);
+            transform: translateY(-1px);
+        }
+
+    @@media (max-width: 768px) {
+        .nature-categories-inner {
+            padding: 1.3rem 1.4rem;
+        }
+    }
+
+    @@keyframes fadeUpCategories {
+        from {
+            opacity: 0;
+            transform: translateY(18px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<div class="nature-categories-shell">
+    <div class="nature-categories-inner">
+        <div class="nature-categories-grid">
+
+            <a class="nature-pill"
+               asp-controller="Destination" asp-action="Category" asp-route-category="peshteri">
+                Пещери
+            </a>
+
+            <a class="nature-pill"
+               asp-controller="Destination" asp-action="Category" asp-route-category="zhdrela">
+                Ждрела / Каньони
+            </a>
+
+            <a class="nature-pill"
+               asp-controller="Destination" asp-action="Category" asp-route-category="skali">
+                Скални образувания
+            </a>
+
+            <a class="nature-pill"
+               asp-controller="Destination" asp-action="Category" asp-route-category="ekopateki">
+                Екопътеки
+            </a>
+
+            <a class="nature-pill"
+               asp-controller="Destination" asp-action="Category" asp-route-category="vodopadi">
+                Водопади
+            </a>
+
+            <a class="nature-pill"
+               asp-controller="Destination" asp-action="Category" asp-route-category="ezera">
+                Езера
+            </a>
+
+            <a class="nature-pill"
+               asp-controller="Destination" asp-action="Category" asp-route-category="gori">
+                Гори / Резервати
+            </a>
+
+            <a class="nature-pill"
+               asp-controller="Destination" asp-action="Category" asp-route-category="varhove">
+                Върхове
+            </a>
+
+            <a class="nature-pill"
+               asp-controller="Destination" asp-action="Category" asp-route-category="panorami">
+                Панорамни площадки
+            </a>
+
+            <a class="nature-pill"
+               asp-controller="Destination" asp-action="Category" asp-route-category="svetilishta">
+                Светилища / Исторически места
+            </a>
+
+        </div>
+    </div>
+</div>

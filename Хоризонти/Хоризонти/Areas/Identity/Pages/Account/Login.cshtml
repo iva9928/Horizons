@@ -1,0 +1,104 @@
+﻿@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Вход";
+}
+
+<style>
+    body {
+        background: radial-gradient(circle at 0% 0%, #e8f9f1 0, #d9f0ff 40%, #cfe7ff 70%, #bde2ff 100%);
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    .auth-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 85vh;
+        padding: 20px;
+    }
+
+    .auth-card {
+        width: 420px;
+        padding: 2.5rem;
+        border-radius: 30px;
+        background: rgba(255, 255, 255, 0.18);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        animation: fadeIn 0.9s ease-out;
+    }
+
+    .auth-title {
+        font-size: 2rem;
+        font-weight: 700;
+        text-align: center;
+        color: #0f5132;
+        margin-bottom: 1rem;
+    }
+
+    .btn-login {
+        width: 100%;
+        background: linear-gradient(135deg, #228b22, #2ecc71);
+        border: none;
+        padding: 0.9rem;
+        border-radius: 10px;
+        color: #fff;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: 0.25s ease;
+    }
+
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(34, 139, 34, 0.45);
+        }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+
+        <h1 class="auth-title">Вход</h1>
+
+        <form method="post">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control" placeholder="Имейл" />
+                <label asp-for="Input.Email">Имейл</label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-4">
+                <input asp-for="Input.Password" class="form-control" placeholder="Парола" />
+                <label asp-for="Input.Password">Парола</label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+
+            <button class="btn-login" type="submit">Вход</button>
+
+        </form>
+
+        <div class="text-center mt-3">
+            <a asp-area="Identity" asp-page="/Account/Register">Нямаш профил? Регистрирай се</a>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

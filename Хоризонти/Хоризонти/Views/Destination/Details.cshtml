@@ -1,0 +1,560 @@
+﻿@model DestinationDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Name;
+    bool isAdmin = User.Identity?.Name == "admin@horizons.com";
+}
+
+<style>
+    body {
+        background: radial-gradient(circle at 5% 5%, #e6f7ed 0, #f4fbff 45%, #e6f3ff 100%);
+        font-family: "Segoe UI", system-ui, sans-serif;
+    }
+
+    .page-wrapper {
+        max-width: 1200px;
+        margin: 40px auto 60px;
+        padding: 0 1.5rem;
+    }
+
+    /* CARD LAYOUT */
+    .details-card {
+        display: grid;
+        grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+        gap: 36px;
+        padding: 34px;
+        border-radius: 32px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 22px 50px rgba(15, 80, 30, 0.22);
+        border: 1px solid rgba(210, 230, 225, 0.9);
+        backdrop-filter: blur(14px);
+    }
+
+    .details-img-wrap {
+        position: relative;
+        border-radius: 26px;
+        overflow: hidden;
+        height: 480px; /* BIG hero photo */
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+    }
+
+    .details-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.03);
+        transition: transform 0.7s ease, filter 0.7s ease;
+        filter: saturate(1.1) contrast(1.05);
+    }
+
+    .details-img-wrap:hover .details-img {
+        transform: scale(1.09);
+        filter: saturate(1.2) contrast(1.1);
+    }
+
+    .terrain-chip {
+        position: absolute;
+        left: 16px;
+        top: 16px;
+        padding: 0.45rem 1rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.98);
+        font-size: 0.78rem;
+        letter-spacing: 0.16em;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        z-index: 3;
+    }
+
+    .terrain-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #2e7d32, #66bb6a);
+    }
+
+    .details-badge {
+        position: absolute;
+        right: 18px;
+        bottom: 18px;
+        padding: 0.4rem 0.95rem;
+        border-radius: 999px;
+        background: rgba(0,0,0,0.75);
+        color: #fff;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+
+    /* TEXT SIDE */
+
+    .text-block {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    .title-main {
+        font-size: 2.3rem;
+        font-weight: 800;
+        color: #154d2e;
+        letter-spacing: .02em;
+        margin-bottom: 6px;
+    }
+
+    .subtitle-line {
+        font-size: 0.95rem;
+        color: #58746a;
+        margin-bottom: 18px;
+    }
+
+    .pill-meta {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 18px;
+    }
+
+    .pill {
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        background: rgba(21, 101, 192, 0.06);
+        color: #18527a;
+        border: 1px solid rgba(21, 101, 192, 0.16);
+    }
+
+    .info-box {
+        padding: 16px 18px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(210, 230, 225, 0.85);
+        box-shadow: 0 10px 26px rgba(15, 80, 30, 0.10);
+        margin-bottom: 18px;
+    }
+
+    .info-row {
+        font-size: 0.98rem;
+        margin-bottom: 8px;
+        color: #2f4338;
+    }
+
+        .info-row strong {
+            color: #1e633c;
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+    .description-text {
+        margin-top: 4px;
+        font-size: 1rem;
+        line-height: 1.55;
+        color: #304139;
+    }
+
+    /* LOCATION BLOCK */
+    .location-section {
+        margin-top: 45px;
+        text-align: center;
+    }
+
+    .location-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+        margin-top: 12px;
+    }
+
+    .location-label {
+        font-weight: 700;
+        color: #1e633c;
+        margin-bottom: 6px;
+        font-size: 1.1rem;
+    }
+
+    .location-text {
+        font-size: 1rem;
+        line-height: 1.55;
+        color: #3a4a42;
+        max-width: 720px;
+        margin: 0 auto;
+    }
+
+    .location-wrapper {
+        display: flex;
+        justify-content: center; /* Центрира */
+        margin-top: 20px;
+    }
+
+    .location-img {
+        width: 600px; /* По-голяма карта */
+        max-width: 90%;
+        border-radius: 20px;
+        box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+        object-fit: cover;
+    }
+
+
+
+    /* BUTTONS */
+
+    .actions-row {
+        margin-top: 24px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .btn-nice {
+        padding: 10px 22px;
+        border-radius: 999px;
+        font-weight: 600;
+        text-decoration: none;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
+        white-space: nowrap;
+    }
+
+        .btn-nice:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.03);
+            box-shadow: 0 16px 34px rgba(0, 0, 0, 0.24);
+        }
+
+    .btn-back {
+        background: #8aa69d;
+    }
+
+    .btn-reserve {
+        background: linear-gradient(135deg, #007bff, #00b4ff);
+    }
+
+    .btn-fav-add {
+        background: #3fae4f;
+    }
+
+    .btn-fav-remove {
+        background: #e3a645;
+    }
+
+    .btn-edit {
+        background: #1e90ff;
+    }
+
+    .btn-delete {
+        background: #d9534f;
+    }
+
+
+    /* RATING BOX */
+
+    .rating-box {
+        margin-top: 40px;
+        padding: 24px 26px;
+        background: rgba(255,255,255,0.96);
+        border-radius: 22px;
+        box-shadow: 0 16px 38px rgba(0,0,0,0.14);
+        border: 1px solid rgba(210, 230, 225, 0.9);
+    }
+
+    .rating-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .rating-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #154d2e;
+    }
+
+    .rating-average-pill {
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: #fff7e0;
+        color: #8a5b00;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border: 1px solid #f0d48c;
+    }
+
+    .comment-card {
+        background: #ffffff;
+        border-radius: 14px;
+        padding: 10px 12px;
+        margin-bottom: 10px;
+        border: 1px solid rgba(225, 233, 230, 0.9);
+    }
+
+    .comment-meta {
+        font-size: 0.85rem;
+        color: #607067;
+        margin-bottom: 4px;
+    }
+
+    .comment-text {
+        font-size: 0.96rem;
+        color: #293630;
+    }
+
+    /* RESPONSIVE */
+
+    @@media (max-width: 980px) {
+        .details-card
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    .details-img {
+        height: 320px;
+    }
+
+    .location-block {
+        grid-template-columns: 1fr;
+    }
+
+    }
+
+    @@media (max-width: 620px) {
+        .details-card
+
+    {
+        padding: 22px 20px;
+    }
+
+    .title-main {
+        font-size: 1.8rem;
+    }
+
+    .actions-row {
+        flex-direction: column;
+    }
+
+    .btn-nice {
+        width: 100%;
+        justify-content: center;
+    }
+
+    }
+</style>
+
+<div class="page-wrapper">
+
+    <div class="details-card">
+
+        <!-- IMAGE + TERRAIN BADGES -->
+        <div class="details-img-wrap">
+            <img src="@Model.ImageUrl"
+                 alt="@Model.Name"
+                 class="details-img" />
+
+            <div class="terrain-chip">
+                <span class="terrain-dot"></span>
+                <span>@Model.Terrain</span>
+            </div>
+
+            <div class="details-badge">
+                <span>📅 @Model.PublishedOn</span>
+            </div>
+        </div>
+
+        <!-- TEXT SIDE -->
+        <div class="text-block">
+
+            <div>
+                <h2 class="title-main">@Model.Name</h2>
+
+                <div class="subtitle-line">
+                    Публикувана от <strong>@Model.Publisher</strong>
+                </div>
+
+                <div class="pill-meta">
+                    <span class="pill">Родопи · природна дестинация</span>
+                    <span class="pill">Терен: @Model.Terrain</span>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-row">
+                        <strong>Описание:</strong>
+                        <div class="description-text">
+                            @Model.Description
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LOCATION AREA -->
+                <div class="location-block">
+                    <div>
+                        <div class="location-label">Локация</div>
+                        <div class="location-text">
+                            @Model.Location
+                        </div>
+                    </div>
+
+                    <div>
+                        @if (!string.IsNullOrEmpty(Model.LocationUrl))
+                        {
+                            <img src="@Model.LocationUrl"
+                                 alt="Локация на картата"
+                                 class="location-img" />
+                        }
+                        else
+                        {
+                            <p style="color:gray;font-size:0.9rem;margin-top:4px;">
+                                (Няма налична визуална карта за тази дестинация.)
+                            </p>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="actions-row">
+                <a asp-controller="Destination"
+                   asp-action="Index"
+                   class="btn-nice btn-back">
+                    ← Назад
+                </a>
+
+                @if (User.Identity.IsAuthenticated && !isAdmin)
+                {
+                    <a asp-controller="Reservation"
+                       asp-action="Create"
+                       asp-route-destinationId="@Model.Id"
+                       class="btn-nice btn-reserve">
+                        🧾 Резервирай
+                    </a>
+
+                    @if (!Model.IsFavorite)
+                    {
+                        <form method="post"
+                              asp-controller="Destination"
+                              asp-action="AddToFavorites"
+                              asp-route-id="@Model.Id"
+                              style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <button class="btn-nice btn-fav-add" type="submit">
+                                ❤ Добави в любими
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form method="post"
+                              asp-controller="Destination"
+                              asp-action="RemoveFromFavorites"
+                              asp-route-id="@Model.Id"
+                              style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <button class="btn-nice btn-fav-remove" type="submit">
+                                ✖ Премахни от любими
+                            </button>
+                        </form>
+                    }
+                }
+
+                @if (Model.IsPublisher || isAdmin)
+                {
+                    <a asp-controller="Destination"
+                       asp-action="Edit"
+                       asp-route-id="@Model.Id"
+                       class="btn-nice btn-edit">
+                        ✏️ Редактирай
+                    </a>
+
+                    <a asp-controller="Destination"
+                       asp-action="Delete"
+                       asp-route-id="@Model.Id"
+                       class="btn-nice btn-delete">
+                        🗑 Изтрий
+                    </a>
+                }
+            </div>
+
+            
+        </div>
+    </div>
+
+    @if (User.Identity.IsAuthenticated && !isAdmin)
+    {
+        <div class="rating-box">
+            <div class="rating-header">
+                <div class="rating-title">⭐ Рейтинг и ревюта</div>
+
+                <div class="rating-average-pill">
+                    Среден рейтинг: @Model.AverageRating.ToString("0.0") ★
+                </div>
+            </div>
+
+            @if (!Model.HasRated)
+            {
+                <form method="post" asp-controller="Rating" asp-action="Add">
+                    <input type="hidden" name="destinationId" value="@Model.Id" />
+
+                    <div class="mb-2">
+                        <label class="form-label">Оцени (1–5):</label>
+                        <select name="stars" class="form-control">
+                            <option value="1">1 ★</option>
+                            <option value="2">2 ★★</option>
+                            <option value="3">3 ★★★</option>
+                            <option value="4">4 ★★★★</option>
+                            <option value="5">5 ★★★★★</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">Коментар:</label>
+                        <textarea name="comment" class="form-control" rows="3"></textarea>
+                    </div>
+
+                    <button class="btn btn-primary mt-2">Изпрати</button>
+                </form>
+            }
+            else
+            {
+                <p><strong>Вече сте оставили рейтинг за тази дестинация.</strong></p>
+            }
+
+            <hr />
+
+            <h4 style="font-size:1.05rem;margin-bottom:10px;">Коментари:</h4>
+
+            @if (!Model.Ratings.Any())
+            {
+                <p style="color:gray;font-size:0.9rem;">Все още няма коментари. Бъдете първият!</p>
+            }
+            else
+            {
+                @foreach (var r in Model.Ratings)
+                {
+                    <div class="comment-card">
+                        <div class="comment-meta">
+                            <strong>@r.User</strong> · ★ @r.Stars · @r.CreatedOn
+                        </div>
+                        <div class="comment-text">
+                            @r.Comment
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    }
+
+</div>

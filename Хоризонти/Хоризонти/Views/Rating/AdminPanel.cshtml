@@ -1,0 +1,28 @@
+﻿@model IEnumerable<RatingAdminViewModel>
+
+<h2 class="mt-4 mb-3">⭐ Всички оценки и коментари</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Потребител</th>
+            <th>Дестинация</th>
+            <th>Оценка</th>
+            <th>Коментар</th>
+            <th>Дата</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.UserName</td>
+                <td>@r.DestinationName</td>
+                <td>@($"{r.Stars} ⭐")</td>
+                <td>@r.Comment</td>
+                <td>@r.CreatedOn</td>
+            </tr>
+        }
+    </tbody>
+</table>

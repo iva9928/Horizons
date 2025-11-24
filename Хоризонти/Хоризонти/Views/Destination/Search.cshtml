@@ -1,0 +1,50 @@
+﻿@model DestinationSearchViewModel
+
+<h2>Търсене и филтри</h2>
+
+<form method="get">
+
+    <input type="text" name="query" value="@Model.Query" placeholder="Търси..." />
+
+    <select name="terrainId">
+        <option value="">-- Терени --</option>
+        @foreach (var t in Model.Terrains)
+        {
+            <option value="@t.Id" selected="@(Model.TerrainId == t.Id)">
+                @t.Name
+            </option>
+        }
+    </select>
+
+    <input type="number" name="minPrice" value="@Model.MinPrice" placeholder="Мин. цена" />
+    <input type="number" name="maxPrice" value="@Model.MaxPrice" placeholder="Макс. цена" />
+
+    <label>
+        <input type="checkbox" name="onlyFavorites" value="true" @(Model.OnlyFavorites == true ? "checked" : "") />
+        Само любими
+    </label>
+
+    <button type="submit">Филтрирай</button>
+</form>
+
+<hr />
+
+@if (!Model.Results.Any())
+{
+    <p>Няма намерени резултати.</p>
+}
+else
+{
+    <div class="cards">
+        @foreach (var d in Model.Results)
+        {
+            <div class="card">
+                <img src="@d.ImageUrl" />
+                <h3>@d.Name</h3>
+                <p>@d.Terrain</p>
+                <p>Цена: @d.TicketPrice лв.</p>
+                <a asp-controller="Destination" asp-action="Details" asp-route-id="@d.Id">Виж</a>
+            </div>
+        }
+    </div>
+}
