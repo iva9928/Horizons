@@ -1,0 +1,88 @@
+﻿@model Horizons.Models.ReservationCreateViewModel
+
+@{
+    ViewData["Title"] = "Резервирай дестинация";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-3">@ViewData["Title"]</h2>
+    <h4 class="text-muted mb-4">@Model.DestinationName</h4>
+
+    <div class="row">
+        <div class="col-md-6">
+
+            <form asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="DestinationId" />
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Date" class="form-label">Дата на посещение</label>
+                    <input asp-for="Date" class="form-control" type="date" />
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="PeopleCount" class="form-label">Брой хора</label>
+                    <input asp-for="PeopleCount" class="form-control" type="number" min="1" />
+                    <span asp-validation-for="PeopleCount" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Цена на билет (за човек)</label>
+                    <input asp-for="TicketPrice"
+                           class="form-control"
+                           readonly />
+                    <span asp-validation-for="TicketPrice" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3 p-3 bg-info-subtle rounded">
+                    <strong>Обща сума: </strong>
+                    <span id="totalPrice">0,00</span> лв.
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">
+                    ✅ Потвърди резервацията
+                </button>
+            </form>
+
+        </div>
+
+        <div class="col-md-6">
+            @if (!string.IsNullOrEmpty(Model.DestinationImageUrl))
+            {
+                <img src="@Model.DestinationImageUrl"
+                     alt="@Model.DestinationName"
+                     class="img-fluid rounded shadow-sm" />
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        (function () {
+            const peopleInput = document.querySelector('input[name="PeopleCount"]');
+            const priceInput = document.querySelector('input[name="TicketPrice"]');
+            const totalSpan = document.getElementById('totalPrice');
+
+            function recalc() {
+                const people = parseInt(peopleInput.value || "0");
+                const pricePerPerson = parseFloat((priceInput.value || "0").replace(',', '.'));
+
+                const total = people * pricePerPerson;
+
+                totalSpan.textContent = total.toFixed(2).replace('.', ',');
+            }
+
+            peopleInput.addEventListener('input', recalc);
+            priceInput.addEventListener('input', recalc);
+
+            recalc();
+        })();
+    </script>
+}

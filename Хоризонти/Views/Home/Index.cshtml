@@ -1,0 +1,249 @@
+﻿@{
+    ViewData["Title"] = "Начало";
+}
+
+<style>
+    .landing-wrapper {
+        position: relative;
+        min-height: 100vh;
+        padding: 3rem 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: radial-gradient(circle at 0% 0%, #e8f9f1 0, #d9f0ff 40%, #cfe7ff 70%, #bde2ff 100%);
+        font-family: "Segoe UI", system-ui, sans-serif;
+    }
+
+    .landing-card {
+        max-width: 900px;
+        width: 100%;
+        padding: 3.2rem 3rem;
+        border-radius: 36px;
+        background: rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        box-shadow: 0 28px 70px rgba(15, 80, 40, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.35);
+        backdrop-filter: blur(22px);
+        text-align: center;
+        animation: landingFadeIn 1.4s ease-out;
+    }
+
+    .landing-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        padding: .35rem 1.1rem;
+        border-radius: 999px;
+        font-size: .78rem;
+        letter-spacing: .22em;
+        text-transform: uppercase;
+        color: #245c38;
+        background: rgba(232, 249, 241, 0.95);
+        margin-bottom: 1.5rem;
+    }
+
+    .landing-pill-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #2e7d32, #66bb6a);
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, .4);
+    }
+
+    .landing-title-main {
+        font-size: 3.4rem;
+        font-weight: 800;
+        letter-spacing: .04em;
+        color: #0f5132;
+        margin-bottom: .4rem;
+    }
+
+    .landing-title-sub {
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: .3em;
+        color: #5b7c6c;
+        margin-bottom: 1.6rem;
+    }
+
+    .landing-text {
+        max-width: 640px;
+        margin: 0 auto 2.6rem;
+        font-size: 1.05rem;
+        color: #294739;
+        line-height: 1.8;
+    }
+
+    .landing-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .landing-btn-main {
+        display: inline-flex;
+        align-items: center;
+        gap: .6rem;
+        padding: 1rem 3rem;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 1.05rem;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        border: none;
+        background: linear-gradient(135deg, #228b22, #2ecc71);
+        color: #fff;
+        text-decoration: none;
+        box-shadow: 0 18px 42px rgba(34, 139, 34, 0.45);
+        transition: all .25s ease-out;
+    }
+
+        .landing-btn-main:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 23px 52px rgba(34, 139, 34, 0.55);
+        }
+
+    .landing-btn-secondary {
+        padding: .9rem 1.8rem;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        background: rgba(255, 255, 255, .2);
+        color: #124e2e;
+        text-decoration: none;
+        font-weight: 600;
+        backdrop-filter: blur(10px);
+        transition: all .2s ease-out;
+    }
+
+        .landing-btn-secondary:hover {
+            background: rgba(255, 255, 255, .35);
+            color: #0f3f24;
+        }
+
+    .leaf {
+        position: absolute;
+        width: 34px;
+        height: 34px;
+        background: linear-gradient(135deg, #6fdc6f, #2e7d32);
+        border-radius: 40% 60% 70% 30%;
+        opacity: 0.9;
+        filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.25));
+        animation: fallingLeaf 16s linear infinite;
+    }
+
+        .leaf::before {
+            content: "";
+            position: absolute;
+            inset: 35% 40% 10% 10%;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.55);
+            opacity: .8;
+        }
+
+        .leaf.l1 {
+            left: 6%;
+            animation-duration: 17s;
+        }
+
+        .leaf.l2 {
+            left: 20%;
+            animation-duration: 20s;
+            animation-delay: -5s;
+        }
+
+        .leaf.l3 {
+            left: 38%;
+            animation-duration: 18s;
+            animation-delay: -8s;
+        }
+
+        .leaf.l4 {
+            left: 58%;
+            animation-duration: 22s;
+            animation-delay: -3s;
+        }
+
+        .leaf.l5 {
+            left: 76%;
+            animation-duration: 19s;
+            animation-delay: -10s;
+        }
+
+        .leaf.l6 {
+            left: 90%;
+            animation-duration: 21s;
+            animation-delay: -7s;
+        }
+
+    @@keyframes landingFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(40px) scale(.98);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @@keyframes fallingLeaf {
+        0% {
+            transform: translateY(-140px) rotate(0);
+            opacity: 0;
+        }
+
+        15% {
+            opacity: 1;
+        }
+
+        50% {
+            transform: translateY(50vh) translateX(-30px) rotate(110deg);
+        }
+
+        100% {
+            transform: translateY(115vh) translateX(20px) rotate(190deg);
+            opacity: 0;
+        }
+    }
+</style>
+
+<div class="landing-wrapper">
+
+    <div class="leaf l1"></div>
+    <div class="leaf l2"></div>
+    <div class="leaf l3"></div>
+    <div class="leaf l4"></div>
+    <div class="leaf l5"></div>
+    <div class="leaf l6"></div>
+
+    <section class="landing-card">
+
+        <div class="landing-pill">
+            <span class="landing-pill-dot"></span>
+            Родопи · Природни маршрути
+        </div>
+
+        <h1 class="landing-title-main">Опознай красотата на Родопите</h1>
+
+        <div class="landing-title-sub">природни забележителности</div>
+
+        <p class="landing-text">
+            Добре дошъл в <strong>Horizons</strong> – твоят визуален гид за най-красивите природни забележителности в Родопите.
+            Разгледай, избери и запази любимите си места за бъдещи приключения.
+        </p>
+
+        <div class="landing-actions">
+
+            <a asp-controller="Destination" asp-action="Index" class="landing-btn-main">
+                Започни пътешествието ➜
+            </a>
+
+            <a asp-area="Identity" asp-page="/Account/Login" class="landing-btn-secondary">
+                Вход в профила
+            </a>
+
+        </div>
+    </section>
+</div>

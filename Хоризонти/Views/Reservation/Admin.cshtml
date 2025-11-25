@@ -1,0 +1,142 @@
+﻿@model IEnumerable<Horizons.Models.ReservationListViewModel>
+
+@{
+    ViewData["Title"] = "Всички резервации";
+}
+
+<style>
+    :root {
+        --bg: #f5f7fa;
+        --paper: #ffffff;
+        --accent: #2d89ef;
+        --accent-dark: #1a5fb4;
+        --text: #2c2c2c;
+        --muted: #6d6d6d;
+        --radius: 14px;
+        --shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+
+    body {
+        background: var(--bg);
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    .wrapper {
+        max-width: 1300px;
+        margin: 40px auto;
+        padding: 0 20px;
+        animation: fadeIn .5s ease-out;
+    }
+
+    @@keyframes fadeIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    .title {
+        font-size: 2.4rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 25px;
+        color: var(--accent-dark);
+    }
+
+    .card {
+        background: var(--paper);
+        padding: 25px;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        padding: 14px;
+        background: var(--accent);
+        color: white;
+        font-size: 1.05rem;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    td {
+        padding: 14px;
+        font-size: 1rem;
+        border-bottom: 1px solid #e8e8e8;
+        color: var(--text);
+    }
+
+    tr:nth-child(even) {
+        background: #f0f4ff;
+    }
+
+    tr:hover {
+        background: #e6efff;
+        transition: .2s;
+    }
+
+    .no-data {
+        text-align: center;
+        padding: 35px 0;
+        font-size: 1.3rem;
+        color: var(--muted);
+    }
+</style>
+
+<div class="wrapper">
+    <h1 class="title">@ViewData["Title"]</h1>
+
+    <div class="card">
+
+        @if (!Model.Any())
+        {
+            <div class="no-data">Няма направени резервации.</div>
+        }
+        else
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Дестинация</th>
+                        <th>Потребител</th>
+                        <th>Дата</th>
+                        <th>Брой хора</th>
+                        <th>Цена</th>
+                        <th>Общо</th>
+                        <th>Създадена на</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var r in Model)
+                    {
+                        <tr>
+                            <td>@r.Id</td>
+                            <td>@r.DestinationName</td>
+                            <td>@r.UserName</td>
+                            <td>@r.Date.ToString("dd.MM.yyyy")</td>
+                            <td>@r.PeopleCount</td>
+                            <td>@($"{r.TicketPrice:F2} лв.")</td>
+                            <td>@($"{r.TotalPrice:F2} лв.")</td>
+                            <td>@r.CreatedOn.ToString("dd.MM.yyyy HH:mm")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

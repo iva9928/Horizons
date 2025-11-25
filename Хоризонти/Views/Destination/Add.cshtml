@@ -1,0 +1,87 @@
+﻿@model DestinationAddViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering;
+
+@{
+    ViewData["Title"] = "Добави дестинация";
+    var today = DateTime.Now.ToString("dd-MM-yyyy");
+}
+
+<style>
+    .form-box {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 30px;
+        background: rgba(255,255,255,0.9);
+        border-radius: 28px;
+        box-shadow: 0 18px 40px rgba(15,80,30,0.18);
+    }
+
+    .form-control {
+        border-radius: 14px;
+        padding: 12px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #155739;
+    }
+
+    .btn-save {
+        margin-top: 25px;
+        padding: 14px;
+        width: 100%;
+        background: #34c759;
+        color: white;
+        border: none;
+        border-radius: 14px;
+        font-weight: 700;
+        transition: 0.25s;
+    }
+
+        .btn-save:hover {
+            background: #28a745;
+            transform: translateY(-2px);
+        }
+</style>
+
+<div class="form-box">
+
+    <h2>➕ Добави дестинация</h2>
+    <hr />
+
+    <form asp-action="Add" method="post">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <label asp-for="Name" class="form-label mt-3">Име</label>
+        <input asp-for="Name" class="form-control" />
+
+        <label asp-for="TerrainId" class="form-label mt-3">Тип терен</label>
+        <select asp-for="TerrainId" class="form-control"
+                asp-items="@(new SelectList(Model.Terrains, "Id", "Name"))">
+            <option value="">Избери...</option>
+        </select>
+
+        <label asp-for="Description" class="form-label mt-3">Описание</label>
+        <textarea asp-for="Description" rows="3" class="form-control"></textarea>
+
+        <label asp-for="ImageUrl" class="form-label mt-3">URL на снимка</label>
+        <input asp-for="ImageUrl" class="form-control" />
+
+        <label asp-for="Location" class="form-label mt-3">Локация (текст)</label>
+        <input asp-for="Location" class="form-control" />
+
+        <label asp-for="LocationUrl" class="form-label mt-3">Локация (Google Maps URL)</label>
+        <input asp-for="LocationUrl" class="form-control" />
+
+        <label asp-for="TicketPrice" class="form-label mt-3">Цена на билет</label>
+        <input asp-for="TicketPrice" class="form-control" type="number" step="0.01" />
+
+        <label asp-for="PublishedOn" class="form-label mt-3">Публикувана на</label>
+        <input asp-for="PublishedOn" class="form-control" type="text"
+               value="@(string.IsNullOrEmpty(Model.PublishedOn) ? today : Model.PublishedOn)" />
+
+        <button class="btn-save">💾 Запази</button>
+    </form>
+
+</div>

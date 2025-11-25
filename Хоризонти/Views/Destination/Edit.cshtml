@@ -1,0 +1,106 @@
+﻿@model DestinationEditViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Редактирай";
+}
+
+<style>
+    .page-wrapper {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 30px;
+        background: rgba(255,255,255,0.85);
+        border-radius: 30px;
+        box-shadow: 0 18px 40px rgba(15,80,30,0.18);
+        backdrop-filter: blur(12px);
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #155739;
+    }
+
+    .form-control {
+        border-radius: 12px;
+        padding: 10px;
+        border: 1px solid #c3d8cc;
+    }
+
+    .btn-save {
+        margin-top: 20px;
+        padding: 12px;
+        width: 100%;
+        background: #3fae4f;
+        color: white;
+        border: none;
+        border-radius: 14px;
+        font-weight: 700;
+        transition: .25s;
+    }
+
+        .btn-save:hover {
+            background: #349445;
+        }
+</style>
+
+<div class="page-wrapper">
+
+    <h2 class="mb-3">✏️ Редактирай дестинация</h2>
+    <hr />
+
+    <form asp-action="Edit" method="post">
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="PublisherId" />
+
+        <label asp-for="Name" class="form-label mt-3">Име</label>
+        <input asp-for="Name" class="form-control" />
+
+        <label asp-for="PublishedOn" class="form-label mt-3">Публикувана на</label>
+        <input asp-for="PublishedOn" class="form-control" />
+
+        <label asp-for="Description" class="form-label mt-3">Описание</label>
+        <textarea asp-for="Description" rows="3" class="form-control"></textarea>
+
+        <label asp-for="ImageUrl" class="form-label mt-3">URL на снимка</label>
+        <input asp-for="ImageUrl" class="form-control" />
+
+        <!-- ✅ ДОБАВЕНО: ЛОКАЦИЯ -->
+        <label asp-for="Location" class="form-label mt-3">Локация (име)</label>
+        <input asp-for="Location" class="form-control" />
+
+        <!-- ✅ ДОБАВЕНО: GOOGLE MAPS URL -->
+        <label asp-for="LocationUrl" class="form-label mt-3">Локация (URL)</label>
+        <input asp-for="LocationUrl" class="form-control" />
+
+        <label asp-for="TerrainId" class="form-label mt-3">Тип терен</label>
+        <select asp-for="TerrainId" class="form-control"
+                asp-items="@(new SelectList(Model.Terrains, "Id", "Name"))">
+            <option value="">Избери...</option>
+        </select>
+
+        <button type="submit" class="btn-save">💾 Запази</button>
+    </form>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
