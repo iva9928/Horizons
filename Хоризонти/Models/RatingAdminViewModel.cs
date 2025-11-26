@@ -1,4 +1,4 @@
-﻿using Horizons.Models;
+﻿
 
 public class RatingAdminViewModel
 {

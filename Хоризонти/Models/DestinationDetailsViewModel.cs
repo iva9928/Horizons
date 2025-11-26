@@ -1,5 +1,4 @@
-﻿namespace Horizons.Models
-{
+﻿
     public class DestinationDetailsViewModel
     {
         public int Id { get; set; }
@@ -26,4 +25,4 @@
 
         public IEnumerable<RatingViewModel> Ratings { get; set; } = new List<RatingViewModel>();
     }
-}
+

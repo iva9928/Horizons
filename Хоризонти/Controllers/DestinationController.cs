@@ -3,6 +3,7 @@ using Horizons.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
+using Хоризонти.Models;
 
 namespace Horizons.Controllers
 {

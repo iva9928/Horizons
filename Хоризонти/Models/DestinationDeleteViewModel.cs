@@ -1,5 +1,5 @@
-﻿namespace Horizons.Models
-{
+﻿
+
     public class DestinationDeleteViewModel
     {
         public int Id { get; set; }
@@ -10,4 +10,4 @@
         
         public string PublisherId { get; set; } = string.Empty;
     }
-}
+

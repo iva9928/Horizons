@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Horizons.Models;
+using System.ComponentModel.DataAnnotations;
 
-namespace Horizons.Models
-{
+
     public class DestinationAddViewModel
     {
         public int Id { get; set; }
@@ -32,4 +32,4 @@ namespace Horizons.Models
 
         public List<string> Images { get; set; } = new();
     }
-}
+

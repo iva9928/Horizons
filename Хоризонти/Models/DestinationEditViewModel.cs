@@ -1,6 +1,8 @@
-﻿namespace Horizons.Models
-{
-    public class DestinationEditViewModel
+﻿
+
+using Horizons.Models;
+
+public class DestinationEditViewModel
     {
         public int Id { get; set; }
 
@@ -25,4 +27,4 @@
         public decimal TicketPrice { get; set; }
         public List<string> Images { get; set; } = new();
     }
-}
+
