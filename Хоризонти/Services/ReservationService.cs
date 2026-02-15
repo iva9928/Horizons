@@ -5,15 +5,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Horizons.Services
 {
+    /// <summary>
+    /// Service responsible for handling reservation-related business logic,
+    /// including creation and retrieval of reservations.
+    /// </summary>
     public class ReservationService : IReservationService
     {
         private readonly ApplicationDbContext context;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReservationService"/> class.
+        /// </summary>
+        /// <param name="context">The application's database context.</param>
         public ReservationService(ApplicationDbContext context)
         {
             this.context = context;
         }
 
+        /// <summary>
+        /// Retrieves a reservation creation model for a specific destination.
+        /// </summary>
+        /// <param name="destinationId">The identifier of the destination to reserve.</param>
+        /// <returns>
+        /// A populated <see cref="ReservationCreateViewModel"/> if the destination exists and is not deleted;
+        /// otherwise <c>null</c>.
+        /// </returns>
         public async Task<ReservationCreateViewModel?> GetCreateModelAsync(int destinationId)
         {
             var dest = await context.Destinations
@@ -34,6 +50,14 @@ namespace Horizons.Services
             };
         }
 
+        /// <summary>
+        /// Creates a new reservation in the system.
+        /// </summary>
+        /// <param name="model">The reservation data provided by the user.</param>
+        /// <param name="userId">The identifier of the user making the reservation.</param>
+        /// <exception cref="ArgumentException">
+        /// Thrown when the reservation model or user identifier is invalid.
+        /// </exception>
         public async Task CreateReservationAsync(ReservationCreateViewModel model, string userId)
         {
             if (model == null || userId == null)
@@ -53,6 +77,13 @@ namespace Horizons.Services
             await context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Retrieves all reservations in the system.
+        /// </summary>
+        /// <remarks>
+        /// Intended for administrative use.
+        /// </remarks>
+        /// <returns>A collection of <see cref="ReservationListViewModel"/> ordered by creation date (descending).</returns>
         public async Task<IEnumerable<ReservationListViewModel>> GetAllReservationsAsync()
         {
             return await context.Reservations
@@ -73,6 +104,13 @@ namespace Horizons.Services
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// Retrieves all reservations made by a specific user.
+        /// </summary>
+        /// <param name="userId">The identifier of the user.</param>
+        /// <returns>
+        /// A collection of <see cref="ReservationListViewModel"/> ordered by reservation date (descending).
+        /// </returns>
         public async Task<IEnumerable<ReservationListViewModel>> GetUserReservationsAsync(string userId)
         {
             return await context.Reservations
@@ -88,7 +126,7 @@ namespace Horizons.Services
                     TicketPrice = r.TicketPrice,
                     TotalPrice = r.TicketPrice * r.PeopleCount,
                     CreatedOn = r.CreatedOn,
-                    UserName = "" // Не се показва в My.cshtml
+                    UserName = "" // Not displayed in My.cshtml
                 })
                 .ToListAsync();
         }

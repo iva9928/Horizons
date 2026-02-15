@@ -7,15 +7,27 @@ using Хоризонти.Models;
 
 namespace Horizons.Controllers
 {
+    /// <summary>
+    /// Controller responsible for managing destinations including 
+    /// creation, editing, deletion, searching, favorites, and rating functionality.
+    /// </summary>
     public class DestinationController : BaseController
     {
         private readonly IDestinationService service;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DestinationController"/> class.
+        /// </summary>
+        /// <param name="service">Service used for destination-related operations.</param>
         public DestinationController(IDestinationService service)
         {
             this.service = service;
         }
 
+        /// <summary>
+        /// Displays the form for adding a new destination.
+        /// </summary>
+        /// <returns>A view with populated terrain options.</returns>
         [HttpGet]
         public async Task<IActionResult> Add()
         {
@@ -27,6 +39,14 @@ namespace Horizons.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Processes the submission of a new destination.
+        /// </summary>
+        /// <param name="model">The destination data submitted by the user.</param>
+        /// <returns>
+        /// Redirects to the index page if successful; 
+        /// otherwise returns the form view with validation errors.
+        /// </returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(DestinationAddViewModel model)
@@ -43,6 +63,15 @@ namespace Horizons.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        /// <summary>
+        /// Displays a list of destinations with optional filtering options.
+        /// </summary>
+        /// <param name="query">Search keyword for destination name.</param>
+        /// <param name="terrainId">Optional terrain filter.</param>
+        /// <param name="minPrice">Minimum ticket price filter.</param>
+        /// <param name="maxPrice">Maximum ticket price filter.</param>
+        /// <param name="onlyFavorites">Indicates whether only favorite destinations should be displayed.</param>
+        /// <returns>A filtered list of destinations.</returns>
         public async Task<IActionResult> Index(
             string? query,
             int? terrainId,
@@ -87,6 +116,11 @@ namespace Horizons.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Displays destinations filtered by predefined category keywords.
+        /// </summary>
+        /// <param name="category">Category identifier used for filtering destinations.</param>
+        /// <returns>The filtered destinations displayed in the index view.</returns>
         [HttpGet]
         public async Task<IActionResult> Category(string category)
         {
@@ -125,6 +159,10 @@ namespace Horizons.Controllers
             return View("Index", model);
         }
 
+        /// <summary>
+        /// Displays the currently authenticated user's favorite destinations.
+        /// </summary>
+        /// <returns>A view containing favorite destinations.</returns>
         public async Task<IActionResult> Favorites()
         {
             var userId = GetUserId();
@@ -150,6 +188,11 @@ namespace Horizons.Controllers
             return View("Index", model);
         }
 
+        /// <summary>
+        /// Displays detailed information for a specific destination.
+        /// </summary>
+        /// <param name="id">The unique identifier of the destination.</param>
+        /// <returns>The destination details view or NotFound if it does not exist.</returns>
         public async Task<IActionResult> Details(int id)
         {
             var userId = GetUserId();
@@ -161,6 +204,11 @@ namespace Horizons.Controllers
             return View(destinationDetails);
         }
 
+        /// <summary>
+        /// Displays the edit form for a destination.
+        /// </summary>
+        /// <param name="id">The destination identifier.</param>
+        /// <returns>The edit view if authorized; otherwise NotFound or Unauthorized.</returns>
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -175,6 +223,14 @@ namespace Horizons.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Processes the destination edit form submission.
+        /// </summary>
+        /// <param name="model">The updated destination data.</param>
+        /// <returns>
+        /// Redirects to details page if successful; 
+        /// otherwise returns appropriate error response.
+        /// </returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(DestinationEditViewModel model)
@@ -201,6 +257,11 @@ namespace Horizons.Controllers
             return RedirectToAction(nameof(Details), new { id = model.Id });
         }
 
+        /// <summary>
+        /// Displays the confirmation page for deleting a destination.
+        /// </summary>
+        /// <param name="id">The destination identifier.</param>
+        /// <returns>The delete confirmation view.</returns>
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
@@ -225,6 +286,11 @@ namespace Horizons.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Deletes a destination after confirmation.
+        /// </summary>
+        /// <param name="model">The delete confirmation model.</param>
+        /// <returns>Redirects to index page if successful.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(DestinationDeleteViewModel model)
@@ -243,6 +309,11 @@ namespace Horizons.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        /// <summary>
+        /// Adds a destination to the user's favorites.
+        /// </summary>
+        /// <param name="id">The destination identifier.</param>
+        /// <returns>Redirects to the destination details page.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToFavorites(int id)
@@ -252,6 +323,11 @@ namespace Horizons.Controllers
             return RedirectToAction(nameof(Details), new { id });
         }
 
+        /// <summary>
+        /// Removes a destination from the user's favorites.
+        /// </summary>
+        /// <param name="id">The destination identifier.</param>
+        /// <returns>Redirects to the destination details page.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveFromFavorites(int id)
@@ -261,6 +337,13 @@ namespace Horizons.Controllers
             return RedirectToAction(nameof(Details), new { id });
         }
 
+        /// <summary>
+        /// Adds a rating and optional comment to a destination.
+        /// </summary>
+        /// <param name="id">The destination identifier.</param>
+        /// <param name="stars">The rating value.</param>
+        /// <param name="comment">Optional user comment.</param>
+        /// <returns>Redirects to the destination details page.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Rate(int id, int stars, string comment)
@@ -274,6 +357,10 @@ namespace Horizons.Controllers
             return RedirectToAction("Details", new { id });
         }
 
+        /// <summary>
+        /// Determines whether the currently authenticated user is an administrator.
+        /// </summary>
+        /// <returns>True if the user is administrator; otherwise false.</returns>
         private bool IsAdmin()
         {
             return User.Identity?.Name == "admin@horizons.com";
