@@ -1,4 +1,5 @@
 using Horizons.Data;
+using Horizons.Data.Models;   // ? ВАЖНО
 using Horizons.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -14,8 +15,9 @@ namespace Horizons
             // -----------------------
             // DATABASE
             // -----------------------
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-                                   ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            var connectionString = builder.Configuration
+                .GetConnectionString("DefaultConnection")
+                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
@@ -25,19 +27,23 @@ namespace Horizons
             // -----------------------
             builder.Services.AddScoped<IDestinationService, DestinationService>();
             builder.Services.AddScoped<IReservationService, ReservationService>();
+            builder.Services.AddScoped<IAiService, AiService>();
 
             // -----------------------
             // IDENTITY
             // -----------------------
             builder.Services
-                .AddDefaultIdentity<IdentityUser>(options =>
+                .AddDefaultIdentity<ApplicationUser>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = false;
+
                     options.Password.RequireDigit = false;
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireLowercase = false;
+                    options.Password.RequiredLength = 6;
                 })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddControllersWithViews();
@@ -58,17 +64,13 @@ namespace Horizons
             }
 
             // -----------------------
-            // STATIC FILES (CRITICAL!)
+            // MIDDLEWARE
             // -----------------------
             app.UseHttpsRedirection();
-
-            // Това позволява зареждането на /images/... от wwwroot
             app.UseStaticFiles();
 
-            // -----------------------
-            // ROUTING + AUTH
-            // -----------------------
             app.UseRouting();
+
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -81,9 +83,9 @@ namespace Horizons
 
             app.MapRazorPages();
 
-
-
             app.Run();
+
+
         }
     }
 }

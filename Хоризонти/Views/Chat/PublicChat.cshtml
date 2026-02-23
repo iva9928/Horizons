@@ -1,0 +1,18 @@
+﻿@model List<Horizons.Data.Models.Message>
+
+<h2>Публичен чат</h2>
+
+@foreach (var msg in Model)
+{
+    <div>
+        <strong>@msg.Sender.UserName:</strong>
+        @msg.Content
+        <small>@msg.SentOn</small>
+    </div>
+}
+
+<form asp-action="SendPublic" method="post">
+    <input type="hidden" name="destinationId" value="@ViewBag.DestinationId" />
+    <textarea name="content"></textarea>
+    <button type="submit">Изпрати</button>
+</form>

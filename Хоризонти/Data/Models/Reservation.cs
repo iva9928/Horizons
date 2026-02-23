@@ -16,7 +16,7 @@ namespace Horizons.Data.Models
 
         [Required]
         public string UserId { get; set; } = null!;
-        public IdentityUser User { get; set; } = null!;
+        public ApplicationUser User { get; set; } = null!;
 
         [Required]
         public DateTime Date { get; set; }

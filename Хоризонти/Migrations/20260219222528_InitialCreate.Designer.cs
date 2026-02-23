@@ -4,6 +4,7 @@ using Horizons.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Хоризонти.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260219222528_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,58 +108,18 @@ namespace Хоризонти.Migrations
                             AccessFailedCount = 0,
                             Age = 30,
                             Bio = "Main administrator of Horizons.",
-                            ConcurrencyStamp = "85459cf9-d2d6-4b32-8ea0-b0e001c787cf",
+                            ConcurrencyStamp = "071d6f64-4489-4b38-a670-a2226701b3a9",
                             Email = "admin@horizons.com",
                             EmailConfirmed = true,
                             IsGuide = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@HORIZONS.COM",
                             NormalizedUserName = "ADMIN@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKXPe5TT3Y64djyQN9+EH8fxVXCd4F0WOyttrMPFHmNuHEkrqognwTmb8MqZS0jsEw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOvrvoIeILjsgffsvS6xj18tuLwIjISIYNvhuh9uAPGzX4HKbDlvAUVeW4MCsGIaww==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "STATIC_SECURITY_STAMP",
                             TwoFactorEnabled = false,
                             UserName = "admin@horizons.com"
-                        },
-                        new
-                        {
-                            Id = "guide-cave",
-                            AccessFailedCount = 0,
-                            Age = 34,
-                            Bio = "Спелеолог с 12 години опит.",
-                            ConcurrencyStamp = "bca7c034-c991-4e12-bcd5-50d3e0d8f6d7",
-                            Email = "cave@horizons.com",
-                            EmailConfirmed = true,
-                            IsGuide = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "CAVE@HORIZONS.COM",
-                            NormalizedUserName = "CAVE@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPeq0JkiJjkAEIJwSFxz/2fNuh0i6VVhcPboVUBfdvLENxe0YEzXmcWUCnF8Q6bbtg==",
-                            PhoneNumberConfirmed = false,
-                            ProfileImageUrl = "/images/guides/cave.png",
-                            SecurityStamp = "ed0581ec-d337-4d84-83f0-8c6f9e19987c",
-                            TwoFactorEnabled = false,
-                            UserName = "cave@horizons.com"
-                        },
-                        new
-                        {
-                            Id = "guide-eco",
-                            AccessFailedCount = 0,
-                            Age = 29,
-                            Bio = "Еколог и водач на екопътеки.",
-                            ConcurrencyStamp = "d639f02d-c7e1-4f4a-aa65-d21cdcc43d45",
-                            Email = "eco@horizons.com",
-                            EmailConfirmed = true,
-                            IsGuide = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ECO@HORIZONS.COM",
-                            NormalizedUserName = "ECO@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAh26Z5bzSedBxc9LaGMLytkhvNT6F+ylvNrkhpZRZX7oy9PgYsfMGJT/pXEjLcMqw==",
-                            PhoneNumberConfirmed = false,
-                            ProfileImageUrl = "/images/guides/eco.png",
-                            SecurityStamp = "8a0ffbcf-01c2-4403-9b80-7beb9d955047",
-                            TwoFactorEnabled = false,
-                            UserName = "eco@horizons.com"
                         });
                 });
 
@@ -700,45 +663,6 @@ namespace Хоризонти.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Horizons.Data.Models.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<int?>("DestinationId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsPublic")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ReceiverId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("SenderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("SentOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReceiverId");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("Messages");
-                });
-
             modelBuilder.Entity("Horizons.Data.Models.Rating", b =>
                 {
                     b.Property<int>("Id")
@@ -1048,25 +972,6 @@ namespace Хоризонти.Migrations
                     b.Navigation("Publisher");
 
                     b.Navigation("Terrain");
-                });
-
-            modelBuilder.Entity("Horizons.Data.Models.Message", b =>
-                {
-                    b.HasOne("ApplicationUser", "Receiver")
-                        .WithMany()
-                        .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ApplicationUser", "Sender")
-                        .WithMany()
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Receiver");
-
-                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("Horizons.Data.Models.Rating", b =>

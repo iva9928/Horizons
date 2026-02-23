@@ -1,5 +1,6 @@
 ﻿
 
+using Horizons.Data.Models;
 using Horizons.Models;
 
 public class DestinationEditViewModel
@@ -25,6 +26,9 @@ public class DestinationEditViewModel
             = new List<TerrainViewModel>();
 
         public decimal TicketPrice { get; set; }
-        public List<string> Images { get; set; } = new();
+
+    public Season Season { get; set; }
+
+    public List<string> Images { get; set; } = new();
     }
 

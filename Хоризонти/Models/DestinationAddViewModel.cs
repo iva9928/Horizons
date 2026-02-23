@@ -1,8 +1,10 @@
 ﻿using Horizons.Models;
 using System.ComponentModel.DataAnnotations;
+using Horizons.Data.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 
-    public class DestinationAddViewModel
+public class DestinationAddViewModel
     {
         public int Id { get; set; }
 
@@ -30,6 +32,11 @@ using System.ComponentModel.DataAnnotations;
 
         public string? LocationUrl { get; set; }
 
-        public List<string> Images { get; set; } = new();
+    public Season Season { get; set; }
+
+    public IEnumerable<SelectListItem> Seasons { get; set; }
+        = new List<SelectListItem>();
+
+    public List<string> Images { get; set; } = new();
     }
 

@@ -1,5 +1,7 @@
 ﻿
-    public class DestinationDetailsViewModel
+using Horizons.Data.Models;
+
+public class DestinationDetailsViewModel
     {
         public int Id { get; set; }
 
@@ -23,6 +25,10 @@
         public double AverageRating { get; set; }
         public bool HasRated { get; set; }
 
-        public IEnumerable<RatingViewModel> Ratings { get; set; } = new List<RatingViewModel>();
+    public Season Season { get; set; }
+
+    public string? VideoUrl { get; set; }
+
+    public IEnumerable<RatingViewModel> Ratings { get; set; } = new List<RatingViewModel>();
     }
 

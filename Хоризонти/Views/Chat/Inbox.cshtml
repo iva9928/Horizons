@@ -1,0 +1,12 @@
+﻿@model List<Horizons.Data.Models.Message>
+
+<h2>Лични съобщения</h2>
+
+@foreach (var msg in Model)
+{
+    <div>
+        <strong>@msg.Sender.UserName → @msg.Receiver.UserName</strong>
+        <p>@msg.Content</p>
+        <small>@msg.SentOn</small>
+    </div>
+}

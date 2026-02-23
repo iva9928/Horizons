@@ -556,5 +556,31 @@
             }
         </div>
     }
+    @if (!string.IsNullOrEmpty(Model.VideoUrl))
+    {
+        <hr />
+
+        <button class="btn btn-success"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#videoCollapse"
+                aria-expanded="false"
+                aria-controls="videoCollapse">
+            🎥 Виртуално пътешествие
+        </button>
+
+        <div class="collapse mt-3" id="videoCollapse">
+            <div class="card card-body">
+                <div class="ratio ratio-16x9">
+                    <iframe src="@Model.VideoUrl"
+                            title="Virtual Tour"
+                            allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    }
+
+
 
 </div>

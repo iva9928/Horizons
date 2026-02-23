@@ -62,6 +62,12 @@
             <option value="">Избери...</option>
         </select>
 
+        <label asp-for="Season" class="form-label mt-3">Сезонност</label>
+        <select asp-for="Season" class="form-control"
+                asp-items="Model.Seasons">
+            <option value="">Избери сезон...</option>
+        </select>
+
         <label asp-for="Description" class="form-label mt-3">Описание</label>
         <textarea asp-for="Description" rows="3" class="form-control"></textarea>
 

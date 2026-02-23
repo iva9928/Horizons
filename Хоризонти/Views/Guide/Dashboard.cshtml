@@ -1,0 +1,10 @@
+﻿@using Horizons.Data.Models
+@model ApplicationUser
+<h2>Guide Profile</h2>
+
+<img src="@Model.ProfileImageUrl" width="200" />
+<p><strong>Email:</strong> @Model.Email</p>
+<p><strong>Bio:</strong> @Model.Bio</p>
+
+<a asp-controller="Chat"
+   asp-action="Inbox">Моите съобщения</a>

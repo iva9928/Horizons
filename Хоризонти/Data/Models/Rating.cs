@@ -20,7 +20,7 @@ namespace Horizons.Data.Models
 
         [Required]
         public string UserId { get; set; }
-        public IdentityUser User { get; set; }
+        public ApplicationUser User { get; set; }
 
         public int DestinationId { get; set; }
         public Destination Destination { get; set; }

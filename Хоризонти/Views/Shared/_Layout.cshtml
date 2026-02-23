@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 <!DOCTYPE html>
 <html lang="bg">
@@ -23,52 +23,10 @@
             box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
         }
 
-        .logo-img {
-            height: 45px;
-            width: auto;
-            object-fit: contain;
-            margin-right: 12px;
-            border-radius: 50%;
-        }
-
-        .logo-link {
-            display: flex;
-            align-items: center;
-        }
-
-        .navbar-brand,
-        .nav-link,
-        .dropdown-item {
+        .navbar-brand, .nav-link {
             color: #fff !important;
             font-weight: 500;
-            font-size: 1.05rem;
         }
-
-            .nav-link:hover,
-            .navbar-brand:hover {
-                opacity: .85;
-            }
-
-        /* ✅ Финален, единствен и работещ стил за бутона */
-        .btn-add-destination {
-            display: inline-block;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #2196f3, #1e88e5);
-            color: white !important;
-            font-weight: 600;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: 1rem;
-            margin-left: 15px;
-            box-shadow: 0 4px 14px rgba(33,150,243,0.35);
-            transition: 0.25s ease;
-        }
-
-            .btn-add-destination:hover {
-                background: linear-gradient(135deg, #1e88e5, #1976d2);
-                box-shadow: 0 6px 20px rgba(25,118,210,0.45);
-                transform: translateY(-2px);
-            }
 
         .btn-logout {
             background: #ffcc00;
@@ -79,9 +37,91 @@
             border-radius: 8px;
         }
 
-            .btn-logout:hover {
-                background: #e6b800;
-            }
+        /* 🤖 AI Chat */
+        #ai-chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #247158;
+            color: white;
+            font-size: 28px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 9999;
+        }
+
+        #ai-chat-container {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 340px;
+            height: 450px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 9999;
+        }
+
+        #ai-chat-header {
+            background: #247158;
+            color: white;
+            padding: 12px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #ai-chat-messages {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+            font-size: 14px;
+            background: #f8f9fa;
+        }
+
+        .user-msg {
+            background: #d1f0e1;
+            padding: 8px;
+            border-radius: 10px;
+            margin-bottom: 6px;
+        }
+
+        .ai-msg {
+            background: white;
+            padding: 8px;
+            border-radius: 10px;
+            margin-bottom: 6px;
+            border: 1px solid #ddd;
+        }
+
+        #ai-chat-input-area {
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+
+        #ai-chat-input {
+            flex: 1;
+            border: none;
+            padding: 10px;
+            outline: none;
+        }
+
+        #ai-chat-input-area button {
+            background: #247158;
+            color: white;
+            border: none;
+            padding: 0 15px;
+            cursor: pointer;
+        }
     </style>
 
     @RenderSection("Styles", required: false)
@@ -93,65 +133,33 @@
         <nav class="navbar navbar-expand-lg navbar-dark">
             <a class="navbar-brand" asp-controller="Home" asp-action="Index">Horizons</a>
 
-            <button class="navbar-toggler" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#navMenu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navMenu">
-
+            <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto">
 
+                    <!-- Дестинации -->
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Destination" asp-action="Index">Дестинации</a>
+                        <a class="nav-link" asp-controller="Destination" asp-action="Index">
+                            Дестинации
+                        </a>
                     </li>
 
-                    <a asp-controller="Home" asp-action="Index" class="logo-link">
-                        <img src="~/images/logo.jpg" class="logo-img" alt="Сайт Лого" />
-                    </a>
+                    <!-- ВРЪЩАМЕ СЕЗОННОСТ -->
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Destination" asp-action="Seasons">
+                            🌤 Сезонност
+                        </a>
+                    </li>
 
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                        if (User.Identity!.Name == "admin@horizons.com")
-                        {
-                            <!-- 🔥 Красив бутон "Добави дестинация" -->
-                            <li class="nav-item">
-                                <a class="btn-add-destination"
-                                   asp-controller="Destination"
-                                   asp-action="Add">
-                                    ➕ Добави дестинация
-                                </a>
-                            </li>
+                    <!-- НОВ БУТОН ТУР ГАЙДОВЕ -->
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Guide" asp-action="Index">
+                            🧭 Тур гайдове
+                        </a>
+                    </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Reservation" asp-action="Admin">
-                                    🛠 Всички резервации
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Rating" asp-action="All">
-                                    ⭐ Оценки & Коментари
-                                </a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Destination" asp-action="Favorites">Любими</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Reservation" asp-action="My">
-                                    Моите резервации
-                                </a>
-                            </li>
-                        }
-                    }
                 </ul>
 
                 <ul class="navbar-nav ms-auto">
-
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <li class="nav-item">
@@ -161,8 +169,7 @@
                         <li class="nav-item">
                             <form method="post"
                                   asp-area="Identity"
-                                  asp-page="/Account/Logout"
-                                  asp-route-returnUrl="@Url.Action("Index", "Home")">
+                                  asp-page="/Account/Logout">
                                 <button class="btn btn-logout btn-sm">Изход</button>
                             </form>
                         </li>
@@ -170,16 +177,14 @@
                     else
                     {
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Вход</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Регистрация</a>
+                            <a class="nav-link"
+                               asp-area="Identity"
+                               asp-page="/Account/Login">
+                                Вход
+                            </a>
                         </li>
                     }
-
                 </ul>
-
             </div>
         </nav>
     </header>
@@ -192,7 +197,59 @@
         © @DateTime.Now.Year - Horizons
     </footer>
 
+    <!-- 🤖 AI Chat -->
+    <div id="ai-chat-button" onclick="toggleChat()">🤖</div>
+
+    <div id="ai-chat-container">
+        <div id="ai-chat-header">
+            AI Travel Assistant
+            <span onclick="toggleChat()" style="cursor:pointer;">✖</span>
+        </div>
+        <div id="ai-chat-messages"></div>
+        <div id="ai-chat-input-area">
+            <input type="text" id="ai-chat-input" placeholder="Попитай ме..." />
+            <button onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function toggleChat() {
+            let chat = document.getElementById("ai-chat-container");
+            chat.style.display = chat.style.display === "flex" ? "none" : "flex";
+        }
+
+        document.getElementById("ai-chat-input")
+            .addEventListener("keypress", function (e) {
+                if (e.key === "Enter") {
+                    sendMessage();
+                }
+            });
+
+        async function sendMessage() {
+            let input = document.getElementById("ai-chat-input");
+            let message = input.value.trim();
+            if (!message) return;
+
+            let messages = document.getElementById("ai-chat-messages");
+
+            messages.innerHTML += `<div class="user-msg"><b>Ти:</b> ${message}</div>`;
+            input.value = "";
+
+            let response = await fetch("/AI/Ask", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: "message=" + encodeURIComponent(message)
+            });
+
+            let data = await response.json();
+            data = data.replace(/\n/g, "<br>");
+
+            messages.innerHTML += `<div class="ai-msg"><b>AI:</b><br>${data}</div>`;
+            messages.scrollTop = messages.scrollHeight;
+        }
+    </script>
 
     @RenderSection("Scripts", required: false)
 

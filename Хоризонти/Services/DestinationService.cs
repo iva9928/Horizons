@@ -5,28 +5,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Horizons.Services
 {
-    /// <summary>
-    /// Service responsible for handling all business logic related to destinations,
-    /// including CRUD operations, favorites, ratings, and terrain retrieval.
-    /// </summary>
     public class DestinationService : IDestinationService
     {
         private readonly ApplicationDbContext context;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DestinationService"/> class.
-        /// </summary>
-        /// <param name="context">The application's database context.</param>
         public DestinationService(ApplicationDbContext context)
         {
             this.context = context;
         }
 
-        /// <summary>
-        /// Adds a new destination to the database.
-        /// </summary>
-        /// <param name="model">The data used to create the destination.</param>
-        /// <param name="userId">The identifier of the user publishing the destination.</param>
         public async Task AddDestinationAsync(DestinationAddViewModel model, string userId)
         {
             var destination = new Destination
@@ -34,12 +21,13 @@ namespace Horizons.Services
                 Name = model.Name,
                 Description = model.Description,
                 ImageUrl = model.ImageUrl,
-                Location = model.Location?.Trim() ?? "",
-                LocationUrl = string.IsNullOrWhiteSpace(model.LocationUrl) ? null : model.LocationUrl.Trim(),
+                Location = model.Location ?? "",
+                LocationUrl = model.LocationUrl,
                 PublishedOn = DateTime.Parse(model.PublishedOn),
                 TerrainId = model.TerrainId,
                 PublisherId = userId,
                 TicketPrice = model.TicketPrice,
+                Season = model.Season,
                 IsDeleted = false
             };
 
@@ -47,25 +35,16 @@ namespace Horizons.Services
             await context.SaveChangesAsync();
         }
 
-        /// <summary>
-        /// Edits an existing destination.
-        /// </summary>
-        /// <param name="model">The updated destination data.</param>
-        /// <param name="userId">The identifier of the user attempting the edit.</param>
-        /// <exception cref="InvalidOperationException">Thrown when the destination is not found.</exception>
-        /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the user is not the publisher of the destination.
-        /// </exception>
         public async Task EditDestinationAsync(DestinationEditViewModel model, string userId)
         {
             var destination = await context.Destinations
                 .FirstOrDefaultAsync(d => d.Id == model.Id && !d.IsDeleted);
 
             if (destination == null)
-                throw new InvalidOperationException("Destination not found.");
+                throw new InvalidOperationException();
 
             if (destination.PublisherId != userId)
-                throw new UnauthorizedAccessException("You are not the publisher.");
+                throw new UnauthorizedAccessException();
 
             destination.Name = model.Name;
             destination.Description = model.Description;
@@ -75,18 +54,11 @@ namespace Horizons.Services
             destination.PublishedOn = DateTime.Parse(model.PublishedOn);
             destination.TerrainId = model.TerrainId;
             destination.TicketPrice = model.TicketPrice;
+            destination.Season = model.Season;
 
             await context.SaveChangesAsync();
         }
 
-        /// <summary>
-        /// Retrieves detailed information for a specific destination.
-        /// </summary>
-        /// <param name="id">The destination identifier.</param>
-        /// <param name="userId">The current user identifier.</param>
-        /// <returns>
-        /// A <see cref="DestinationDetailsViewModel"/> if found; otherwise null.
-        /// </returns>
         public async Task<DestinationDetailsViewModel?> GetDestinationDetailsAsync(int id, string userId)
         {
             var d = await context.Destinations
@@ -94,11 +66,7 @@ namespace Horizons.Services
                 .Include(x => x.Publisher)
                 .FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
 
-            if (d == null)
-                return null;
-
-            bool isFavorite = await context.UserDestinations
-                .AnyAsync(ud => ud.UserId == userId && ud.DestinationId == id);
+            if (d == null) return null;
 
             var ratings = await context.Ratings
                 .Where(r => r.DestinationId == id)
@@ -106,6 +74,10 @@ namespace Horizons.Services
                 .ToListAsync();
 
             double avg = ratings.Any() ? ratings.Average(r => r.Stars) : 0;
+
+            bool isFavorite = await context.UserDestinations
+                .AnyAsync(x => x.UserId == userId && x.DestinationId == id);
+
             bool hasRated = ratings.Any(r => r.UserId == userId);
 
             return new DestinationDetailsViewModel
@@ -120,10 +92,12 @@ namespace Horizons.Services
                 Terrain = d.Terrain.Name,
                 TicketPrice = d.TicketPrice,
                 PublishedOn = d.PublishedOn.ToString("dd-MM-yyyy"),
+                Season = d.Season,
                 IsPublisher = d.PublisherId == userId,
                 IsFavorite = isFavorite,
                 AverageRating = avg,
                 HasRated = hasRated,
+                VideoUrl = d.VideoUrl,
                 Ratings = ratings.Select(r => new RatingViewModel
                 {
                     Stars = r.Stars,
@@ -134,14 +108,9 @@ namespace Horizons.Services
             };
         }
 
-        /// <summary>
-        /// Retrieves all non-deleted destinations.
-        /// </summary>
-        /// <param name="userId">The current user identifier.</param>
-        /// <returns>A collection of destination list view models.</returns>
         public async Task<IEnumerable<DestinationListViewModel>> GetAllDestinationsAsync(string userId)
         {
-            var userDest = context.UserDestinations.AsQueryable();
+            var userDest = context.UserDestinations;
 
             return await context.Destinations
                 .Include(d => d.Terrain)
@@ -153,6 +122,7 @@ namespace Horizons.Services
                     ImageUrl = d.ImageUrl,
                     Terrain = d.Terrain.Name,
                     TicketPrice = d.TicketPrice,
+                    Season = d.Season,
                     FavoritesCount = userDest.Count(ud => ud.DestinationId == d.Id),
                     IsPublisher = d.PublisherId == userId,
                     IsFavorite = userDest.Any(ud => ud.UserId == userId && ud.DestinationId == d.Id)
@@ -160,11 +130,23 @@ namespace Horizons.Services
                 .ToListAsync();
         }
 
-        /// <summary>
-        /// Retrieves a destination entity by identifier.
-        /// </summary>
-        /// <param name="id">The destination identifier.</param>
-        /// <returns>The destination entity if found; otherwise null.</returns>
+        public async Task<IEnumerable<DestinationListViewModel>> GetAllAsync()
+        {
+            return await context.Destinations
+                .Include(d => d.Terrain)
+                .Where(d => !d.IsDeleted)
+                .Select(d => new DestinationListViewModel
+                {
+                    Id = d.Id,
+                    Name = d.Name,
+                    ImageUrl = d.ImageUrl,
+                    Terrain = d.Terrain.Name,
+                    TicketPrice = d.TicketPrice,
+                    Season = d.Season
+                })
+                .ToListAsync();
+        }
+
         public async Task<Destination?> GetDestinationByIdAsync(int id)
         {
             return await context.Destinations
@@ -173,34 +155,24 @@ namespace Horizons.Services
                 .FirstOrDefaultAsync(d => d.Id == id && !d.IsDeleted);
         }
 
-        /// <summary>
-        /// Retrieves all favorite destinations for a specific user.
-        /// </summary>
-        /// <param name="userId">The user identifier.</param>
-        /// <returns>A collection of favorite destinations.</returns>
         public async Task<IEnumerable<FavoriteDestinationViewModel>> GetFavoriteDestinationsAsync(string userId)
         {
             return await context.UserDestinations
-                .Where(ud => ud.UserId == userId && !ud.Destination.IsDeleted)
-                .Select(ud => new FavoriteDestinationViewModel
+                .Where(x => x.UserId == userId && !x.Destination.IsDeleted)
+                .Select(x => new FavoriteDestinationViewModel
                 {
-                    Id = ud.Destination.Id,
-                    Name = ud.Destination.Name,
-                    ImageUrl = ud.Destination.ImageUrl,
-                    Terrain = ud.Destination.Terrain.Name
+                    Id = x.Destination.Id,
+                    Name = x.Destination.Name,
+                    ImageUrl = x.Destination.ImageUrl,
+                    Terrain = x.Destination.Terrain.Name
                 })
                 .ToListAsync();
         }
 
-        /// <summary>
-        /// Adds a destination to the user's favorites.
-        /// </summary>
-        /// <param name="userId">The user identifier.</param>
-        /// <param name="destinationId">The destination identifier.</param>
         public async Task AddToFavoritesAsync(string userId, int destinationId)
         {
             if (!await context.UserDestinations
-                .AnyAsync(ud => ud.UserId == userId && ud.DestinationId == destinationId))
+                .AnyAsync(x => x.UserId == userId && x.DestinationId == destinationId))
             {
                 await context.UserDestinations.AddAsync(new UserDestination
                 {
@@ -212,13 +184,10 @@ namespace Horizons.Services
             }
         }
 
-        /// <summary>
-        /// Removes a destination from the user's favorites.
-        /// </summary>
         public async Task RemoveFromFavoritesAsync(string userId, int destinationId)
         {
             var fav = await context.UserDestinations
-                .FirstOrDefaultAsync(ud => ud.UserId == userId && ud.DestinationId == destinationId);
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.DestinationId == destinationId);
 
             if (fav != null)
             {
@@ -227,29 +196,21 @@ namespace Horizons.Services
             }
         }
 
-        /// <summary>
-        /// Soft deletes a destination.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">If the destination does not exist.</exception>
-        /// <exception cref="UnauthorizedAccessException">If the user is not allowed to delete.</exception>
         public async Task DeleteDestinationAsync(int id, string userId)
         {
             var destination = await context.Destinations
                 .FirstOrDefaultAsync(d => d.Id == id && !d.IsDeleted);
 
             if (destination == null)
-                throw new InvalidOperationException("Destination not found.");
+                throw new InvalidOperationException();
 
             if (destination.PublisherId != userId)
-                throw new UnauthorizedAccessException("Not allowed.");
+                throw new UnauthorizedAccessException();
 
             destination.IsDeleted = true;
             await context.SaveChangesAsync();
         }
 
-        /// <summary>
-        /// Retrieves all terrains.
-        /// </summary>
         public async Task<IEnumerable<TerrainViewModel>> GetAllTerrainsAsync()
         {
             return await context.Terrains
@@ -261,11 +222,6 @@ namespace Horizons.Services
                 .ToListAsync();
         }
 
-        /// <summary>
-        /// Retrieves the edit model for a specific destination.
-        /// </summary>
-        /// <param name="id">The destination identifier.</param>
-        /// <returns>The edit view model if found; otherwise null.</returns>
         public async Task<DestinationEditViewModel?> GetEditModelAsync(int id)
         {
             return await context.Destinations
@@ -281,27 +237,28 @@ namespace Horizons.Services
                     PublishedOn = d.PublishedOn.ToString("dd-MM-yyyy"),
                     TerrainId = d.TerrainId,
                     TicketPrice = d.TicketPrice,
+                    Season = d.Season,
                     PublisherId = d.PublisherId,
                     Terrains = context.Terrains
-                        .Select(t => new TerrainViewModel { Id = t.Id, Name = t.Name })
-                        .ToList()
+                        .Select(t => new TerrainViewModel
+                        {
+                            Id = t.Id,
+                            Name = t.Name
+                        }).ToList()
                 })
                 .FirstOrDefaultAsync();
         }
 
-        /// <summary>
-        /// Adds or updates a rating for a destination.
-        /// </summary>
         public async Task AddRatingAsync(string userId, int destinationId, int stars, string comment)
         {
-            var exists = await context.Ratings
+            var existing = await context.Ratings
                 .FirstOrDefaultAsync(r => r.UserId == userId && r.DestinationId == destinationId);
 
-            if (exists != null)
+            if (existing != null)
             {
-                exists.Stars = stars;
-                exists.Comment = comment;
-                exists.CreatedOn = DateTime.Now;
+                existing.Stars = stars;
+                existing.Comment = comment;
+                existing.CreatedOn = DateTime.Now;
             }
             else
             {
@@ -315,23 +272,6 @@ namespace Horizons.Services
             }
 
             await context.SaveChangesAsync();
-        }
-
-        /// <summary>
-        /// Retrieves all destinations (basic listing).
-        /// </summary>
-        public async Task<IEnumerable<DestinationListViewModel>> GetAllAsync()
-        {
-            return await context.Destinations
-                .Select(d => new DestinationListViewModel
-                {
-                    Id = d.Id,
-                    Name = d.Name,
-                    ImageUrl = d.ImageUrl,
-                    Terrain = d.Terrain.Name,
-                    TicketPrice = d.TicketPrice
-                })
-                .ToListAsync();
         }
     }
 }

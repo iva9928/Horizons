@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static Horizons.Data.ValidationConstants;
+using Horizons.Data.Models;
 
 namespace Horizons.Data.Models
 {

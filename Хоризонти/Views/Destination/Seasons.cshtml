@@ -1,0 +1,99 @@
+﻿@model Horizons.Models.SeasonViewModel
+
+<style>
+    .season-section {
+        margin-bottom: 60px;
+    }
+
+    .season-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .season-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+    }
+
+    .season-card {
+        border-radius: 18px;
+        overflow: hidden;
+        background: white;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        transition: 0.3s ease;
+    }
+
+        .season-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+        }
+
+        .season-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+    .season-card-body {
+        padding: 15px;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+</style>
+
+<div class="season-section">
+    <div class="season-title">🌸 Пролет</div>
+    <div class="season-grid">
+        @foreach (var item in Model.Spring)
+        {
+            <a asp-action="Details" asp-route-id="@item.Id" class="season-card text-decoration-none text-dark">
+                <img src="@item.ImageUrl" />
+                <div class="season-card-body">@item.Name</div>
+            </a>
+        }
+    </div>
+</div>
+
+<div class="season-section">
+    <div class="season-title">☀ Лято</div>
+    <div class="season-grid">
+        @foreach (var item in Model.Summer)
+        {
+            <a asp-action="Details" asp-route-id="@item.Id" class="season-card text-decoration-none text-dark">
+                <img src="@item.ImageUrl" />
+                <div class="season-card-body">@item.Name</div>
+            </a>
+        }
+    </div>
+</div>
+
+<div class="season-section">
+    <div class="season-title">🍁 Есен</div>
+    <div class="season-grid">
+        @foreach (var item in Model.Autumn)
+        {
+            <a asp-action="Details" asp-route-id="@item.Id" class="season-card text-decoration-none text-dark">
+                <img src="@item.ImageUrl" />
+                <div class="season-card-body">@item.Name</div>
+            </a>
+        }
+    </div>
+</div>
+
+<div class="season-section">
+    <div class="season-title">❄ Зима</div>
+    <div class="season-grid">
+        @foreach (var item in Model.Winter)
+        {
+            <a asp-action="Details" asp-route-id="@item.Id" class="season-card text-decoration-none text-dark">
+                <img src="@item.ImageUrl" />
+                <div class="season-card-body">@item.Name</div>
+            </a>
+        }
+    </div>
+</div>
