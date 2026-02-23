@@ -1,0 +1,18 @@
+name: Deploy to DO
+
+on:
+  push:
+    branches: [ "main" ]  # change to "master" if that's your branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DROPLET_HOST }}
+          username: ${{ secrets.DROPLET_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            sudo /usr/local/bin/deploy_horizonti.sh
