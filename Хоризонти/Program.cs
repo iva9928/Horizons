@@ -1,5 +1,5 @@
 using Horizons.Data;
-using Horizons.Data.Models;   // ? ВАЖНО
+using Horizons.Data.Models;
 using Horizons.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,12 +15,16 @@ namespace Horizons
             // -----------------------
             // DATABASE
             // -----------------------
-            var connectionString = builder.Configuration
-                .GetConnectionString("DefaultConnection")
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
                 ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
+            // ? OPTIONAL (само ако имаш пакета):
+            // Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
+            // Ако го нямаш -> остави реда закоментиран, иначе ще е червено и няма да компилира.
+            // builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             // -----------------------
             // SERVICES
@@ -30,10 +34,10 @@ namespace Horizons
             builder.Services.AddScoped<IAiService, AiService>();
 
             // -----------------------
-            // IDENTITY
+            // IDENTITY (ApplicationUser + Roles)
             // -----------------------
             builder.Services
-                .AddDefaultIdentity<ApplicationUser>(options =>
+                .AddIdentity<ApplicationUser, IdentityRole>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = false;
 
@@ -43,8 +47,12 @@ namespace Horizons
                     options.Password.RequireLowercase = false;
                     options.Password.RequiredLength = 6;
                 })
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders()
+                .AddDefaultUI();
+
+            // ? Нужно за Identity UI (Register/Login)
+            builder.Services.AddRazorPages();
 
             builder.Services.AddControllersWithViews();
 
@@ -84,8 +92,6 @@ namespace Horizons
             app.MapRazorPages();
 
             app.Run();
-
-
         }
     }
 }

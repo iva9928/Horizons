@@ -102,5 +102,6 @@ namespace Horizons.Controllers
             var reservations = await reservationService.GetAllReservationsAsync();
             return View(reservations);
         }
+
     }
 }

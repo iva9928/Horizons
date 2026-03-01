@@ -4,6 +4,7 @@ using Horizons.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Хоризонти.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260224112607_AddTours")]
+    partial class AddTours
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,118 +108,18 @@ namespace Хоризонти.Migrations
                             AccessFailedCount = 0,
                             Age = 30,
                             Bio = "Main administrator of Horizons.",
-                            ConcurrencyStamp = "63e1220a-9b41-4676-b6aa-c8677f464746",
+                            ConcurrencyStamp = "ef6ecd5a-8a6b-4b3f-9e53-2f413da9cd99",
                             Email = "admin@horizons.com",
                             EmailConfirmed = true,
                             IsGuide = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@HORIZONS.COM",
                             NormalizedUserName = "ADMIN@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDHu4N/h1BK1XgoF0i+vWNwFr1/YnaZzdBqf7X62YSTeQ7rO1lq700jZJ3yTUNv15A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELuWKgtrggULomHrwpP705/PpFAgTLPkfgydwW10z8K6dUQ2YzTTS2+77Jwjn2yt3A==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "STATIC_SECURITY_STAMP",
                             TwoFactorEnabled = false,
                             UserName = "admin@horizons.com"
-                        },
-                        new
-                        {
-                            Id = "11111111-1111-1111-1111-111111111111",
-                            AccessFailedCount = 0,
-                            Age = 34,
-                            Bio = "Планински гид с над 10 години опит в Родопите. Специализира в пещерни маршрути и високопланински преходи.",
-                            ConcurrencyStamp = "40a4ce05-507f-4e50-a842-04080c3c8a6e",
-                            Email = "ivan.petrov@horizons.com",
-                            EmailConfirmed = true,
-                            IsGuide = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "IVAN.PETROV@HORIZONS.COM",
-                            NormalizedUserName = "IVAN.PETROV@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEE9DsZnW2IhJREe0nWEpXh5GtixOot7dfZ5b5EV8WV7tR0sgRPk0/iuISPrtjIRrKw==",
-                            PhoneNumberConfirmed = false,
-                            ProfileImageUrl = "/images/planinaM.png",
-                            SecurityStamp = "GUIDE1_SECURITY",
-                            TwoFactorEnabled = false,
-                            UserName = "ivan.petrov@horizons.com"
-                        },
-                        new
-                        {
-                            Id = "22222222-2222-2222-2222-222222222222",
-                            AccessFailedCount = 0,
-                            Age = 29,
-                            Bio = "Лицензиран екскурзовод и любител на екопътеките. Организира турове до водопади и панорамни площадки.",
-                            ConcurrencyStamp = "7c9dc5d2-230b-4a35-bd3b-1db753073836",
-                            Email = "maria.stoyanova@horizons.com",
-                            EmailConfirmed = true,
-                            IsGuide = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "MARIA.STOYANOVA@HORIZONS.COM",
-                            NormalizedUserName = "MARIA.STOYANOVA@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAELCm0ConLT5roa9ZJfgL1oDj8Ho3XpUlKsrtc3iVCCUj8v0h0tMt6hXVS7AP3ZMgDA==",
-                            PhoneNumberConfirmed = false,
-                            ProfileImageUrl = "/images/jenaE.png",
-                            SecurityStamp = "GUIDE2_SECURITY",
-                            TwoFactorEnabled = false,
-                            UserName = "maria.stoyanova@horizons.com"
-                        },
-                        new
-                        {
-                            Id = "33333333-3333-3333-3333-333333333333",
-                            AccessFailedCount = 0,
-                            Age = 41,
-                            Bio = "Специалист по исторически маршрути и тракийски светилища. Разказвач на легенди и местен фолклор.",
-                            ConcurrencyStamp = "d477bdc4-7b23-468b-90d9-2213db11a3ef",
-                            Email = "georgi.dimitrov@horizons.com",
-                            EmailConfirmed = true,
-                            IsGuide = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "GEORGI.DIMITROV@HORIZONS.COM",
-                            NormalizedUserName = "GEORGI.DIMITROV@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMn4n+/mFd3E4UyW0aBh50805zqS7jbtfWz3V6YwpO+ST05zhAuuuuT3gBHPgmRPjA==",
-                            PhoneNumberConfirmed = false,
-                            ProfileImageUrl = "/images/svetilishtaM.png",
-                            SecurityStamp = "GUIDE3_SECURITY",
-                            TwoFactorEnabled = false,
-                            UserName = "georgi.dimitrov@horizons.com"
-                        },
-                        new
-                        {
-                            Id = "44444444-4444-4444-4444-444444444444",
-                            AccessFailedCount = 0,
-                            Age = 32,
-                            Bio = "Професионален планински водач, сертифициран за зимни преходи и снежни маршрути.",
-                            ConcurrencyStamp = "44f8fe01-3e83-4875-bb90-6c10a7acaf2b",
-                            Email = "elena.ivanova@horizons.com",
-                            EmailConfirmed = true,
-                            IsGuide = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ELENA.IVANOVA@HORIZONS.COM",
-                            NormalizedUserName = "ELENA.IVANOVA@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEK5s9yfpyKXyJChEqVqqEfjhHTbLdsVCgSszSepCuaWdyw/mHfVSZlZqptWmth0OKA==",
-                            PhoneNumberConfirmed = false,
-                            ProfileImageUrl = "/images/vurhh.png",
-                            SecurityStamp = "GUIDE4_SECURITY",
-                            TwoFactorEnabled = false,
-                            UserName = "elena.ivanova@horizons.com"
-                        },
-                        new
-                        {
-                            Id = "55555555-5555-5555-5555-555555555555",
-                            AccessFailedCount = 0,
-                            Age = 38,
-                            Bio = "Еко-туризъм и приключенски маршрути. Организира групови експедиции до върхове и резервати.",
-                            ConcurrencyStamp = "bf5ccfcb-4435-4a10-a882-dfdac8d6aac6",
-                            Email = "nikolay.kolev@horizons.com",
-                            EmailConfirmed = true,
-                            IsGuide = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "NIKOLAY.KOLEV@HORIZONS.COM",
-                            NormalizedUserName = "NIKOLAY.KOLEV@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMBqoICyfiEkPv5wEGrH5udjo8NoDhV3nZzeuA+ME6ar/2eFJV2Sr2z5bKJch9CDNw==",
-                            PhoneNumberConfirmed = false,
-                            ProfileImageUrl = "/images/parkoveM.png",
-                            SecurityStamp = "GUIDE5_SECURITY",
-                            TwoFactorEnabled = false,
-                            UserName = "nikolay.kolev@horizons.com"
                         });
                 });
 
@@ -790,18 +693,11 @@ namespace Хоризонти.Migrations
                     b.Property<DateTime>("SentOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("TourId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("DestinationId");
 
                     b.HasIndex("ReceiverId");
 
                     b.HasIndex("SenderId");
-
-                    b.HasIndex("TourId");
 
                     b.ToTable("Messages");
                 });
@@ -946,45 +842,6 @@ namespace Хоризонти.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Horizons.Data.Models.TourReservation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsCancelled")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("PeopleCount")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("PricePerPerson")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("TourId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TourId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("TourReservations");
-                });
-
             modelBuilder.Entity("Horizons.Data.Models.UserDestination", b =>
                 {
                     b.Property<string>("UserId")
@@ -1080,10 +937,12 @@ namespace Хоризонти.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -1120,10 +979,12 @@ namespace Хоризонти.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -1190,11 +1051,6 @@ namespace Хоризонти.Migrations
 
             modelBuilder.Entity("Horizons.Data.Models.Message", b =>
                 {
-                    b.HasOne("Horizons.Data.Models.Destination", "Destination")
-                        .WithMany()
-                        .HasForeignKey("DestinationId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("ApplicationUser", "Receiver")
                         .WithMany()
                         .HasForeignKey("ReceiverId")
@@ -1207,18 +1063,9 @@ namespace Хоризонти.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Tour", "Tour")
-                        .WithMany()
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Destination");
-
                     b.Navigation("Receiver");
 
                     b.Navigation("Sender");
-
-                    b.Navigation("Tour");
                 });
 
             modelBuilder.Entity("Horizons.Data.Models.Rating", b =>
@@ -1255,25 +1102,6 @@ namespace Хоризонти.Migrations
                         .IsRequired();
 
                     b.Navigation("Destination");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Horizons.Data.Models.TourReservation", b =>
-                {
-                    b.HasOne("Tour", "Tour")
-                        .WithMany("Reservations")
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Tour");
 
                     b.Navigation("User");
                 });
@@ -1353,13 +1181,13 @@ namespace Хоризонти.Migrations
                     b.HasOne("Horizons.Data.Models.Destination", "Destination")
                         .WithMany()
                         .HasForeignKey("DestinationId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ApplicationUser", "Guide")
                         .WithMany()
                         .HasForeignKey("GuideId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Destination");
@@ -1370,11 +1198,6 @@ namespace Хоризонти.Migrations
             modelBuilder.Entity("Horizons.Data.Models.Terrain", b =>
                 {
                     b.Navigation("Destinations");
-                });
-
-            modelBuilder.Entity("Tour", b =>
-                {
-                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

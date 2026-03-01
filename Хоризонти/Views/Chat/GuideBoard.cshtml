@@ -1,0 +1,19 @@
+﻿@using Horizons.Data.Models
+@model List<Message>
+
+<h2>Съобщения за организирани обиколки - @ViewBag.GuideEmail</h2>
+
+@if (!Model.Any())
+{
+    <p>Все още няма публикувани съобщения.</p>
+}
+else
+{
+    foreach (var msg in Model)
+    {
+        <div style="margin-bottom:10px; padding:10px; border:1px solid #ddd; border-radius:8px;">
+            <p>@msg.Content</p>
+            <small>@msg.SentOn.ToLocalTime()</small>
+        </div>
+    }
+}

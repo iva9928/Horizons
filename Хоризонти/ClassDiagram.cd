@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AIController">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\AiController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AiService">
+    <Position X="2" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\AiService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ApplicationUser">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACEAAAAAAAAAAAAAAAAAAAAAAkAA=</HashCode>
+      <FileName>Data\Models\ApplicationUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DestinationAddViewModel">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACQAIAAQAiAAAAAAIAgAQAAAAACBAAAAEAAIAAAAA=</HashCode>
+      <FileName>Models\DestinationAddViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DestinationDeleteViewModel">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAACAAAAAQAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\DestinationDeleteViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DestinationDetailsViewModel">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACQgAAAwAiAAAACgIAgAQAAAACAAAAAGEAAAAAAEA=</HashCode>
+      <FileName>Models\DestinationDetailsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DestinationEditViewModel">
+    <Position X="9.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACQAAAAQAiAAAAAAIAgAQAAQAACBAAAAEAAIAAAAA=</HashCode>
+      <FileName>Models\DestinationEditViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DestinationListViewModel">
+    <Position X="11" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACQgAAAQAAAAAACAAAgAQAAAAACAAAAEAAAAAAAEA=</HashCode>
+      <FileName>Models\DestinationListViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Program" Collapsed="true">
+    <Position X="20.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Areas.Identity.Pages.Account.LoginModel" Collapsed="true">
+    <Position X="18.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAgAABAAAAAMAAAAAAAAAIEAAAAAAA=</HashCode>
+      <FileName>Areas\Identity\Pages\Account\Login.cshtml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Areas.Identity.Pages.Account.RegisterModel" Collapsed="true">
+    <Position X="15" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAADAAAAQAAAAAgAABAAAAAMgCAAAQAAAIEAAAAAAA=</HashCode>
+      <FileName>Areas\Identity\Pages\Account\Register.cshtml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Controllers.BaseController" Collapsed="true">
+    <Position X="10.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\BaseController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Controllers.ChatController" Collapsed="true">
+    <Position X="16.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAABAAAAAAAAAIAAEAAAAAADAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\ChatController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Controllers.DestinationController" Collapsed="true">
+    <Position X="12.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAIAAAABAAAAAAAAAAAACAAAAAAAAEGAAAAAAAA=</HashCode>
+      <FileName>Controllers\DestinationController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Controllers.HomeController" Collapsed="true">
+    <Position X="8" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\HomeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Controllers.ReservationController" Collapsed="true">
+    <Position X="10.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAQAAAAAAAEgAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\ReservationController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Data.Models.Destination" Collapsed="true">
+    <Position X="20.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACQAAAAwAiAAAACAIAgAQAAQAACAAAAEEAAQAAAAA=</HashCode>
+      <FileName>Data\Models\Destination.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Data.Models.Rating" Collapsed="true">
+    <Position X="22" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEADAAAEAAAAAAAAAAAAAAgAAAACAABEAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Models\Rating.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Data.Models.Reservation" Collapsed="true">
+    <Position X="16.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAAAAAAAAAAAAgAgAAAACQABNAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Models\Reservation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Data.Models.Terrain" Collapsed="true">
+    <Position X="16.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Models\Terrain.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Data.Models.TourReservation" Collapsed="true">
+    <Position X="20.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAjAAAAAAAAAAAAAAAAAAgAAAACQAAKAAAEKAAAAAA=</HashCode>
+      <FileName>Data\Models\TourReservation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Data.Models.UserDestination" Collapsed="true">
+    <Position X="22" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAgAAAAAAABEAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Models\UserDestination.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Data.ApplicationDbContext" Collapsed="true">
+    <Position X="15" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAEgAAACAAEAAAAAAEAAAAAYEAAAA=</HashCode>
+      <FileName>Data\ApplicationDbContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Data.ValidationConstants" Collapsed="true">
+    <Position X="15" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAIAEAggAACAAAIAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Data\ValidationConstants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Extensions.ClaimsPrincipalExtensions" Collapsed="true">
+    <Position X="18.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extensions\ClaimsPrincipalExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Models.ErrorViewModel" Collapsed="true">
+    <Position X="15" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ErrorViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Models.FavoriteDestinationViewModel" Collapsed="true">
+    <Position X="16.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACQgAAAAAAAAAAAAAAgAQAAAAAAAAAAEAAAAAAAEA=</HashCode>
+      <FileName>Models\FavoriteDestinationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Models.ReservationCreateViewModel" Collapsed="true">
+    <Position X="18.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAgAAAAAAEQABJAAABAAAAAAA=</HashCode>
+      <FileName>Models\ReservationCreateViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Models.ReservationListViewModel" Collapsed="true">
+    <Position X="20.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAgAAAAAACQAAJAQABAAAAAAA=</HashCode>
+      <FileName>Models\ReservationListViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Models.SeasonViewModel" Collapsed="true">
+    <Position X="15" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAEAgAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Models\SeasonViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Models.TerrainViewModel" Collapsed="true">
+    <Position X="18.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\TerrainViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Services.DestinationService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECgAAAAAAACAAAQAAAABgAAgAAAAAAEAgACAAAEQQ=</HashCode>
+      <FileName>Services\DestinationService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Horizons.Services.ReservationService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAQCAAAAAIAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\ReservationService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RatingAdminViewModel" Collapsed="true">
+    <Position X="13.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEACAAAEAAAAAAAAAAAAAAAAAAACAAAAAQABAAAAAAA=</HashCode>
+      <FileName>Models\RatingAdminViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RatingController" Collapsed="true">
+    <Position X="15" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Controllers\RatingController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RatingViewModel" Collapsed="true">
+    <Position X="16.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEABAAAEAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\RatingViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tour" Collapsed="true">
+    <Position X="17.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAIAAgAAIAEACAAAAAAAAAAABFAAAACAAAAAA=</HashCode>
+      <FileName>Data\Models\Tour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Хоризонти.Models.DestinationSearchViewModel" Collapsed="true">
+    <Position X="12" Y="12.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAACAAACAgAAAAABIAAAAA=</HashCode>
+      <FileName>Models\DestinationSearchViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GuideController">
+    <Position X="12.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAEAAAAAAAAAAAAAAAAAAAABEAAAAAAAA=</HashCode>
+      <FileName>Controllers\GuideController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Horizons.Services.IDestinationService" Collapsed="true">
+    <Position X="15" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAgAAAAAAACAAAQAAAABgAAgAAAAAAEAgACAAAEQQ=</HashCode>
+      <FileName>Services\IDestinationService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Horizons.Services.IReservationService" Collapsed="true">
+    <Position X="16.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAQAAAAAAIAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\IReservationService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Horizons.Data.Models.Season" Collapsed="true">
+    <Position X="15" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAEAgAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Models\Season.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

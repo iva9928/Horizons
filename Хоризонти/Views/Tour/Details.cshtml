@@ -1,0 +1,28 @@
+﻿@* =========================
+   ✅ НОВ: Views/Tour/Details.cshtml
+   Тук е формата за съобщение към гида за този тур
+   ========================= *@
+@using Horizons.Data.Models
+@model Tour
+
+<h2>Детайли за тур</h2>
+
+<p><b>Дестинация:</b> @Model.Destination?.Name</p>
+<p><b>Гид:</b> @Model.Guide?.Email</p>
+<p><b>Дата:</b> @Model.Date</p>
+<p><b>Цена/човек:</b> @Model.PricePerPerson</p>
+<p><b>Макс. хора:</b> @Model.MaxPeople</p>
+
+<hr />
+
+<h3>Пиши на гида</h3>
+
+<form asp-controller="Chat" asp-action="SendToGuide" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="tourId" value="@Model.Id" />
+
+    <textarea name="content" class="form-control" rows="3"
+              placeholder="Напиши съобщение за организираната обиколка..."></textarea>
+
+    <button type="submit" class="btn btn-success mt-2">Изпрати</button>
+</form>

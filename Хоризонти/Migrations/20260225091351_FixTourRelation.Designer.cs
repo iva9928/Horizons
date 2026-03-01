@@ -4,6 +4,7 @@ using Horizons.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Хоризонти.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260225091351_FixTourRelation")]
+    partial class FixTourRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,14 +108,14 @@ namespace Хоризонти.Migrations
                             AccessFailedCount = 0,
                             Age = 30,
                             Bio = "Main administrator of Horizons.",
-                            ConcurrencyStamp = "63e1220a-9b41-4676-b6aa-c8677f464746",
+                            ConcurrencyStamp = "22e168f3-2b16-4984-90ba-bdacc7e2e30e",
                             Email = "admin@horizons.com",
                             EmailConfirmed = true,
                             IsGuide = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@HORIZONS.COM",
                             NormalizedUserName = "ADMIN@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDHu4N/h1BK1XgoF0i+vWNwFr1/YnaZzdBqf7X62YSTeQ7rO1lq700jZJ3yTUNv15A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAED6a8pHqLB6Zo9HzDOOaNCjXJylKBH4EGiqLhqgBG5D6mJ5R0bW9yg4aa5RRtJ5cmg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "STATIC_SECURITY_STAMP",
                             TwoFactorEnabled = false,
@@ -124,16 +127,16 @@ namespace Хоризонти.Migrations
                             AccessFailedCount = 0,
                             Age = 34,
                             Bio = "Планински гид с над 10 години опит в Родопите. Специализира в пещерни маршрути и високопланински преходи.",
-                            ConcurrencyStamp = "40a4ce05-507f-4e50-a842-04080c3c8a6e",
+                            ConcurrencyStamp = "678c1ddd-8636-423b-88a5-870c6b7d32d7",
                             Email = "ivan.petrov@horizons.com",
                             EmailConfirmed = true,
                             IsGuide = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "IVAN.PETROV@HORIZONS.COM",
                             NormalizedUserName = "IVAN.PETROV@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEE9DsZnW2IhJREe0nWEpXh5GtixOot7dfZ5b5EV8WV7tR0sgRPk0/iuISPrtjIRrKw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAedJYu6UPTJa0TqobaeRLvswXrvnmazqJkCPZ/mSFOnYpYGrCQDtaiDLjbh2Es4uQ==",
                             PhoneNumberConfirmed = false,
-                            ProfileImageUrl = "/images/planinaM.png",
+                            ProfileImageUrl = "https://thispersondoesnotexist.com/",
                             SecurityStamp = "GUIDE1_SECURITY",
                             TwoFactorEnabled = false,
                             UserName = "ivan.petrov@horizons.com"
@@ -144,16 +147,16 @@ namespace Хоризонти.Migrations
                             AccessFailedCount = 0,
                             Age = 29,
                             Bio = "Лицензиран екскурзовод и любител на екопътеките. Организира турове до водопади и панорамни площадки.",
-                            ConcurrencyStamp = "7c9dc5d2-230b-4a35-bd3b-1db753073836",
+                            ConcurrencyStamp = "7a82aa5c-dd90-4070-ac9e-f2ac77cb44ea",
                             Email = "maria.stoyanova@horizons.com",
                             EmailConfirmed = true,
                             IsGuide = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "MARIA.STOYANOVA@HORIZONS.COM",
                             NormalizedUserName = "MARIA.STOYANOVA@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAELCm0ConLT5roa9ZJfgL1oDj8Ho3XpUlKsrtc3iVCCUj8v0h0tMt6hXVS7AP3ZMgDA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKMM3k/uYXOVUgKpVQqiGmOtvWd2bQQMh/eH7c6b4mWNLxcjoosqaGQbK8qurMVZJg==",
                             PhoneNumberConfirmed = false,
-                            ProfileImageUrl = "/images/jenaE.png",
+                            ProfileImageUrl = "https://thispersondoesnotexist.com/",
                             SecurityStamp = "GUIDE2_SECURITY",
                             TwoFactorEnabled = false,
                             UserName = "maria.stoyanova@horizons.com"
@@ -164,16 +167,16 @@ namespace Хоризонти.Migrations
                             AccessFailedCount = 0,
                             Age = 41,
                             Bio = "Специалист по исторически маршрути и тракийски светилища. Разказвач на легенди и местен фолклор.",
-                            ConcurrencyStamp = "d477bdc4-7b23-468b-90d9-2213db11a3ef",
+                            ConcurrencyStamp = "27a43dda-b322-4f3b-a566-26532df3b880",
                             Email = "georgi.dimitrov@horizons.com",
                             EmailConfirmed = true,
                             IsGuide = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "GEORGI.DIMITROV@HORIZONS.COM",
                             NormalizedUserName = "GEORGI.DIMITROV@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMn4n+/mFd3E4UyW0aBh50805zqS7jbtfWz3V6YwpO+ST05zhAuuuuT3gBHPgmRPjA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFOLwKpGmm3gfyJuM5ZccahEaORF98w9GCpNVIgyTqZjZ/kCZ70jlOYmtRF4lwiDEw==",
                             PhoneNumberConfirmed = false,
-                            ProfileImageUrl = "/images/svetilishtaM.png",
+                            ProfileImageUrl = "https://thispersondoesnotexist.com/",
                             SecurityStamp = "GUIDE3_SECURITY",
                             TwoFactorEnabled = false,
                             UserName = "georgi.dimitrov@horizons.com"
@@ -184,16 +187,16 @@ namespace Хоризонти.Migrations
                             AccessFailedCount = 0,
                             Age = 32,
                             Bio = "Професионален планински водач, сертифициран за зимни преходи и снежни маршрути.",
-                            ConcurrencyStamp = "44f8fe01-3e83-4875-bb90-6c10a7acaf2b",
+                            ConcurrencyStamp = "916a79f8-542a-4545-85c4-f6291e91f726",
                             Email = "elena.ivanova@horizons.com",
                             EmailConfirmed = true,
                             IsGuide = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ELENA.IVANOVA@HORIZONS.COM",
                             NormalizedUserName = "ELENA.IVANOVA@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEK5s9yfpyKXyJChEqVqqEfjhHTbLdsVCgSszSepCuaWdyw/mHfVSZlZqptWmth0OKA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFZUJ55P7Dixiy1wG0D0fECyZgJWKZKhqpWLtDJm91nVaG4RV5eu0MKpuNok45+2WQ==",
                             PhoneNumberConfirmed = false,
-                            ProfileImageUrl = "/images/vurhh.png",
+                            ProfileImageUrl = "https://thispersondoesnotexist.com/",
                             SecurityStamp = "GUIDE4_SECURITY",
                             TwoFactorEnabled = false,
                             UserName = "elena.ivanova@horizons.com"
@@ -204,16 +207,16 @@ namespace Хоризонти.Migrations
                             AccessFailedCount = 0,
                             Age = 38,
                             Bio = "Еко-туризъм и приключенски маршрути. Организира групови експедиции до върхове и резервати.",
-                            ConcurrencyStamp = "bf5ccfcb-4435-4a10-a882-dfdac8d6aac6",
+                            ConcurrencyStamp = "3bb3afc1-3a0e-4bbe-b412-a557abc1b1e2",
                             Email = "nikolay.kolev@horizons.com",
                             EmailConfirmed = true,
                             IsGuide = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "NIKOLAY.KOLEV@HORIZONS.COM",
                             NormalizedUserName = "NIKOLAY.KOLEV@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMBqoICyfiEkPv5wEGrH5udjo8NoDhV3nZzeuA+ME6ar/2eFJV2Sr2z5bKJch9CDNw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECjJzLlPOBTjNGD/IItSGtM2U4I0J7jFl5UyGH+6WFhEhjL4MmZtF/p6ZLjq0Dmp3g==",
                             PhoneNumberConfirmed = false,
-                            ProfileImageUrl = "/images/parkoveM.png",
+                            ProfileImageUrl = "https://thispersondoesnotexist.com/",
                             SecurityStamp = "GUIDE5_SECURITY",
                             TwoFactorEnabled = false,
                             UserName = "nikolay.kolev@horizons.com"
@@ -1080,10 +1083,12 @@ namespace Хоризонти.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -1120,10 +1125,12 @@ namespace Хоризонти.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");

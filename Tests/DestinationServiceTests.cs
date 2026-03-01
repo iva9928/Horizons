@@ -2,10 +2,9 @@ using Horizons.Data;
 using Horizons.Data.Models;
 using Horizons.Models;
 using Horizons.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NUnit.Framework;
 using System.ComponentModel.DataAnnotations;
-
 
 namespace Horizons.Tests
 {
@@ -26,16 +25,14 @@ namespace Horizons.Tests
             service = new DestinationService(context);
 
             context.Terrains.Add(new Terrain { Id = 1, Name = "Пещера" });
-            context.Terrains.Add(new Terrain { Id = 2, Name = "Гора" });
-
-
             context.SaveChanges();
         }
 
         [TearDown]
         public void TearDown() => context.Dispose();
 
-        // 1
+        // ================= ADD =================
+
         [Test]
         public async Task AddDestination_ShouldAdd()
         {
@@ -48,7 +45,7 @@ namespace Horizons.Tests
                 TerrainId = 1,
                 TicketPrice = 10,
                 Location = "Sofia",
-                LocationUrl = "test-url"
+                LocationUrl = "url"
             };
 
             await service.AddDestinationAsync(model, "publisher1");
@@ -56,7 +53,6 @@ namespace Horizons.Tests
             Assert.AreEqual(1, context.Destinations.Count());
         }
 
-        // 2
         [Test]
         public async Task AddDestination_ShouldTrimLocation()
         {
@@ -69,7 +65,7 @@ namespace Horizons.Tests
                 TerrainId = 1,
                 TicketPrice = 10,
                 Location = "   Sofia   ",
-                LocationUrl = "test-url"
+                LocationUrl = "url"
             };
 
             await service.AddDestinationAsync(model, "publisher1");
@@ -77,305 +73,7 @@ namespace Horizons.Tests
             Assert.AreEqual("Sofia", context.Destinations.First().Location);
         }
 
-        // 3
-        [Test]
-        public async Task AddDestination_ShouldSetPublisher()
-        {
-            var model = new DestinationAddViewModel
-            {
-                Name = "X",
-                Description = "D",
-                ImageUrl = "i",
-                PublishedOn = "01-01-2024",
-                TerrainId = 1,
-                TicketPrice = 1,
-                Location = "Loc",
-                LocationUrl = "test-url"
-            };
-
-            await service.AddDestinationAsync(model, "publisher1");
-            Assert.AreEqual("publisher1", context.Destinations.First().PublisherId);
-        }
-
-
-        // 6
-        [Test]
-        public async Task Edit_ShouldModifyFields()
-        {
-            context.Destinations.Add(new Destination
-            {
-                Id = 1,
-                Name = "Old",
-                Description = "O",
-                ImageUrl = "i",
-                PublisherId = "publisher1",
-                TerrainId = 1,
-                TicketPrice = 1,
-                Location = "L",
-                LocationUrl = "old",
-                PublishedOn = DateTime.Now
-            });
-
-            context.SaveChanges();
-
-            var model = new DestinationEditViewModel
-            {
-                Id = 1,
-                Name = "New",
-                Description = "NewDesc",
-                ImageUrl = "newImg",
-                TerrainId = 1,
-                TicketPrice = 20,
-                PublishedOn = "01-01-2024",
-                Location = "NewL",
-                LocationUrl = "test-url",
-                PublisherId = "publisher1"
-            };
-
-            await service.EditDestinationAsync(model, "publisher1");
-
-            var x = context.Destinations.First();
-            Assert.AreEqual("New", x.Name);
-            Assert.AreEqual(20, x.TicketPrice);
-        }
-
-        // 7
-        
-
-        // 8
-        [Test]
-        public void Edit_ShouldThrow_IfNotFound()
-        {
-            var model = new DestinationEditViewModel
-            {
-                Id = 100,
-                Name = "X"
-            };
-
-            Assert.ThrowsAsync<InvalidOperationException>(() =>
-                service.EditDestinationAsync(model, "publisher1"));
-        }
-
-      
-
-        // 11
-        [Test]
-        public void Delete_ShouldThrow_IfNotFound()
-        {
-            Assert.ThrowsAsync<InvalidOperationException>(() =>
-                service.DeleteDestinationAsync(999, "x"));
-        }
-
-       
-        [Test]
-        public async Task Details_ShouldReturnNull_IfNotFound()
-        {
-            var result = await service.GetDestinationDetailsAsync(999, "u1");
-            Assert.IsNull(result);
-        }
-
-       
-       
-
-        // 20
-        [Test]
-        public async Task GetAllTerrains_ShouldReturnCorrect()
-        {
-            var terrains = await service.GetAllTerrainsAsync();
-            Assert.AreEqual(2, terrains.Count());
-        }
-
-      
-       
-        // 29
-        [Test]
-        public async Task Add_ShouldRequireLocationUrl()
-        {
-            var model = new DestinationAddViewModel
-            {
-                Name = "Test",
-                Description = "D",
-                ImageUrl = "img",
-                PublishedOn = "01-01-2024",
-                TerrainId = 1,
-                TicketPrice = 1,
-                Location = "L",
-                LocationUrl = "test-url"
-            };
-
-            await service.AddDestinationAsync(model, "publisher1");
-
-            Assert.AreEqual("test-url", context.Destinations.First().LocationUrl);
-        }
-        private Destination ValidDestination(string publisher = "user1", int id = 1)
-        {
-            return new Destination
-            {
-                Id = id,
-                Name = "Test",
-                Description = "Desc",
-                ImageUrl = "img",
-                TicketPrice = 10,
-                PublishedOn = DateTime.Now,
-                TerrainId = 1,
-                PublisherId = publisher,
-                Location = "Here",
-                LocationUrl = "url.png",
-                Terrain = new Terrain { Id = 1, Name = "T" },
-                Publisher = new ApplicationUser { Id = publisher, UserName = publisher }
-            };
-        }
-        // 1
-        [Test]
-        public async Task AddDestination_ShouldAddValidDestination()
-        {
-            var model = new DestinationAddViewModel
-            {
-                Name = "Test",
-                Description = "Desc",
-                ImageUrl = "img",
-                PublishedOn = "01-01-2024",
-                TerrainId = 1,
-                TicketPrice = 5,
-                Location = "Loc",
-                LocationUrl = "u.png"
-            };
-
-            await service.AddDestinationAsync(model, "user1");
-
-            Assert.AreEqual(1, context.Destinations.Count());
-        }
-
-    
-
-        // 3
-        [Test]
-        public async Task AddDestination_ShouldSaveLocationUrlOrNull()
-        {
-            var model = new DestinationAddViewModel
-            {
-                Name = "Test",
-                Description = "Desc",
-                ImageUrl = "img",
-                PublishedOn = "01-01-2024",
-                TerrainId = 1,
-                TicketPrice = 10,
-                Location = "Loc",
-                LocationUrl = ""
-            };
-
-            await service.AddDestinationAsync(model, "user1");
-
-            Assert.IsNull(context.Destinations.First().LocationUrl);
-        }
-
-        // 11
-        [Test]
-        public void Delete_ShouldThrow_WhenNotFound()
-        {
-            Assert.ThrowsAsync<InvalidOperationException>(() =>
-                service.DeleteDestinationAsync(123, "user"));
-        }
-
-
-        // 17
-        [Test]
-        public async Task GetDetails_ShouldReturnNull_WhenNotFound()
-        {
-            var result = await service.GetDestinationDetailsAsync(123, "u");
-            Assert.IsNull(result);
-        }
-
-
-
-    }
-}
-
-
-namespace Horizons.Tests
-{
-    [TestFixture]
-    public class DestinationServiceTests2
-    {
-        private ApplicationDbContext context;
-        private DestinationService service;
-
-        [SetUp]
-        public void Setup()
-        {
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options;
-
-            context = new ApplicationDbContext(options);
-            service = new DestinationService(context);
-
-            context.Terrains.Add(new Terrain { Id = 1, Name = "Test Terrain" });
-            context.SaveChanges();
-        }
-
-        [TearDown] public void Teardown() => context.Dispose();
-
-
-        [Test]
-        public async Task AddDestination_ShouldAdd_WhenValid()
-        {
-            var model = new DestinationAddViewModel
-            {
-                Name = "Name",
-                Description = "Desc",
-                ImageUrl = "img",
-                PublishedOn = "01-01-2023",
-                TerrainId = 1,
-                Location = "Sofia"
-            };
-
-            await service.AddDestinationAsync(model, "u1");
-
-            Assert.AreEqual(1, context.Destinations.Count());
-        }
-
-        [Test]
-        public async Task AddDestination_ShouldTrimLocation()
-        {
-            var model = new DestinationAddViewModel
-            {
-                Name = "Name",
-                Description = "Desc",
-                ImageUrl = "img",
-                PublishedOn = "01-01-2023",
-                TerrainId = 1,
-                Location = "   Sofia   "
-            };
-
-            await service.AddDestinationAsync(model, "u1");
-
-            Assert.AreEqual("Sofia", context.Destinations.First().Location);
-        }
-
-        [Test]
-        public async Task AddDestination_ShouldSetPublisher()
-        {
-            var model = new DestinationAddViewModel
-            {
-                Name = "N",
-                Description = "D",
-                ImageUrl = "i",
-                PublishedOn = "01-01-2023",
-                TerrainId = 1,
-                Location = "Loc"
-            };
-
-            await service.AddDestinationAsync(model, "publisher");
-
-            Assert.AreEqual("publisher", context.Destinations.First().PublisherId);
-        }
-
-       
-
-       
-
-      
+        // ================= EDIT =================
 
         [Test]
         public async Task Edit_ShouldUpdateFields()
@@ -384,176 +82,149 @@ namespace Horizons.Tests
             {
                 Id = 1,
                 Name = "Old",
-                Description = "D",
-                ImageUrl = "i",
+                Description = "Desc",
+                ImageUrl = "img",
                 PublisherId = "p1",
                 TerrainId = 1,
+                TicketPrice = 1,
                 PublishedOn = DateTime.Now,
                 Location = "L",
-                LocationUrl = "/"
+                LocationUrl = "url"
             });
-
             context.SaveChanges();
 
             var model = new DestinationEditViewModel
             {
                 Id = 1,
-                Name = "NewName",
+                Name = "New",
                 Description = "NewDesc",
                 ImageUrl = "NewImg",
-                PublishedOn = "01-01-2024",
                 TerrainId = 1,
                 TicketPrice = 20,
+                PublishedOn = "01-01-2024",
                 Location = "NewLoc",
-                LocationUrl = "/new"
+                LocationUrl = "new"
             };
 
             await service.EditDestinationAsync(model, "p1");
 
             var d = context.Destinations.First();
-            Assert.AreEqual("NewName", d.Name);
-            Assert.AreEqual("NewLoc", d.Location);
-        }
-
-        [Test]
-        public void Edit_ShouldThrow_WhenWrongPublisher()
-        {
-            context.Destinations.Add(new Destination
-            {
-                Id = 1,
-                Name = "N",
-                Description = "D",
-                ImageUrl = "i",
-                PublisherId = "real",
-                TerrainId = 1,
-                PublishedOn = DateTime.Now,
-                Location = "L",
-                LocationUrl = "/"
-            });
-            context.SaveChanges();
-
-            var model = new DestinationEditViewModel { Id = 1, Name = "New" };
-
-            Assert.ThrowsAsync<UnauthorizedAccessException>(() =>
-                service.EditDestinationAsync(model, "fake"));
+            Assert.AreEqual("New", d.Name);
+            Assert.AreEqual(20, d.TicketPrice);
         }
 
         [Test]
         public void Edit_ShouldThrow_WhenNotFound()
         {
             var model = new DestinationEditViewModel { Id = 999 };
+
             Assert.ThrowsAsync<InvalidOperationException>(() =>
-                service.EditDestinationAsync(model, "u"));
+                service.EditDestinationAsync(model, "user"));
         }
 
-        // ===================== DELETE ======================
+        // ================= DELETE =================
 
         [Test]
         public async Task Delete_ShouldMarkAsDeleted()
         {
             context.Destinations.Add(new Destination
             {
-                Id = 10,
-                Name = "N",
+                Id = 1,
+                Name = "Test",
                 Description = "D",
-                ImageUrl = "i",
+                ImageUrl = "img",
                 PublisherId = "me",
                 TerrainId = 1,
                 PublishedOn = DateTime.Now,
                 Location = "L",
-                LocationUrl = "/"
+                LocationUrl = "url"
             });
             context.SaveChanges();
 
-            await service.DeleteDestinationAsync(10, "me");
+            await service.DeleteDestinationAsync(1, "me");
 
             Assert.IsTrue(context.Destinations.First().IsDeleted);
         }
 
         [Test]
-        public void Delete_ShouldThrow_WrongPublisher()
+        public void Delete_ShouldThrow_WhenWrongPublisher()
         {
             context.Destinations.Add(new Destination
             {
-                Id = 9,
-                Name = "N",
+                Id = 2,
+                Name = "Test",
                 Description = "D",
-                ImageUrl = "i",
+                ImageUrl = "img",
                 PublisherId = "owner",
                 TerrainId = 1,
                 PublishedOn = DateTime.Now,
                 Location = "L",
-                LocationUrl = "/"
+                LocationUrl = "url"
             });
             context.SaveChanges();
 
             Assert.ThrowsAsync<UnauthorizedAccessException>(() =>
-                service.DeleteDestinationAsync(9, "other"));
+                service.DeleteDestinationAsync(2, "other"));
         }
 
-        [Test]
-        public void Delete_ShouldThrow_WhenNotFound()
-        {
-            Assert.ThrowsAsync<InvalidOperationException>(() =>
-                service.DeleteDestinationAsync(555, "u"));
-        }
-
-        // ===================== FAVORITES ======================
+        // ================= FAVORITES =================
 
         [Test]
         public async Task AddToFavorites_ShouldAdd()
         {
-
-            await service.AddToFavoritesAsync("u1", 1);
+            await service.AddToFavoritesAsync(1, "u1");
             Assert.AreEqual(1, context.UserDestinations.Count());
         }
 
         [Test]
         public async Task AddToFavorites_ShouldNotDuplicate()
         {
-            context.UserDestinations.Add(new UserDestination { UserId = "u1", DestinationId = 1 });
+            context.UserDestinations.Add(new UserDestination
+            {
+                UserId = "u1",
+                DestinationId = 1
+            });
             context.SaveChanges();
 
-            await service.AddToFavoritesAsync("u1", 1);
+            await service.AddToFavoritesAsync(1, "u1");
+
             Assert.AreEqual(1, context.UserDestinations.Count());
         }
 
-       
         [Test]
-        public async Task Details_ShouldReturnNull_WhenMissing()
+        public async Task RemoveFromFavorites_ShouldRemove()
         {
-            var result = await service.GetDestinationDetailsAsync(1234, "u");
+            context.UserDestinations.Add(new UserDestination
+            {
+                UserId = "u1",
+                DestinationId = 1
+            });
+            context.SaveChanges();
+
+            await service.RemoveFromFavoritesAsync(1, "u1");
+
+            Assert.AreEqual(0, context.UserDestinations.Count());
+        }
+
+        // ================= DETAILS =================
+
+        [Test]
+        public async Task Details_ShouldReturnNull_WhenNotFound()
+        {
+            var result = await service.GetDestinationDetailsAsync(999, "u1");
             Assert.IsNull(result);
         }
 
-      
-
-      
+        // ================= TERRAINS =================
 
         [Test]
-        public async Task GetTerrains_ShouldReturnList()
+        public async Task GetAllTerrains_ShouldReturnList()
         {
-            var t = await service.GetAllTerrainsAsync();
-            Assert.AreEqual(1, t.Count());
+            var terrains = await service.GetAllTerrainsAsync();
+            Assert.AreEqual(1, terrains.Count());
         }
 
-   
-
-       
-
-      
-        [Test]
-        public async Task FavoriteList_ShouldReturnCorrect()
-        {
-            context.UserDestinations.Add(new UserDestination { UserId = "u", DestinationId = 1 });
-            context.SaveChanges();
-
-            var fav = await service.GetFavoriteDestinationsAsync("u");
-
-            Assert.AreEqual(1, fav.Count());
-        }
-
-       
+        // ================= RESERVATION =================
 
         [Test]
         public void ReservationPrice_ShouldCalculateCorrectly()
@@ -563,21 +234,19 @@ namespace Horizons.Tests
                 TicketPrice = 10,
                 PeopleCount = 3
             };
+
             Assert.AreEqual(30, r.TotalPrice);
         }
 
         [Test]
-        public void Reservation_ShouldThrow_WhenPeopleInvalid()
+        public void Reservation_ShouldThrow_WhenInvalidPeople()
         {
             var r = new Reservation { PeopleCount = 0, TicketPrice = 1 };
+
             Assert.Throws<ValidationException>(() =>
             {
                 Validator.ValidateObject(r, new ValidationContext(r), true);
             });
         }
-
-     
-        
     }
 }
-

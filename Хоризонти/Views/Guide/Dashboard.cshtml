@@ -1,10 +1,33 @@
 ﻿@using Horizons.Data.Models
 @model ApplicationUser
+
 <h2>Guide Profile</h2>
 
-<img src="@Model.ProfileImageUrl" width="200" />
+@if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+{
+    <img src="@Model.ProfileImageUrl" width="200" />
+}
+
 <p><strong>Email:</strong> @Model.Email</p>
 <p><strong>Bio:</strong> @Model.Bio</p>
 
+<hr />
+
+<h4>📣 Съобщение за организирана обиколка</h4>
+
+<form asp-controller="Chat" asp-action="SendGuideBoard" method="post">
+    @Html.AntiForgeryToken()
+
+    <textarea name="content" rows="4" style="width:100%;"
+              placeholder="Пример: Събота 10:00 – Орлово око. Сборен пункт: паркинга. Макс 12 човека."></textarea>
+
+    <button type="submit" style="margin-top:10px;">Изпрати</button>
+</form>
+
+<hr />
+
 <a asp-controller="Chat"
-   asp-action="Inbox">Моите съобщения</a>
+   asp-action="GuideBoard"
+   asp-route-guideId="@Model.Id">
+    👀 Виж публикуваните съобщения
+</a>

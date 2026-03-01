@@ -1,0 +1,28 @@
+﻿@using Horizons.Data.Models
+@model ApplicationUser
+
+<h2>Guide Profile</h2>
+
+@if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+{
+    <img src="@Model.ProfileImageUrl" width="200" />
+}
+
+<p><strong>Email:</strong> @Model.Email</p>
+<p><strong>Bio:</strong> @Model.Bio</p>
+<br />
+<a asp-controller="Chat"
+   asp-action="ChatWithGuide"
+   asp-route-guideId="@Model.Id"
+   class="btn btn-primary">
+    Пиши съобщение
+</a>
+
+@if (User.Identity!.Name == Model.Email)
+{
+    <a asp-controller="Chat"
+       asp-action="GuideBoard"
+       asp-route-guideId="@Model.Id">
+        Съобщения
+    </a>
+}

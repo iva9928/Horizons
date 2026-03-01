@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Horizons.Data.Models
 {
@@ -19,10 +18,13 @@ namespace Horizons.Data.Models
         [MaxLength(1000)]
         public string Content { get; set; } = null!;
 
-        public DateTime SentOn { get; set; }
+        public DateTime SentOn { get; set; } = DateTime.UtcNow;
 
-        public bool IsPublic { get; set; }
+        public bool IsPublic { get; set; } = false;
 
         public int? DestinationId { get; set; }
+        public Destination? Destination { get; set; }
+        public int? TourId { get; set; }
+        public Tour? Tour { get; set; }
     }
 }

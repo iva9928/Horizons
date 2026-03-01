@@ -1,91 +1,96 @@
 ﻿using Horizons.Data;
 using Horizons.Data.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Horizons.Controllers
 {
     [Authorize]
     public class ChatController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext context;
 
-        public ChatController(ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager)
+        public ChatController(ApplicationDbContext context)
         {
-            _context = context;
-            _userManager = userManager;
+            this.context = context;
         }
 
-        public async Task<IActionResult> PublicChat(int destinationId)
+        private string GetUserId()
+            => User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+        // ================= GUIDE BOARD =================
+
+        [HttpGet]
+        public async Task<IActionResult> GuideBoard(string guideId)
         {
-            var messages = await _context.Messages
-                .Where(m => m.IsPublic && m.DestinationId == destinationId)
+            var currentUserId = GetUserId();
+
+            if (string.IsNullOrEmpty(guideId))
+                return NotFound();
+
+            if (currentUserId != guideId)
+                return Unauthorized();
+
+            var guide = await context.Users
+                .FirstOrDefaultAsync(u => u.Id == guideId);
+
+            if (guide == null)
+                return NotFound();
+
+            var messages = await context.Messages
+                .Where(m => m.ReceiverId == guideId)
+                .OrderByDescending(m => m.SentOn)
+                .ToListAsync();
+
+            ViewBag.GuideEmail = guide.Email;
+
+            return View(messages);
+        }
+
+        // ================= USER → GUIDE CHAT =================
+
+        [HttpGet]
+        public async Task<IActionResult> ChatWithGuide(string guideId)
+        {
+            var userId = GetUserId();
+
+            var messages = await context.Messages
+                .Where(m =>
+                    (m.SenderId == userId && m.ReceiverId == guideId) ||
+                    (m.SenderId == guideId && m.ReceiverId == userId))
                 .Include(m => m.Sender)
                 .OrderBy(m => m.SentOn)
                 .ToListAsync();
 
-            ViewBag.DestinationId = destinationId;
-            return View(messages);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> SendPublic(int destinationId, string content)
-        {
-            var user = await _userManager.GetUserAsync(User);
-
-            var message = new Message
-            {
-                SenderId = user!.Id,
-                ReceiverId = user.Id,
-                Content = content,
-                SentOn = DateTime.Now,
-                IsPublic = true,
-                DestinationId = destinationId
-            };
-
-            _context.Messages.Add(message);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(PublicChat), new { destinationId });
-        }
-
-        public async Task<IActionResult> Inbox()
-        {
-            var user = await _userManager.GetUserAsync(User);
-
-            var messages = await _context.Messages
-                .Where(m => !m.IsPublic &&
-                            (m.SenderId == user!.Id || m.ReceiverId == user.Id))
-                .Include(m => m.Sender)
-                .Include(m => m.Receiver)
-                .OrderByDescending(m => m.SentOn)
-                .ToListAsync();
+            ViewBag.GuideId = guideId;
 
             return View(messages);
         }
 
         [HttpPost]
-        public async Task<IActionResult> SendPrivate(string receiverId, string content)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendToGuide(string guideId, string content)
         {
-            var sender = await _userManager.GetUserAsync(User);
+            var userId = GetUserId();
+
+            if (string.IsNullOrWhiteSpace(content))
+                return RedirectToAction(nameof(ChatWithGuide), new { guideId });
 
             var message = new Message
             {
-                SenderId = sender!.Id,
-                ReceiverId = receiverId,
+                SenderId = userId,
+                ReceiverId = guideId,
                 Content = content,
-                SentOn = DateTime.Now,
+                SentOn = DateTime.UtcNow,
                 IsPublic = false
             };
 
-            _context.Messages.Add(message);
-            await _context.SaveChangesAsync();
+            await context.Messages.AddAsync(message);
+            await context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Inbox));
+            return RedirectToAction(nameof(ChatWithGuide), new { guideId });
         }
     }
 }

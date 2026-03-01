@@ -14,6 +14,8 @@ namespace Horizons.Services
             this.context = context;
         }
 
+        // ================= ADD =================
+
         public async Task AddDestinationAsync(DestinationAddViewModel model, string userId)
         {
             var destination = new Destination
@@ -34,6 +36,8 @@ namespace Horizons.Services
             await context.Destinations.AddAsync(destination);
             await context.SaveChangesAsync();
         }
+
+        // ================= EDIT =================
 
         public async Task EditDestinationAsync(DestinationEditViewModel model, string userId)
         {
@@ -59,45 +63,69 @@ namespace Horizons.Services
             await context.SaveChangesAsync();
         }
 
+        // ================= DELETE =================
+
+        public async Task DeleteDestinationAsync(int id, string userId)
+        {
+            var destination = await context.Destinations
+                .FirstOrDefaultAsync(d => d.Id == id && !d.IsDeleted);
+
+            if (destination == null)
+                throw new InvalidOperationException();
+
+            if (destination.PublisherId != userId)
+                throw new UnauthorizedAccessException();
+
+            destination.IsDeleted = true;
+
+            await context.SaveChangesAsync();
+        }
+
+        // ================= DETAILS =================
+
         public async Task<DestinationDetailsViewModel?> GetDestinationDetailsAsync(int id, string userId)
         {
-            var d = await context.Destinations
-                .Include(x => x.Terrain)
-                .Include(x => x.Publisher)
-                .FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
+            var destination = await context.Destinations
+                .Include(d => d.Terrain)
+                .Include(d => d.Publisher)
+                .FirstOrDefaultAsync(d => d.Id == id && !d.IsDeleted);
 
-            if (d == null) return null;
+            if (destination == null)
+                return null;
 
             var ratings = await context.Ratings
                 .Where(r => r.DestinationId == id)
                 .Include(r => r.User)
                 .ToListAsync();
 
-            double avg = ratings.Any() ? ratings.Average(r => r.Stars) : 0;
+            double average = ratings.Any() ? ratings.Average(r => r.Stars) : 0;
 
-            bool isFavorite = await context.UserDestinations
-                .AnyAsync(x => x.UserId == userId && x.DestinationId == id);
+            bool isFavorite = false;
 
-            bool hasRated = ratings.Any(r => r.UserId == userId);
+            if (!string.IsNullOrEmpty(userId))
+            {
+                isFavorite = await context.UserDestinations
+                    .AnyAsync(x => x.UserId == userId && x.DestinationId == id);
+            }
 
             return new DestinationDetailsViewModel
             {
-                Id = d.Id,
-                Name = d.Name,
-                Description = d.Description,
-                ImageUrl = d.ImageUrl,
-                Location = d.Location,
-                LocationUrl = d.LocationUrl,
-                Publisher = d.Publisher.UserName,
-                Terrain = d.Terrain.Name,
-                TicketPrice = d.TicketPrice,
-                PublishedOn = d.PublishedOn.ToString("dd-MM-yyyy"),
-                Season = d.Season,
-                IsPublisher = d.PublisherId == userId,
+                Id = destination.Id,
+                Name = destination.Name,
+                Description = destination.Description,
+                ImageUrl = destination.ImageUrl,
+                Location = destination.Location,
+                LocationUrl = destination.LocationUrl,
+                Publisher = destination.Publisher.UserName!,
+                Terrain = destination.Terrain.Name,
+                TicketPrice = destination.TicketPrice,
+                PublishedOn = destination.PublishedOn.ToString("dd-MM-yyyy"),
+                Season = destination.Season,
+                IsPublisher = destination.PublisherId == userId,
                 IsFavorite = isFavorite,
-                AverageRating = avg,
-                HasRated = hasRated,
-                VideoUrl = d.VideoUrl,
+                AverageRating = average,
+                HasRated = ratings.Any(r => r.UserId == userId),
+                VideoUrl = destination.VideoUrl,
                 Ratings = ratings.Select(r => new RatingViewModel
                 {
                     Stars = r.Stars,
@@ -108,10 +136,10 @@ namespace Horizons.Services
             };
         }
 
+        // ================= LIST WITH USER CONTEXT =================
+
         public async Task<IEnumerable<DestinationListViewModel>> GetAllDestinationsAsync(string userId)
         {
-            var userDest = context.UserDestinations;
-
             return await context.Destinations
                 .Include(d => d.Terrain)
                 .Where(d => !d.IsDeleted)
@@ -123,12 +151,16 @@ namespace Horizons.Services
                     Terrain = d.Terrain.Name,
                     TicketPrice = d.TicketPrice,
                     Season = d.Season,
-                    FavoritesCount = userDest.Count(ud => ud.DestinationId == d.Id),
                     IsPublisher = d.PublisherId == userId,
-                    IsFavorite = userDest.Any(ud => ud.UserId == userId && ud.DestinationId == d.Id)
+                    IsFavorite = context.UserDestinations
+                        .Any(ud => ud.UserId == userId && ud.DestinationId == d.Id),
+                    FavoritesCount = context.UserDestinations
+                        .Count(ud => ud.DestinationId == d.Id)
                 })
                 .ToListAsync();
         }
+
+        // ================= LIST WITHOUT USER =================
 
         public async Task<IEnumerable<DestinationListViewModel>> GetAllAsync()
         {
@@ -147,12 +179,45 @@ namespace Horizons.Services
                 .ToListAsync();
         }
 
+        // ================= GET BY ID =================
+
         public async Task<Destination?> GetDestinationByIdAsync(int id)
         {
             return await context.Destinations
                 .Include(d => d.Publisher)
                 .Include(d => d.Terrain)
                 .FirstOrDefaultAsync(d => d.Id == id && !d.IsDeleted);
+        }
+
+        // ================= FAVORITES =================
+
+        public async Task AddToFavoritesAsync(int destinationId, string userId)
+        {
+            bool exists = await context.UserDestinations
+                .AnyAsync(x => x.UserId == userId && x.DestinationId == destinationId);
+
+            if (!exists)
+            {
+                await context.UserDestinations.AddAsync(new UserDestination
+                {
+                    UserId = userId,
+                    DestinationId = destinationId
+                });
+
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task RemoveFromFavoritesAsync(int destinationId, string userId)
+        {
+            var favorite = await context.UserDestinations
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.DestinationId == destinationId);
+
+            if (favorite != null)
+            {
+                context.UserDestinations.Remove(favorite);
+                await context.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<FavoriteDestinationViewModel>> GetFavoriteDestinationsAsync(string userId)
@@ -169,47 +234,7 @@ namespace Horizons.Services
                 .ToListAsync();
         }
 
-        public async Task AddToFavoritesAsync(string userId, int destinationId)
-        {
-            if (!await context.UserDestinations
-                .AnyAsync(x => x.UserId == userId && x.DestinationId == destinationId))
-            {
-                await context.UserDestinations.AddAsync(new UserDestination
-                {
-                    UserId = userId,
-                    DestinationId = destinationId
-                });
-
-                await context.SaveChangesAsync();
-            }
-        }
-
-        public async Task RemoveFromFavoritesAsync(string userId, int destinationId)
-        {
-            var fav = await context.UserDestinations
-                .FirstOrDefaultAsync(x => x.UserId == userId && x.DestinationId == destinationId);
-
-            if (fav != null)
-            {
-                context.UserDestinations.Remove(fav);
-                await context.SaveChangesAsync();
-            }
-        }
-
-        public async Task DeleteDestinationAsync(int id, string userId)
-        {
-            var destination = await context.Destinations
-                .FirstOrDefaultAsync(d => d.Id == id && !d.IsDeleted);
-
-            if (destination == null)
-                throw new InvalidOperationException();
-
-            if (destination.PublisherId != userId)
-                throw new UnauthorizedAccessException();
-
-            destination.IsDeleted = true;
-            await context.SaveChangesAsync();
-        }
+        // ================= TERRAIN =================
 
         public async Task<IEnumerable<TerrainViewModel>> GetAllTerrainsAsync()
         {
@@ -221,6 +246,8 @@ namespace Horizons.Services
                 })
                 .ToListAsync();
         }
+
+        // ================= EDIT MODEL =================
 
         public async Task<DestinationEditViewModel?> GetEditModelAsync(int id)
         {
@@ -249,6 +276,8 @@ namespace Horizons.Services
                 .FirstOrDefaultAsync();
         }
 
+        // ================= RATING =================
+
         public async Task AddRatingAsync(string userId, int destinationId, int stars, string comment)
         {
             var existing = await context.Ratings
@@ -267,7 +296,8 @@ namespace Horizons.Services
                     UserId = userId,
                     DestinationId = destinationId,
                     Stars = stars,
-                    Comment = comment
+                    Comment = comment,
+                    CreatedOn = DateTime.Now
                 });
             }
 

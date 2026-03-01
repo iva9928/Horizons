@@ -21,30 +21,100 @@ using Horizons.Data.Models;
             public DbSet<Reservation> Reservations { get; set; } = null!;
             public DbSet<Rating> Ratings { get; set; } = null!;
             public DbSet<Message> Messages { get; set; } = null!;
+        public DbSet<Tour> Tours { get; set; }
+        public DbSet<TourReservation> TourReservations { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
-            {
-                base.OnModelCreating(builder);
+         {
+            base.OnModelCreating(builder);
 
-                builder.Entity<UserDestination>()
-                    .HasKey(ud => new { ud.UserId, ud.DestinationId });
+            // =============================
+            // USER DESTINATION (Many-to-Many)
+            // =============================
+            builder.Entity<UserDestination>()
+                .HasKey(ud => new { ud.UserId, ud.DestinationId });
 
-                builder.Entity<Destination>()
-                    .HasOne(d => d.Publisher)
-                    .WithMany()
-                    .HasForeignKey(d => d.PublisherId)
-                    .OnDelete(DeleteBehavior.Restrict);
+            // =============================
+            // DESTINATION → PUBLISHER
+            // =============================
+            builder.Entity<Destination>()
+                .HasOne(d => d.Publisher)
+                .WithMany()
+                .HasForeignKey(d => d.PublisherId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // =============================
+            // DECIMAL PRECISION FIX
+            // =============================
+            builder.Entity<Destination>()
+                .Property(d => d.TicketPrice)
+                .HasColumnType("decimal(18,2)");
+
+            builder.Entity<Tour>()
+                .Property(t => t.PricePerPerson)
+                .HasColumnType("decimal(18,2)");
+
+            builder.Entity<TourReservation>()
+                .Property(tr => tr.PricePerPerson)
+                .HasColumnType("decimal(18,2)");
+
+            // =============================
+            // MESSAGE RELATIONS
+            // =============================
             builder.Entity<Message>()
-    .HasOne(m => m.Sender)
-    .WithMany()
-    .HasForeignKey(m => m.SenderId)
-    .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(m => m.Sender)
+                .WithMany()
+                .HasForeignKey(m => m.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Message>()
                 .HasOne(m => m.Receiver)
                 .WithMany()
                 .HasForeignKey(m => m.ReceiverId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Message>()
+                .HasOne(m => m.Tour)
+                .WithMany()
+                .HasForeignKey(m => m.TourId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Message>()
+                .HasOne(m => m.Destination)
+                .WithMany()
+                .HasForeignKey(m => m.DestinationId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // =============================
+            // TOUR RELATIONS
+            // =============================
+            builder.Entity<Tour>()
+                .HasOne(t => t.Guide)
+                .WithMany()
+                .HasForeignKey(t => t.GuideId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Tour>()
+                .HasOne(t => t.Destination)
+                .WithMany()
+                .HasForeignKey(t => t.DestinationId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // =============================
+            // TOUR RESERVATION (FIX MULTIPLE CASCADE)
+            // =============================
+            builder.Entity<TourReservation>()
+    .HasOne(tr => tr.Tour)
+    .WithMany(t => t.Reservations)
+    .HasForeignKey(tr => tr.TourId)
+    .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<TourReservation>()
+                .HasOne(tr => tr.User)
+                .WithMany()
+                .HasForeignKey(tr => tr.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
             const string adminId = "7699db7d-964f-4782-8209-d76562e0fece";
 
@@ -71,45 +141,102 @@ using Horizons.Data.Models;
                 // ✅ ВАЖНО: ApplicationUser
                 builder.Entity<ApplicationUser>().HasData(defaultUser);
 
-           
+            // ===== GUIDES SEED =====
 
-            var guides = new List<ApplicationUser>
-{
-    new ApplicationUser
-    {
-        Id = "guide-cave",
-        UserName = "cave@horizons.com",
-        NormalizedUserName = "CAVE@HORIZONS.COM",
-        Email = "cave@horizons.com",
-        NormalizedEmail = "CAVE@HORIZONS.COM",
-        EmailConfirmed = true,
-        SecurityStamp = Guid.NewGuid().ToString(),
-        Age = 34,
-        Bio = "Спелеолог с 12 години опит.",
-        IsGuide = true,
-        ProfileImageUrl = "/images/guides/cave.png"
-    },
-    new ApplicationUser
-    {
-        Id = "guide-eco",
-        UserName = "eco@horizons.com",
-        NormalizedUserName = "ECO@HORIZONS.COM",
-        Email = "eco@horizons.com",
-        NormalizedEmail = "ECO@HORIZONS.COM",
-        EmailConfirmed = true,
-        SecurityStamp = Guid.NewGuid().ToString(),
-        Age = 29,
-        Bio = "Еколог и водач на екопътеки.",
-        IsGuide = true,
-        ProfileImageUrl = "/images/guides/eco.png"
-    }
-};
+            var guide1Id = "11111111-1111-1111-1111-111111111111";
+            var guide2Id = "22222222-2222-2222-2222-222222222222";
+            var guide3Id = "33333333-3333-3333-3333-333333333333";
+            var guide4Id = "44444444-4444-4444-4444-444444444444";
+            var guide5Id = "55555555-5555-5555-5555-555555555555";
 
-            foreach (var guide in guides)
+            var guide1 = new ApplicationUser
             {
-                guide.PasswordHash = passwordHasher.HashPassword(guide, "Guide123!");
-                builder.Entity<ApplicationUser>().HasData(guide);
-            }
+                Id = guide1Id,
+                UserName = "ivan.petrov@horizons.com",
+                NormalizedUserName = "IVAN.PETROV@HORIZONS.COM",
+                Email = "ivan.petrov@horizons.com",
+                NormalizedEmail = "IVAN.PETROV@HORIZONS.COM",
+                EmailConfirmed = true,
+                SecurityStamp = "GUIDE1_SECURITY",
+                Age = 34,
+                Bio = "Планински гид с над 10 години опит в Родопите. Специализира в пещерни маршрути и високопланински преходи.",
+                IsGuide = true,
+                ProfileImageUrl = "/images/planinaM.png"
+            };
+
+            var guide2 = new ApplicationUser
+            {
+                Id = guide2Id,
+                UserName = "maria.stoyanova@horizons.com",
+                NormalizedUserName = "MARIA.STOYANOVA@HORIZONS.COM",
+                Email = "maria.stoyanova@horizons.com",
+                NormalizedEmail = "MARIA.STOYANOVA@HORIZONS.COM",
+                EmailConfirmed = true,
+                SecurityStamp = "GUIDE2_SECURITY",
+                Age = 29,
+                Bio = "Лицензиран екскурзовод и любител на екопътеките. Организира турове до водопади и панорамни площадки.",
+                IsGuide = true,
+                ProfileImageUrl = "/images/jenaE.png"
+            };
+
+            var guide3 = new ApplicationUser
+            {
+                Id = guide3Id,
+                UserName = "georgi.dimitrov@horizons.com",
+                NormalizedUserName = "GEORGI.DIMITROV@HORIZONS.COM",
+                Email = "georgi.dimitrov@horizons.com",
+                NormalizedEmail = "GEORGI.DIMITROV@HORIZONS.COM",
+                EmailConfirmed = true,
+                SecurityStamp = "GUIDE3_SECURITY",
+                Age = 41,
+                Bio = "Специалист по исторически маршрути и тракийски светилища. Разказвач на легенди и местен фолклор.",
+                IsGuide = true,
+                ProfileImageUrl = "/images/svetilishtaM.png"
+            };
+
+            var guide4 = new ApplicationUser
+            {
+                Id = guide4Id,
+                UserName = "elena.ivanova@horizons.com",
+                NormalizedUserName = "ELENA.IVANOVA@HORIZONS.COM",
+                Email = "elena.ivanova@horizons.com",
+                NormalizedEmail = "ELENA.IVANOVA@HORIZONS.COM",
+                EmailConfirmed = true,
+                SecurityStamp = "GUIDE4_SECURITY",
+                Age = 32,
+                Bio = "Професионален планински водач, сертифициран за зимни преходи и снежни маршрути.",
+                IsGuide = true,
+                ProfileImageUrl = "/images/vurhh.png"
+            };
+
+            var guide5 = new ApplicationUser
+            {
+                Id = guide5Id,
+                UserName = "nikolay.kolev@horizons.com",
+                NormalizedUserName = "NIKOLAY.KOLEV@HORIZONS.COM",
+                Email = "nikolay.kolev@horizons.com",
+                NormalizedEmail = "NIKOLAY.KOLEV@HORIZONS.COM",
+                EmailConfirmed = true,
+                SecurityStamp = "GUIDE5_SECURITY",
+                Age = 38,
+                Bio = "Еко-туризъм и приключенски маршрути. Организира групови експедиции до върхове и резервати.",
+                IsGuide = true,
+                ProfileImageUrl = "/images/parkoveM.png"
+            };
+
+            var hasher = new PasswordHasher<ApplicationUser>();
+
+            guide1.PasswordHash = hasher.HashPassword(guide1, "Guide123!");
+            guide2.PasswordHash = hasher.HashPassword(guide2, "Guide123!");
+            guide3.PasswordHash = hasher.HashPassword(guide3, "Guide123!");
+            guide4.PasswordHash = hasher.HashPassword(guide4, "Guide123!");
+            guide5.PasswordHash = hasher.HashPassword(guide5, "Guide123!");
+
+            builder.Entity<ApplicationUser>().HasData(
+                guide1, guide2, guide3, guide4, guide5
+            );
+
+
 
             builder.Entity<Terrain>().HasData(
                     new Terrain { Id = 1, Name = "Пещера" },

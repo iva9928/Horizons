@@ -1,0 +1,19 @@
+﻿@using Horizons.Data.Models
+@model List<ApplicationUser>
+
+<h2>Тур гайдове</h2>
+
+@foreach (var guide in Model)
+{
+    <div style="margin-bottom:20px;">
+        <img src="@guide.ProfileImageUrl" width="120" />
+        <h4>@guide.UserName</h4>
+        <p>@guide.Bio</p>
+
+        <a asp-controller="Guide"
+           asp-action="Profile"
+           asp-route-id="@guide.Id">
+            Виж профил
+        </a>
+    </div>
+}
