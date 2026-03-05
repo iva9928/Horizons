@@ -12,23 +12,23 @@ namespace Horizons.Controllers
     {
         private readonly ApplicationDbContext context;
 
-        public ChatController(ApplicationDbContext context)
+
+    public ChatController(ApplicationDbContext context)
         {
             this.context = context;
         }
 
         private string GetUserId()
-            => User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        {
+            return User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        }
 
-        // ================= GUIDE BOARD =================
+        // GUIDE BOARD (гидът вижда всички съобщения към него)
 
         [HttpGet]
         public async Task<IActionResult> GuideBoard(string guideId)
         {
             var currentUserId = GetUserId();
-
-            if (string.IsNullOrEmpty(guideId))
-                return NotFound();
 
             if (currentUserId != guideId)
                 return Unauthorized();
@@ -41,6 +41,7 @@ namespace Horizons.Controllers
 
             var messages = await context.Messages
                 .Where(m => m.ReceiverId == guideId)
+                .Include(m => m.Sender)
                 .OrderByDescending(m => m.SentOn)
                 .ToListAsync();
 
@@ -49,7 +50,7 @@ namespace Horizons.Controllers
             return View(messages);
         }
 
-        // ================= USER → GUIDE CHAT =================
+        // ЛИЧЕН ЧАТ МЕЖДУ ПОТРЕБИТЕЛ И ГИД
 
         [HttpGet]
         public async Task<IActionResult> ChatWithGuide(string guideId)
@@ -66,8 +67,10 @@ namespace Horizons.Controllers
 
             ViewBag.GuideId = guideId;
 
-            return View(messages);
+            return View("ConversationView", messages);
         }
+
+        // ПОТРЕБИТЕЛ → ПИШЕ НА ГИД
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -76,7 +79,7 @@ namespace Horizons.Controllers
             var userId = GetUserId();
 
             if (string.IsNullOrWhiteSpace(content))
-                return RedirectToAction(nameof(ChatWithGuide), new { guideId });
+                return RedirectToAction("ChatWithGuide", new { guideId });
 
             var message = new Message
             {
@@ -87,10 +90,54 @@ namespace Horizons.Controllers
                 IsPublic = false
             };
 
-            await context.Messages.AddAsync(message);
+            context.Messages.Add(message);
             await context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(ChatWithGuide), new { guideId });
+            return RedirectToAction("ChatWithGuide", new { guideId });
+        }
+
+        // ГИД → ПИШЕ ОБЩО СЪОБЩЕНИЕ (виждат го всички)
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendPublic(string content)
+        {
+            var guideId = GetUserId();
+
+            var message = new Message
+            {
+                SenderId = guideId,
+                ReceiverId = null,
+                Content = content,
+                SentOn = DateTime.UtcNow,
+                IsPublic = true
+            };
+
+            context.Messages.Add(message);
+            await context.SaveChangesAsync();
+
+            return RedirectToAction("Dashboard", "Guide");
+        }
+
+        // ПОТРЕБИТЕЛСКИ INBOX
+
+        [HttpGet]
+        public async Task<IActionResult> Inbox()
+        {
+            var userId = GetUserId();
+
+            var messages = await context.Messages
+                .Where(m =>
+                    m.IsPublic ||
+                    m.ReceiverId == userId ||
+                    m.SenderId == userId)
+                .Include(m => m.Sender)
+                .OrderByDescending(m => m.SentOn)
+                .ToListAsync();
+
+            return View(messages);
         }
     }
+
+
 }

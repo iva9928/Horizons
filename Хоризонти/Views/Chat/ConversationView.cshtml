@@ -1,0 +1,190 @@
+﻿@model List<Horizons.Data.Models.Message>
+@using System.Security.Claims
+
+@{
+    var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+}
+
+<style>
+
+    body {
+        background: linear-gradient(135deg,#eef2f7,#f8fafc);
+        font-family: Segoe UI;
+    }
+
+    .chat-wrapper {
+        max-width: 900px;
+        margin: 40px auto;
+    }
+
+    .chat-header {
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .chat-box {
+        background: white;
+        border-radius: 20px;
+        padding: 25px;
+        height: 500px;
+        overflow-y: auto;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    .message {
+        padding: 14px 18px;
+        margin: 15px 0;
+        border-radius: 18px;
+        max-width: 70%;
+        transition: 0.25s;
+        position: relative;
+    }
+
+        .message:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+        }
+
+    .my {
+        background: linear-gradient(135deg,#4CAF50,#2e7d32);
+        color: white;
+        margin-left: auto;
+    }
+
+    .other {
+        background: #f1f3f6;
+    }
+
+    .sender {
+        font-size: 13px;
+        font-weight: bold;
+        margin-bottom: 4px;
+    }
+
+    .time {
+        font-size: 11px;
+        opacity: 0.6;
+        margin-top: 6px;
+    }
+
+    .reply {
+        font-size: 12px;
+        color: #2e7dff;
+        margin-top: 6px;
+        cursor: pointer;
+        opacity: 0.8;
+    }
+
+        .reply:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+    .reply-box {
+        background: #f5f7fb;
+        border-left: 4px solid #2e7dff;
+        padding: 8px;
+        margin-bottom: 6px;
+        border-radius: 6px;
+        font-size: 12px;
+    }
+
+    .chat-form {
+        margin-top: 15px;
+        display: flex;
+        gap: 10px;
+    }
+
+        .chat-form textarea {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            resize: none;
+        }
+
+        .chat-form button {
+            background: linear-gradient(135deg,#2e7dff,#1c54d6);
+            border: none;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+            .chat-form button:hover {
+                transform: scale(1.05);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            }
+
+</style>
+
+<div class="chat-wrapper">
+
+    <div class="chat-header">
+        💬 Разговор
+    </div>
+
+    <div class="chat-box" id="chatBox">
+
+        @foreach (var msg in Model)
+        {
+            var css = msg.SenderId == currentUserId ? "my" : "other";
+
+            <div class="message @css">
+
+                <div class="sender">
+                    @msg.Sender?.Email
+                </div>
+
+                <div>
+                    @msg.Content
+                </div>
+
+                <div class="time">
+                    @msg.SentOn.ToLocalTime()
+                </div>
+
+                <div class="reply" onclick="replyTo('@msg.Content')">
+                    ↩ Отговор
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+    <form asp-action="SendToGuide" method="post" class="chat-form">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" name="guideId" value="@ViewBag.GuideId" />
+
+<textarea id="messageBox" name="content" rows="2" placeholder="Напиши съобщение..." required></textarea>
+
+        <button type="submit">
+            Изпрати
+        </button>
+
+    </form>
+
+</div>
+
+<script>
+
+    function replyTo(text){
+
+    var box = document.getElementById("messageBox");
+
+    box.value="↩ Отговор на: " + text + "\n";
+
+    box.focus();
+
+    }
+
+    var chat=document.getElementById("chatBox");
+    chat.scrollTop=chat.scrollHeight;
+
+</script>

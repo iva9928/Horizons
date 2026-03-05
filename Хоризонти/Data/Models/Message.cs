@@ -10,9 +10,8 @@ namespace Horizons.Data.Models
         public string SenderId { get; set; } = null!;
         public ApplicationUser Sender { get; set; } = null!;
 
-        [Required]
-        public string ReceiverId { get; set; } = null!;
-        public ApplicationUser Receiver { get; set; } = null!;
+        public string? ReceiverId { get; set; }
+        public ApplicationUser? Receiver { get; set; }
 
         [Required]
         [MaxLength(1000)]
@@ -24,6 +23,7 @@ namespace Horizons.Data.Models
 
         public int? DestinationId { get; set; }
         public Destination? Destination { get; set; }
+
         public int? TourId { get; set; }
         public Tour? Tour { get; set; }
     }

@@ -4,6 +4,7 @@ using Horizons.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text.Json;
 using Хоризонти.Models;
 
 namespace Horizons.Controllers
@@ -13,7 +14,7 @@ namespace Horizons.Controllers
     {
         private readonly IDestinationService service;
 
-        public DestinationController(IDestinationService service)
+    public DestinationController(IDestinationService service)
         {
             this.service = service;
         }
@@ -73,8 +74,16 @@ namespace Horizons.Controllers
             if (maxPrice.HasValue)
                 destinations = destinations.Where(d => d.TicketPrice <= maxPrice).ToList();
 
-            if (onlyFavorites && !string.IsNullOrEmpty(userId))
-                destinations = destinations.Where(d => d.IsFavorite).ToList();
+            if (onlyFavorites)
+            {
+                var favorites = HttpContext.Session.GetString("favorites");
+
+                if (favorites != null)
+                {
+                    var ids = JsonSerializer.Deserialize<List<int>>(favorites)!;
+                    destinations = destinations.Where(d => ids.Contains(d.Id)).ToList();
+                }
+            }
 
             var model = new DestinationSearchViewModel
             {
@@ -102,39 +111,30 @@ namespace Horizons.Controllers
 
                 destinations = normalized switch
                 {
-                    "peshteri" => destinations
-                        .Where(d => d.Name.ToLower().Contains("пещер"))
-                        .ToList(),
+                    "peshteri" => destinations.Where(d => d.Name.ToLower().Contains("пещер")).ToList(),
 
-                    "zhdrela" => destinations
-                        .Where(d => d.Name.ToLower().Contains("ждрел") ||
-                                    d.Name.ToLower().Contains("каньон"))
-                        .ToList(),
+                    "zhdrela" => destinations.Where(d =>
+                        d.Name.ToLower().Contains("ждрел") ||
+                        d.Name.ToLower().Contains("каньон")).ToList(),
 
-                    "skalni" => destinations
-                        .Where(d => d.Name.ToLower().Contains("скал"))
-                        .ToList(),
+                    "skalni" => destinations.Where(d =>
+                        d.Name.ToLower().Contains("скал")).ToList(),
 
-                    "ekopateki" => destinations
-                        .Where(d => d.Name.ToLower().Contains("еко"))
-                        .ToList(),
+                    "ekopateki" => destinations.Where(d =>
+                        d.Name.ToLower().Contains("еко")).ToList(),
 
-                    "vodopadi" => destinations
-                        .Where(d => d.Name.ToLower().Contains("водопад"))
-                        .ToList(),
+                    "vodopadi" => destinations.Where(d =>
+                        d.Name.ToLower().Contains("водопад")).ToList(),
 
-                    "ezera" => destinations
-                        .Where(d => d.Name.ToLower().Contains("езер"))
-                        .ToList(),
+                    "ezera" => destinations.Where(d =>
+                        d.Name.ToLower().Contains("езер")).ToList(),
 
-                    "varhove" => destinations
-                        .Where(d => d.Name.ToLower().Contains("връх"))
-                        .ToList(),
+                    "varhove" => destinations.Where(d =>
+                        d.Name.ToLower().Contains("връх")).ToList(),
 
-                    "gori" => destinations
-                        .Where(d => d.Name.ToLower().Contains("гора") ||
-                                    d.Name.ToLower().Contains("резерват"))
-                        .ToList(),
+                    "gori" => destinations.Where(d =>
+                        d.Name.ToLower().Contains("гора") ||
+                        d.Name.ToLower().Contains("резерват")).ToList(),
 
                     _ => new List<DestinationListViewModel>()
                 };
@@ -160,26 +160,67 @@ namespace Horizons.Controllers
             return View(destination);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddToFavorites(int id)
-        {
-            await service.AddToFavoritesAsync(id, GetUserId());
-            return RedirectToAction(nameof(Details), new { id });
-        }
+        // ADD FAVORITE
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveFromFavorites(int id)
+        public IActionResult AddToFavorites(int id)
         {
-            await service.RemoveFromFavoritesAsync(id, GetUserId());
+            var favorites = HttpContext.Session.GetString("favorites");
+
+            List<int> list;
+
+            if (favorites == null)
+                list = new List<int>();
+            else
+                list = JsonSerializer.Deserialize<List<int>>(favorites)!;
+
+            if (!list.Contains(id))
+                list.Add(id);
+
+            HttpContext.Session.SetString("favorites",
+                JsonSerializer.Serialize(list));
+
             return RedirectToAction(nameof(Details), new { id });
         }
+
+        // REMOVE FAVORITE
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RemoveFromFavorites(int id)
+        {
+            var favorites = HttpContext.Session.GetString("favorites");
+
+            if (favorites != null)
+            {
+                var list = JsonSerializer.Deserialize<List<int>>(favorites)!;
+
+                list.Remove(id);
+
+                HttpContext.Session.SetString("favorites",
+                    JsonSerializer.Serialize(list));
+            }
+
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        // FAVORITES PAGE
 
         public async Task<IActionResult> Favorites()
         {
-            var favorites = await service.GetFavoriteDestinationsAsync(GetUserId());
-            return View(favorites);
+            var favorites = HttpContext.Session.GetString("favorites");
+
+            if (favorites == null)
+                return View(new List<DestinationListViewModel>());
+
+            var ids = JsonSerializer.Deserialize<List<int>>(favorites)!;
+
+            var destinations = (await service.GetAllDestinationsAsync(GetUserId()))
+                .Where(d => ids.Contains(d.Id))
+                .ToList();
+
+            return View(destinations);
         }
 
         [AllowAnonymous]
@@ -216,4 +257,6 @@ namespace Horizons.Controllers
                 });
         }
     }
+
+
 }

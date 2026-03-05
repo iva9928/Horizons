@@ -16,7 +16,7 @@ namespace Horizons.Data.Models
         public bool IsDeleted { get; set; }
 
         public int TerrainId { get; set; }
-        public Terrain Terrain { get; set; } = null!;
+        public Terrain TerrainName { get; set; } = null!;
 
         public string PublisherId { get; set; } = null!;
         public ApplicationUser Publisher { get; set; } = null!;

@@ -12,35 +12,21 @@ namespace Horizons
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // -----------------------
-            // DATABASE
-            // -----------------------
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+            ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
-            // ? OPTIONAL (само ако имаш пакета):
-            // Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
-            // Ако го нямаш -> остави реда закоментиран, иначе ще е червено и няма да компилира.
-            // builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-            // -----------------------
-            // SERVICES
-            // -----------------------
             builder.Services.AddScoped<IDestinationService, DestinationService>();
             builder.Services.AddScoped<IReservationService, ReservationService>();
             builder.Services.AddScoped<IAiService, AiService>();
 
-            // -----------------------
-            // IDENTITY (ApplicationUser + Roles)
-            // -----------------------
             builder.Services
                 .AddIdentity<ApplicationUser, IdentityRole>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = false;
-
                     options.Password.RequireDigit = false;
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
@@ -51,16 +37,14 @@ namespace Horizons
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
 
-            // ? Нужно за Identity UI (Register/Login)
             builder.Services.AddRazorPages();
-
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddSession();
+            builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
 
-            // -----------------------
-            // ERROR HANDLING
-            // -----------------------
             if (app.Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -71,20 +55,16 @@ namespace Horizons
                 app.UseHsts();
             }
 
-            // -----------------------
-            // MIDDLEWARE
-            // -----------------------
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            app.UseSession();
+
             app.UseAuthentication();
             app.UseAuthorization();
 
-            // -----------------------
-            // ROUTES
-            // -----------------------
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
@@ -94,4 +74,6 @@ namespace Horizons
             app.Run();
         }
     }
+
+
 }

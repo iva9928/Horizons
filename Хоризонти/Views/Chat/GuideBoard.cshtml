@@ -1,19 +1,30 @@
-﻿@using Horizons.Data.Models
-@model List<Message>
+﻿@model List<Horizons.Data.Models.Message>
 
-<h2>Съобщения за организирани обиколки - @ViewBag.GuideEmail</h2>
+<div class="board">
 
-@if (!Model.Any())
-{
-    <p>Все още няма публикувани съобщения.</p>
-}
-else
-{
-    foreach (var msg in Model)
+    @foreach (var msg in Model)
     {
-        <div style="margin-bottom:10px; padding:10px; border:1px solid #ddd; border-radius:8px;">
-            <p>@msg.Content</p>
-            <small>@msg.SentOn.ToLocalTime()</small>
+        <div class="message-card">
+
+            <div class="sender">
+                От: @msg.Sender?.Email
+            </div>
+
+            <div>
+                @msg.Content
+            </div>
+
+            <div class="time">
+                @msg.SentOn
+            </div>
+
+            <a asp-controller="Chat"
+               asp-action="ChatWithGuide"
+               asp-route-guideId="@msg.SenderId">
+                Отговор
+            </a>
+
         </div>
     }
-}
+
+</div>
