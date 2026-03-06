@@ -12,8 +12,7 @@ namespace Horizons.Controllers
     {
         private readonly ApplicationDbContext context;
 
-
-    public ChatController(ApplicationDbContext context)
+        public ChatController(ApplicationDbContext context)
         {
             this.context = context;
         }
@@ -22,8 +21,6 @@ namespace Horizons.Controllers
         {
             return User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
         }
-
-        // GUIDE BOARD (гидът вижда всички съобщения към него)
 
         [HttpGet]
         public async Task<IActionResult> GuideBoard(string guideId)
@@ -50,8 +47,6 @@ namespace Horizons.Controllers
             return View(messages);
         }
 
-        // ЛИЧЕН ЧАТ МЕЖДУ ПОТРЕБИТЕЛ И ГИД
-
         [HttpGet]
         public async Task<IActionResult> ChatWithGuide(string guideId)
         {
@@ -69,8 +64,6 @@ namespace Horizons.Controllers
 
             return View("ConversationView", messages);
         }
-
-        // ПОТРЕБИТЕЛ → ПИШЕ НА ГИД
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -96,8 +89,6 @@ namespace Horizons.Controllers
             return RedirectToAction("ChatWithGuide", new { guideId });
         }
 
-        // ГИД → ПИШЕ ОБЩО СЪОБЩЕНИЕ (виждат го всички)
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendPublic(string content)
@@ -119,8 +110,6 @@ namespace Horizons.Controllers
             return RedirectToAction("Dashboard", "Guide");
         }
 
-        // ПОТРЕБИТЕЛСКИ INBOX
-
         [HttpGet]
         public async Task<IActionResult> Inbox()
         {
@@ -138,6 +127,4 @@ namespace Horizons.Controllers
             return View(messages);
         }
     }
-
-
 }

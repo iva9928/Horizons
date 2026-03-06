@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Хоризонти.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260219222528_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260306110844_Location")]
+    partial class Location
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -108,18 +108,118 @@ namespace Хоризонти.Migrations
                             AccessFailedCount = 0,
                             Age = 30,
                             Bio = "Main administrator of Horizons.",
-                            ConcurrencyStamp = "071d6f64-4489-4b38-a670-a2226701b3a9",
+                            ConcurrencyStamp = "4c08d4fa-c0f2-4e35-b863-7ce0970627b0",
                             Email = "admin@horizons.com",
                             EmailConfirmed = true,
                             IsGuide = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@HORIZONS.COM",
                             NormalizedUserName = "ADMIN@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOvrvoIeILjsgffsvS6xj18tuLwIjISIYNvhuh9uAPGzX4HKbDlvAUVeW4MCsGIaww==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMS27IaJ1MKu+Sxpf3qrfCnZOC47o7NdqNw71dxxoZ8clKpG2RJYe3KCgUMN+pzowA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "STATIC_SECURITY_STAMP",
                             TwoFactorEnabled = false,
                             UserName = "admin@horizons.com"
+                        },
+                        new
+                        {
+                            Id = "11111111-1111-1111-1111-111111111111",
+                            AccessFailedCount = 0,
+                            Age = 34,
+                            Bio = "Планински гид с над 10 години опит в Родопите. Специализира в пещерни маршрути и високопланински преходи.",
+                            ConcurrencyStamp = "790e9a48-c449-41c0-9e1c-ff9f4d840ccf",
+                            Email = "ivan.petrov@horizons.com",
+                            EmailConfirmed = true,
+                            IsGuide = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "IVAN.PETROV@HORIZONS.COM",
+                            NormalizedUserName = "IVAN.PETROV@HORIZONS.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAe3j5PsaW2uVH5IjOTy50xsCZNY93kN4lae0DXgVBQAuMVW0sxHOM2z7Qjx5qdWcg==",
+                            PhoneNumberConfirmed = false,
+                            ProfileImageUrl = "/images/planinaM.png",
+                            SecurityStamp = "GUIDE1_SECURITY",
+                            TwoFactorEnabled = false,
+                            UserName = "ivan.petrov@horizons.com"
+                        },
+                        new
+                        {
+                            Id = "22222222-2222-2222-2222-222222222222",
+                            AccessFailedCount = 0,
+                            Age = 29,
+                            Bio = "Лицензиран екскурзовод и любител на екопътеките. Организира турове до водопади и панорамни площадки.",
+                            ConcurrencyStamp = "46546dc1-c2ef-4911-8ac9-de796b62e3ec",
+                            Email = "maria.stoyanova@horizons.com",
+                            EmailConfirmed = true,
+                            IsGuide = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "MARIA.STOYANOVA@HORIZONS.COM",
+                            NormalizedUserName = "MARIA.STOYANOVA@HORIZONS.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFxZ699IUE2d81bphhJECaTt7t44xo6jp6jU4T72xxOZdpRcxt+NcLrYiNSNc8m80A==",
+                            PhoneNumberConfirmed = false,
+                            ProfileImageUrl = "/images/jenaE.png",
+                            SecurityStamp = "GUIDE2_SECURITY",
+                            TwoFactorEnabled = false,
+                            UserName = "maria.stoyanova@horizons.com"
+                        },
+                        new
+                        {
+                            Id = "33333333-3333-3333-3333-333333333333",
+                            AccessFailedCount = 0,
+                            Age = 41,
+                            Bio = "Специалист по исторически маршрути и тракийски светилища. Разказвач на легенди и местен фолклор.",
+                            ConcurrencyStamp = "15af93d5-600a-47de-9a14-8cf3ee47ee93",
+                            Email = "georgi.dimitrov@horizons.com",
+                            EmailConfirmed = true,
+                            IsGuide = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "GEORGI.DIMITROV@HORIZONS.COM",
+                            NormalizedUserName = "GEORGI.DIMITROV@HORIZONS.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAECApCrOiOELw2P562rLoZMZMONqCUZFKo6ImwPCe0PieQHR8NWiUGEsLiLCmrgZivg==",
+                            PhoneNumberConfirmed = false,
+                            ProfileImageUrl = "/images/svetilishtaM.png",
+                            SecurityStamp = "GUIDE3_SECURITY",
+                            TwoFactorEnabled = false,
+                            UserName = "georgi.dimitrov@horizons.com"
+                        },
+                        new
+                        {
+                            Id = "44444444-4444-4444-4444-444444444444",
+                            AccessFailedCount = 0,
+                            Age = 32,
+                            Bio = "Професионален планински водач, сертифициран за зимни преходи и снежни маршрути.",
+                            ConcurrencyStamp = "1c9a02a8-5291-4e9b-a23f-24921a93ae26",
+                            Email = "elena.ivanova@horizons.com",
+                            EmailConfirmed = true,
+                            IsGuide = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ELENA.IVANOVA@HORIZONS.COM",
+                            NormalizedUserName = "ELENA.IVANOVA@HORIZONS.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMyAti/1vwkLIN3/+GZwjZ4e7nWk2b/VQ28snalF9rz+gtVkdLTQWQJR+AzYKWo3wg==",
+                            PhoneNumberConfirmed = false,
+                            ProfileImageUrl = "/images/vurhh.png",
+                            SecurityStamp = "GUIDE4_SECURITY",
+                            TwoFactorEnabled = false,
+                            UserName = "elena.ivanova@horizons.com"
+                        },
+                        new
+                        {
+                            Id = "55555555-5555-5555-5555-555555555555",
+                            AccessFailedCount = 0,
+                            Age = 38,
+                            Bio = "Еко-туризъм и приключенски маршрути. Организира групови експедиции до върхове и резервати.",
+                            ConcurrencyStamp = "c0a5233c-0a1f-4fb0-8166-01412edce639",
+                            Email = "nikolay.kolev@horizons.com",
+                            EmailConfirmed = true,
+                            IsGuide = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "NIKOLAY.KOLEV@HORIZONS.COM",
+                            NormalizedUserName = "NIKOLAY.KOLEV@HORIZONS.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPnxd3QPmHlls6Tp+7Iz7puuULWBYyNib91cmpGyx6vdz8VX0SAbzvJW/bjO0xT6wA==",
+                            PhoneNumberConfirmed = false,
+                            ProfileImageUrl = "/images/parkoveM.png",
+                            SecurityStamp = "GUIDE5_SECURITY",
+                            TwoFactorEnabled = false,
+                            UserName = "nikolay.kolev@horizons.com"
                         });
                 });
 
@@ -184,10 +284,10 @@ namespace Хоризонти.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Дяволското гърло е мистична пропастна пещера, известна със своя огромен подземен водопад — най-големият на Балканите. Легендата разказва, че именно тук Орфей е слязъл в подземния свят, за да търси любимата си Евридика. Входната зала е колосална и създава оглушителен тътен от водата, която изчезва в неизследван сифон. Пещерата вдъхновява с драматична атмосфера, величествени скални форми и усещане за древна, сурова мощ.",
+                            Description = "Ягодинската пещера е една от най-дългите и красиви пещери в България, разположена в живописното Буйновско ждрело в Родопите. Общата ѝ дължина е над 10 километра, но за посетители е достъпна специално изградена туристическа част. Пещерата впечатлява с разнообразни сталактити, сталагмити, сталактони и уникални скални форми, образувани в продължение на милиони години.",
                             ImageUrl = "https://th.bing.com/th/id/R.0f6956b90ab335551ef69581b5fb249c?rik=isKYGcW46QN7Wg&riu=http%3a%2f%2fwww.torre-bg.com%2fimages%2ftravel_offer_images%2fsm.jpg&ehk=A4tcxFAyfCoYpcrgn%2bBHb5mJLTDytaoeZw4chEgjM7U%3d&risl=&pid=ImgRaw&r=0",
                             IsDeleted = false,
-                            Location = "Ягодинската пещера е разположена в Родопите, само на 3 км от село Ягодина.",
+                            Location = "Ягодинската пещера се намира в Западните Родопи, на около 3 км южно от село Ягодина и близо до Буйновското ждрело. Районът е част от Триградския карстов район и е лесно достъпен по асфалтов път.",
                             LocationUrl = "/images/ЯП.png",
                             Name = "Ягодинска пещера",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -200,10 +300,10 @@ namespace Хоризонти.Migrations
                         new
                         {
                             Id = 2,
-                            Description = "Дяволското гърло е мистична пропастна пещера, известна със своя огромен подземен водопад — най-големият на Балканите. Легендата разказва, че именно тук Орфей е слязъл в подземния свят, за да търси любимата си Евридика. Входната зала е колосална и създава оглушителен тътен от водата, която изчезва в неизследван сифон. Пещерата вдъхновява с драматична атмосфера, величествени скални форми и усещане за древна, сурова мощ.",
+                            Description = "Дяволското гърло е една от най-мистичните пещери в България, известна със своя огромен подземен водопад.",
                             ImageUrl = "https://th.bing.com/th/id/R.069ba412d447d50a586d1836cc84c66f?rik=dN5O%2b4J3ghtCwA&pid=ImgRaw&r=0",
                             IsDeleted = false,
-                            Location = "Област Смолян, Западни Родопи, на по-малко от 2км от Триград, на 25км от Девин и на 34км от Доспат",
+                            Location = "Пещерата Дяволското гърло се намира в Триградското ждрело в Западните Родопи, на около 2 км от село Триград и на 25 км от град Девин.",
                             LocationUrl = "/images/ДГ.png",
                             Name = "Пещера Дяволското гърло",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -216,10 +316,10 @@ namespace Хоризонти.Migrations
                         new
                         {
                             Id = 3,
-                            Description = "Ухловица е една от най-красивите пещери в Родопите, често наричана „подземната фея“. Тя се отличава с кристално бели калцитни форми, каскадни тераси и уникални подземни езера. Най-впечатляващата част е „Сребърният водопад“ — варовикова каскада, която блести при осветяване. Пещерата се достига по стръмни стълби, но усилието си заслужава заради изумителните природни картини.",
+                            Description = "Ухловица е една от най-красивите пещери в Родопите, известна със своите калцитни образувания.",
                             ImageUrl = "https://tse4.mm.bing.net/th/id/OIP.w6SkxFzGIvY4ESdZwcs3mwHaE3?rs=1&pid=ImgDetMain&o=7&rm=3",
                             IsDeleted = false,
-                            Location = "Ухловица е село в Южна България. То се намира в община Смолян, област Смолян",
+                            Location = "Пещера Ухловица се намира близо до село Могилица в Западните Родопи, на около 37 км южно от град Смолян.",
                             LocationUrl = "/images/У.png",
                             Name = "Ухловица",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -235,7 +335,7 @@ namespace Хоризонти.Migrations
                             Description = "Триградското ждрело е величествен карстов каньон...",
                             ImageUrl = "https://tse4.mm.bing.net/th/id/OIP.XcL7FSfxMczbaMFwc4YEPgHaJ4?rs=1&pid=ImgDetMain&o=7&rm=3",
                             IsDeleted = false,
-                            Location = "Започва на около 1,5 km северно от село Триград...",
+                            Location = "Триградското ждрело се намира в Западните Родопи между селата Триград и Девин и е издълбано от река Триградска.",
                             LocationUrl = "/images/ТЖ.png",
                             Name = "Триградско ждрело",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -251,7 +351,7 @@ namespace Хоризонти.Migrations
                             Description = "Буйновското ждрело е най-дългото ждрело в България...",
                             ImageUrl = "https://tse4.mm.bing.net/th/id/OIP.LLbqun3yJfkPrZZD7Ie6xAHaDC?rs=1&pid=ImgDetMain&o=7&rm=3",
                             IsDeleted = false,
-                            Location = "Буйновското ждрело се намира в Родопите...",
+                            Location = "Буйновското ждрело се намира в Западните Родопи между селата Тешел и Ягодина и следва течението на река Буйновска.",
                             LocationUrl = "/images/БЖ.png",
                             Name = "Буйновско ждрело",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -267,7 +367,7 @@ namespace Хоризонти.Migrations
                             Description = "Каньонът на водопадите е природен резерват...",
                             ImageUrl = "https://th.bing.com/th/id/R.a5291d2e52f73c8001355d5eb15368ca?rik=R0DvhlMQg3M4bA&riu=http%3a%2f%2fwww.bestplacesinbulgaria.com%2fwp-content%2fuploads%2f2016%2f07%2fthe-waterfall-canyon-tourist-eco-route-04.jpg&ehk=oCv5V7rhnBFogS4%2fm7xRsyWvJs0xKlq0uAwRHdAb%2fZI%3d&risl=&pid=ImgRaw&r=0",
                             IsDeleted = false,
-                            Location = "Каньонът на водопадите се намира в Родопите...",
+                            Location = "Каньонът на водопадите се намира в местността Сосковчето на около 3 км южно от град Смолян.",
                             LocationUrl = "/images/КВ.png",
                             Name = "Каньонът на водопадите",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -283,7 +383,7 @@ namespace Хоризонти.Migrations
                             Description = "Чудните мостове са природно образувани мраморни арки...",
                             ImageUrl = "https://th.bing.com/th/id/R.b048105f8f39b372ffdea8dbcf05c795?rik=FCc9PiWL7rUe5Q&riu=http%3a%2f%2fimgrabo.com%2fpics%2fguide%2f900x600%2f20160601155206_11652.jpeg&ehk=DaVIqKNWclj1HLtnZ9PETVjw7xvfpNsSMMmVTryhjsE%3d&risl=&pid=ImgRaw&r=0",
                             IsDeleted = false,
-                            Location = "Чудните мостове са разположени на около 16 км...",
+                            Location = "Чудните мостове се намират в Западните Родопи, на около 16 км от село Забърдо и приблизително 50 км от град Пловдив.",
                             LocationUrl = "/images/ЧМ.png",
                             Name = "Чудните мостове",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -299,7 +399,7 @@ namespace Хоризонти.Migrations
                             Description = "Каменната сватба е група от розово-бели скални фигури...",
                             ImageUrl = "https://th.bing.com/th/id/R.dac78f30028a402c35f83f7c13014156?rik=ai36YaI2926Wgg&pid=ImgRaw&r=0",
                             IsDeleted = false,
-                            Location = "Намира се на 5 км източно от центъра на град Кърджали...",
+                            Location = "Каменната сватба се намира в Източните Родопи, на около 5 км източно от град Кърджали, близо до село Зимзелен.",
                             LocationUrl = "/images/ВС.png",
                             Name = "Каменната сватба",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -315,7 +415,7 @@ namespace Хоризонти.Migrations
                             Description = "Орфееви скали са панорамен скален масив...",
                             ImageUrl = "https://tse1.mm.bing.net/th/id/OIP.E3gs9mp6NNpTDsT5a8ZVjgHaE8?rs=1&pid=ImgDetMain&o=7&rm=3",
                             IsDeleted = false,
-                            Location = "Орфееви скали се намира в сърцето на Родопите...",
+                            Location = "Орфееви скали се намират в Източните Родопи над язовир Студен кладенец, близо до град Кърджали.",
                             LocationUrl = "/images/ОС.png",
                             Name = "Орфееви скали",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -331,7 +431,7 @@ namespace Хоризонти.Migrations
                             Description = "Екопътека Невястата е къса, но изключително красива пътека...",
                             ImageUrl = "https://th.bing.com/th/id/R.0a050afe7b3736527938ed15d7e9a03d?rik=57SHvi48b7i2bw&pid=ImgRaw&r=0",
                             IsDeleted = false,
-                            Location = "Екопътека “Невястата” се намира в сърцето на Родопи...",
+                            Location = "Екопътека Невястата се намира над град Смолян в Западните Родопи и започва близо до квартал Райково.",
                             LocationUrl = "/images/Н.png",
                             Name = "Екопътека Невястата",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -347,7 +447,7 @@ namespace Хоризонти.Migrations
                             Description = "Екопътеката разкрива уникални панорами към долината на река Въча...",
                             ImageUrl = "https://i.pinimg.com/originals/7a/ea/e5/7aeae5868a2c405cb35e18f18af472ce.jpg",
                             IsDeleted = false,
-                            Location = "В Родопите, на около 3км от центъра на град Девин...",
+                            Location = "Екопътеката Девин – Лъки се намира в Родопите и преминава през красиви горски райони близо до град Девин.",
                             LocationUrl = "/images/ЕДЛ.png",
                             Name = "Екопътека Девин – Лъки",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -363,7 +463,7 @@ namespace Хоризонти.Migrations
                             Description = "Това е една от най-популярните екопътеки в България...",
                             ImageUrl = "https://th.bing.com/th/id/R.9f1c32a1258db100a6f29964c02ff682?rik=oHJQwPzmxk2tYQ&pid=ImgRaw&r=0",
                             IsDeleted = false,
-                            Location = "Само на 2-3 км от Смолян...",
+                            Location = "Екопътека Каньонът на водопадите се намира в местността Сосковчето на около 3 км южно от град Смолян.",
                             LocationUrl = "/images/ЕКВ.png",
                             Name = "Екопътека Каньонът на водопадите",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -379,7 +479,7 @@ namespace Хоризонти.Migrations
                             Description = "Сливодолското падало е един от най-високите и красиви водопади в Родопите...",
                             ImageUrl = "https://th.bing.com/th/id/R.ddeeca6d4f5ce0ec0204b62cc8e37980?rik=25fdGAogwznqjw&riu=http%3a%2f%2fblog.hotel-extreme.bg%2fwp-content%2fuploads%2f2017%2f06%2f6_Fotor1400%d0%bb%d0%be%d0%b3%d0%be-min-1068x600.jpg&ehk=WkEtKlbiCqR1bwRIKog51GgKMwxRCKgwFRsxHPecX8g%3d&risl=&pid=ImgRaw&r=0",
                             IsDeleted = false,
-                            Location = "Водопадът се намира на около 15 километра южно от Асеновград",
+                            Location = "Сливодолското падало се намира в Родопите, на около 15 км южно от град Асеновград, в защитената местност Сливодолско падало.",
                             LocationUrl = "/images/ВСПП.png",
                             Name = "Сливодолското падало",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -395,7 +495,7 @@ namespace Хоризонти.Migrations
                             Description = "Според легендите тук са танцували самодиви...",
                             ImageUrl = "https://tse2.mm.bing.net/th/id/OIP.CO4dsfPS4jbawx7C25h4eQAAAA?rs=1&pid=ImgDetMain&o=7&rm=3",
                             IsDeleted = false,
-                            Location = "В Родопите, в близост до град Девин...",
+                            Location = "Самодивското пръскало се намира в Родопите близо до град Девин, сред гъсти гори и планински склонове.",
                             LocationUrl = "/images/ВСП.png",
                             Name = "Самодивско пръскало",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -411,7 +511,7 @@ namespace Хоризонти.Migrations
                             Description = "Водопад Орфей е част от Каньона на водопадите...",
                             ImageUrl = "https://th.bing.com/th/id/R.5471ea23b3474a4421aca6f30071e691?rik=9xyjKKpLceVaFQ&pid=ImgRaw&r=0",
                             IsDeleted = false,
-                            Location = "Водопад Орфей се намира в местност Сосковчето...",
+                            Location = "Водопад Орфей се намира по маршрута на екопътеката Каньонът на водопадите в местността Сосковчето край град Смолян.",
                             LocationUrl = "/images/ВО.png",
                             Name = "Водопад Орфей",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -427,7 +527,7 @@ namespace Хоризонти.Migrations
                             Description = "Смолянските езера са група от 20 естествени езера...",
                             ImageUrl = "https://tse3.mm.bing.net/th/id/OIP.DN8OOsa-_uZWXD2EQLyFkgHaFj?rs=1&pid=ImgDetMain&o=7&rm=3",
                             IsDeleted = false,
-                            Location = "В покрайнините на град Смолян...",
+                            Location = "Смолянските езера се намират в северната част на град Смолян, разположени по склоновете на Родопите на височина около 1500 метра.",
                             LocationUrl = "/images/СЕ.png",
                             Name = "Смолянски езера",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -443,7 +543,7 @@ namespace Хоризонти.Migrations
                             Description = "Язовир Доспат е един от най-красивите язовири...",
                             ImageUrl = "https://tse2.mm.bing.net/th/id/OIP.WkpaLcOORed2Oc25sw9rRQHaFj?rs=1&pid=ImgDetMain&o=7&rm=3",
                             IsDeleted = false,
-                            Location = "Разположен в посока северозапад – югоизток...",
+                            Location = "Язовир Доспат се намира в Западните Родопи между град Доспат и село Сърница и е един от най-големите язовири в планината.",
                             LocationUrl = "/images/ЯД.png",
                             Name = "Язовир Доспат",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -459,7 +559,7 @@ namespace Хоризонти.Migrations
                             Description = "Широка поляна е любим язовир за риболовци...",
                             ImageUrl = "https://th.bing.com/th/id/R.3d8cc2eb89f0e6b7b09f5a80e9645555?rik=KH2XtILVhMcRxA&pid=ImgRaw&r=0",
                             IsDeleted = false,
-                            Location = "Язовир Широка поляна се намира в борова гора...",
+                            Location = "Язовир Широка поляна се намира в Западните Родопи, на около 30 км от град Батак, заобиколен от гъсти борови гори.",
                             LocationUrl = "/images/ЯШ.png",
                             Name = "Язовир Широка поляна",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -475,7 +575,7 @@ namespace Хоризонти.Migrations
                             Description = "Кормисош е огромен биосферен резерват...",
                             ImageUrl = "https://th.bing.com/th/id/R.1bddc5bf1178275fa5ceed3a41b5ba7b?rik=E5tlQ55qqhUTZw&pid=ImgRaw&r=0",
                             IsDeleted = false,
-                            Location = "Разположен в Родопите",
+                            Location = "Резерват Кормисош се намира в централната част на Родопите и е част от защитените територии на България, известен със своите обширни гори и богато биоразнообразие.",
                             LocationUrl = "/images/ЯП.png",
                             Name = "Резерват Кормисош",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -491,7 +591,7 @@ namespace Хоризонти.Migrations
                             Description = "Червената стена е биосферен резерват под закрилата на UNESCO...",
                             ImageUrl = "https://tse1.mm.bing.net/th/id/OIP.FgtZsnzP3v-JbSbsPskOfAHaE8?rs=1&pid=ImgDetMain&o=7&rm=3",
                             IsDeleted = false,
-                            Location = "В сърцето на Родопите...",
+                            Location = "Резерват Червената стена се намира в Западните Родопи близо до град Асеновград и е един от най-известните биосферни резервати в България.",
                             LocationUrl = "/images/ЧС.png",
                             Name = "Резерват Червената стена",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -507,7 +607,7 @@ namespace Хоризонти.Migrations
                             Description = "Боровите гори около Пампорово създават усещане за алпийски пейзаж...",
                             ImageUrl = "https://tse1.mm.bing.net/th/id/OIP.1eT0klYEsE8Vyn0m_PckzgHaFj?rs=1&pid=ImgDetMain&o=7&rm=3",
                             IsDeleted = false,
-                            Location = "Намира се близо до зимния курорт...",
+                            Location = "Боровите гори се намират около курорта Пампорово в Западните Родопи, близо до град Смолян, и са известни със своя чист въздух и красиви планински пейзажи.",
                             LocationUrl = "/images/БГ.png",
                             Name = "Борова гора край Пампорово",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -523,7 +623,7 @@ namespace Хоризонти.Migrations
                             Description = "Голям Перелик е най-високият връх в Родопите (2191 м)...",
                             ImageUrl = "https://www.bestplacesinbulgaria.com/wp-content/uploads/2016/03/golyam_perelik_02.jpg",
                             IsDeleted = false,
-                            Location = "Връх Голям Перелик е най-високата точка на Родопите...",
+                            Location = "Връх Голям Перелик се намира в централната част на Родопите и е най-високият връх в планината с височина 2191 метра.",
                             LocationUrl = "/images/ПЕР.png",
                             Name = "Връх Голям Перелик",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -539,7 +639,7 @@ namespace Хоризонти.Migrations
                             Description = "Снежанка е известен със своята телевизионна кула...",
                             ImageUrl = "https://th.bing.com/th/id/R.38b7087237df7dea6a5c55b2bba060b0?rik=%2bBeclaLOWgBkSg&pid=ImgRaw&r=0",
                             IsDeleted = false,
-                            Location = "Намира се в Родопи, близо до Пампорово...",
+                            Location = "Връх Снежанка се намира над курорта Пампорово в Западните Родопи и е известен със своята телевизионна кула и панорамна площадка.",
                             LocationUrl = "/images/СНЕЖ.png",
                             Name = "Връх Снежанка",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -555,7 +655,7 @@ namespace Хоризонти.Migrations
                             Description = "Голям Персенк е един от най-красивите върхове в Родопите...",
                             ImageUrl = "https://tse3.mm.bing.net/th/id/OIP.S_fTI4mlWg9XtR06LbxXHwHaEL?rs=1&pid=ImgDetMain&o=7&rm=3",
                             IsDeleted = false,
-                            Location = "Най-високият в Родопския дял Чернатица...",
+                            Location = "Връх Голям Персенк се намира в Родопския дял Чернатица и е един от най-високите върхове в този район.",
                             LocationUrl = "/images/ГП.png",
                             Name = "Голям Персенк",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -571,7 +671,7 @@ namespace Хоризонти.Migrations
                             Description = "Орлово око е панорамна площадка...",
                             ImageUrl = "https://tse4.mm.bing.net/th/id/OIP.sWaV4rkPqBco2_K_4KpJYwHaFo?rs=1&pid=ImgDetMain&o=7&rm=3",
                             IsDeleted = false,
-                            Location = "Орлово око се намира в Западните Родопи...",
+                            Location = "Панорамната площадка Орлово око се намира над Буйновското ждрело в Западните Родопи на височина около 1560 метра, близо до село Ягодина.",
                             LocationUrl = "/images/ОО.png",
                             Name = "Орлово око",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -587,7 +687,7 @@ namespace Хоризонти.Migrations
                             Description = "Площадката предлага чудесна гледка към град Смолян...",
                             ImageUrl = "https://planinka.bg/wp-content/uploads/2024/09/DSCF5725-683x1024.webp",
                             IsDeleted = false,
-                            Location = "Намира се над град Смолян...",
+                            Location = "Панорамната площадка Невястата се намира над град Смолян в Западните Родопи и предлага гледка към града и околните планински върхове.",
                             LocationUrl = "/images/ППН.png",
                             Name = "Панорамна площадка Невястата",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -603,7 +703,7 @@ namespace Хоризонти.Migrations
                             Description = "Панорамните ридове над село Мугла...",
                             ImageUrl = "https://cs14.pikabu.ru/post_img/big/2023/08/08/4/1691469042148636877.jpg",
                             IsDeleted = false,
-                            Location = "В Западните Родопи, област Смолян.",
+                            Location = "Панорамните ридове над село Мугла се намират в Западните Родопи, област Смолян, и разкриват красиви гледки към планинските долини.",
                             LocationUrl = "/images/М.png",
                             Name = "Панорама над Мугла",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -619,7 +719,7 @@ namespace Хоризонти.Migrations
                             Description = "Белинташ е едно от най-известните тракийски светилища...",
                             ImageUrl = "https://tse3.mm.bing.net/th/id/OIP.gRBxnuvSn5A0TaMMIRfL4wHaE8?rs=1&pid=ImgDetMain&o=7&rm=3",
                             IsDeleted = false,
-                            Location = "Белинташ се намира в Родопите...",
+                            Location = "Белинташ се намира в Западните Родопи близо до село Мостово и е едно от най-големите тракийски светилища в България.",
                             LocationUrl = "/images/Б.png",
                             Name = "Белинташ",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -635,7 +735,7 @@ namespace Хоризонти.Migrations
                             Description = "Караджов камък е величествена скална арка...",
                             ImageUrl = "https://th.bing.com/th/id/R.1dae6b2b41ce335644aa4a7945e01631?rik=fx7pNFgWyBe1Uw&pid=ImgRaw&r=0",
                             IsDeleted = false,
-                            Location = "Намира се в близост до село Мостово...",
+                            Location = "Караджов камък се намира в Родопите близо до село Мостово, недалеч от тракийското светилище Белинташ.",
                             LocationUrl = "/images/KK.png",
                             Name = "Караджов камък",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -651,7 +751,7 @@ namespace Хоризонти.Migrations
                             Description = "Татул е древно тракийско светилище...",
                             ImageUrl = "https://tse3.mm.bing.net/th/id/OIP.qmgnBIPyzwGyuIeDA4L38gHaE8?rs=1&pid=ImgDetMain&o=7&rm=3",
                             IsDeleted = false,
-                            Location = "Татул се намира в м. Кая Башъ...",
+                            Location = "Тракийското светилище Татул се намира в Източните Родопи близо до село Татул, на около 15 км от град Момчилград.",
                             LocationUrl = "/images/Т.png",
                             Name = "Татул",
                             PublishedOn = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -661,6 +761,51 @@ namespace Хоризонти.Migrations
                             TicketPrice = 6m,
                             VideoUrl = "https://www.youtube.com/embed/7cAKSl69e5U?start=564"
                         });
+                });
+
+            modelBuilder.Entity("Horizons.Data.Models.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int?>("DestinationId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ReceiverId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("SentOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("TourId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DestinationId");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.HasIndex("TourId");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Horizons.Data.Models.Rating", b =>
@@ -801,6 +946,45 @@ namespace Хоризонти.Migrations
                             Id = 10,
                             Name = "Светилище / Историческо място"
                         });
+                });
+
+            modelBuilder.Entity("Horizons.Data.Models.TourReservation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsCancelled")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PeopleCount")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("PricePerPerson")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TourId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TourReservations");
                 });
 
             modelBuilder.Entity("Horizons.Data.Models.UserDestination", b =>
@@ -955,6 +1139,42 @@ namespace Хоризонти.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Tour", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DestinationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GuideId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("MaxPeople")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("PricePerPerson")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DestinationId");
+
+                    b.HasIndex("GuideId");
+
+                    b.ToTable("Tours");
+                });
+
             modelBuilder.Entity("Horizons.Data.Models.Destination", b =>
                 {
                     b.HasOne("ApplicationUser", "Publisher")
@@ -972,6 +1192,38 @@ namespace Хоризонти.Migrations
                     b.Navigation("Publisher");
 
                     b.Navigation("Terrain");
+                });
+
+            modelBuilder.Entity("Horizons.Data.Models.Message", b =>
+                {
+                    b.HasOne("Horizons.Data.Models.Destination", "Destination")
+                        .WithMany()
+                        .HasForeignKey("DestinationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ApplicationUser", "Receiver")
+                        .WithMany()
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ApplicationUser", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Tour", "Tour")
+                        .WithMany()
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Destination");
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
+
+                    b.Navigation("Tour");
                 });
 
             modelBuilder.Entity("Horizons.Data.Models.Rating", b =>
@@ -1008,6 +1260,25 @@ namespace Хоризонти.Migrations
                         .IsRequired();
 
                     b.Navigation("Destination");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Horizons.Data.Models.TourReservation", b =>
+                {
+                    b.HasOne("Tour", "Tour")
+                        .WithMany("Reservations")
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Tour");
 
                     b.Navigation("User");
                 });
@@ -1082,9 +1353,33 @@ namespace Хоризонти.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Tour", b =>
+                {
+                    b.HasOne("Horizons.Data.Models.Destination", "Destination")
+                        .WithMany()
+                        .HasForeignKey("DestinationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ApplicationUser", "Guide")
+                        .WithMany()
+                        .HasForeignKey("GuideId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Destination");
+
+                    b.Navigation("Guide");
+                });
+
             modelBuilder.Entity("Horizons.Data.Models.Terrain", b =>
                 {
                     b.Navigation("Destinations");
+                });
+
+            modelBuilder.Entity("Tour", b =>
+                {
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

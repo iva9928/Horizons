@@ -1,20 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="AIController">
-    <Position X="0.5" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Controllers\AiController.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="AiService">
-    <Position X="2" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAAACAAAAAAAAAAAAA=</HashCode>
-      <FileName>Services\AiService.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
   <Class Name="ApplicationUser">
     <Position X="3.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
@@ -74,7 +59,7 @@
   <Class Name="Horizons.Areas.Identity.Pages.Account.RegisterModel" Collapsed="true">
     <Position X="15" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAADAAAAQAAAAAgAABAAAAAMgCAAAQAAAIEAAAAAAA=</HashCode>
+      <HashCode>AAAABAAAAAAAAAAgAABAAAAAEAAAAQAAAAIEAAAAAAA=</HashCode>
       <FileName>Areas\Identity\Pages\Account\Register.cshtml.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -88,28 +73,28 @@
   <Class Name="Horizons.Controllers.ChatController" Collapsed="true">
     <Position X="16.75" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAABAAAAAAABAAAAAAAAAIAAEAAAAAADAAAAAAAAAA=</HashCode>
+      <HashCode>AAACAAAAAAAAAAAAAAAAACKAAACAAAAABAAAAAgAAAA=</HashCode>
       <FileName>Controllers\ChatController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Horizons.Controllers.DestinationController" Collapsed="true">
     <Position X="12.5" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIAAAIAAAABAAAAAAAAAAAACAAAAAAAAEGAAAAAAAA=</HashCode>
+      <HashCode>AIIAACAAAAABAAAAAAAAAAAAAAAAAAAAAEGAAAAAAAA=</HashCode>
       <FileName>Controllers\DestinationController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Horizons.Controllers.HomeController" Collapsed="true">
     <Position X="8" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
       <FileName>Controllers\HomeController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Horizons.Controllers.ReservationController" Collapsed="true">
     <Position X="10.25" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAEAAAAAAAAQAAAAAAAEgAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAAAAAAAAEgAAIAAAAAAAAA=</HashCode>
       <FileName>Controllers\ReservationController.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -218,14 +203,6 @@
       <FileName>Models\TerrainViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Horizons.Services.DestinationService" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="22" Y="3" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAECgAAAAAAACAAAQAAAABgAAgAAAAAAEAgACAAAEQQ=</HashCode>
-      <FileName>Services\DestinationService.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
-  </Class>
   <Class Name="Horizons.Services.ReservationService" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="22" Y="5" Width="1.5" />
     <TypeIdentifier>
@@ -275,6 +252,14 @@
       <HashCode>AAAABAAAAAAAEAAAAAAAAAAAAAAAAAAAABEAAAAAAAA=</HashCode>
       <FileName>Controllers\GuideController.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="Horizons.Services.DestinationService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECgAAAAAAACAAAQAAAABgAAgAAAAAAEAgACAAAEQQ=</HashCode>
+      <FileName>Services\DestinationService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Interface Name="Horizons.Services.IDestinationService" Collapsed="true">
     <Position X="15" Y="8.25" Width="1.5" />

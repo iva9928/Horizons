@@ -78,7 +78,6 @@ namespace Horizons.Services
         public async Task<Destination?> GetDestinationByIdAsync(int id)
         {
             return await context.Destinations
-                .Include(d => d.Publisher)
                 .FirstOrDefaultAsync(d => d.Id == id && !d.IsDeleted);
         }
 
@@ -91,26 +90,6 @@ namespace Horizons.Services
             if (destination == null)
                 return null;
 
-            var terrainName = await context.Terrains
-                .Where(t => t.Id == destination.TerrainId)
-                .Select(t => t.Name)
-                .FirstOrDefaultAsync();
-
-            var ratings = await context.Ratings
-                .Where(r => r.DestinationId == id)
-                .Include(r => r.User)
-                .ToListAsync();
-
-            double average = ratings.Any() ? ratings.Average(r => r.Stars) : 0;
-
-            bool isFavorite = false;
-
-            if (!string.IsNullOrEmpty(userId))
-            {
-                isFavorite = await context.UserDestinations
-                    .AnyAsync(x => x.UserId == userId && x.DestinationId == id);
-            }
-
             return new DestinationDetailsViewModel
             {
                 Id = destination.Id,
@@ -120,22 +99,10 @@ namespace Horizons.Services
                 Location = destination.Location,
                 LocationUrl = destination.LocationUrl,
                 Publisher = destination.Publisher.UserName!,
-                Terrain = terrainName,
                 TicketPrice = destination.TicketPrice,
                 PublishedOn = destination.PublishedOn.ToString("dd-MM-yyyy"),
                 Season = destination.Season,
-                IsPublisher = destination.PublisherId == userId,
-                IsFavorite = isFavorite,
-                AverageRating = average,
-                HasRated = ratings.Any(r => r.UserId == userId),
-                VideoUrl = destination.VideoUrl,
-                Ratings = ratings.Select(r => new RatingViewModel
-                {
-                    Stars = r.Stars,
-                    Comment = r.Comment,
-                    User = r.User.UserName!,
-                    CreatedOn = r.CreatedOn.ToString("dd-MM-yyyy")
-                }).ToList()
+                IsPublisher = destination.PublisherId == userId
             };
         }
 
@@ -148,18 +115,10 @@ namespace Horizons.Services
                     Id = d.Id,
                     Name = d.Name,
                     ImageUrl = d.ImageUrl,
-                    Terrain = context.Terrains
-                        .Where(t => t.Id == d.TerrainId)
-                        .Select(t => t.Name)
-                        .FirstOrDefault(),
                     TerrainId = d.TerrainId,
                     TicketPrice = d.TicketPrice,
                     Season = d.Season,
-                    IsPublisher = d.PublisherId == userId,
-                    IsFavorite = context.UserDestinations
-                        .Any(ud => ud.UserId == userId && ud.DestinationId == d.Id),
-                    FavoritesCount = context.UserDestinations
-                        .Count(ud => ud.DestinationId == d.Id)
+                    IsPublisher = d.PublisherId == userId
                 })
                 .ToListAsync();
         }
@@ -173,24 +132,9 @@ namespace Horizons.Services
                     Id = d.Id,
                     Name = d.Name,
                     ImageUrl = d.ImageUrl,
-                    Terrain = context.Terrains
-                        .Where(t => t.Id == d.TerrainId)
-                        .Select(t => t.Name)
-                        .FirstOrDefault(),
                     TerrainId = d.TerrainId,
                     TicketPrice = d.TicketPrice,
                     Season = d.Season
-                })
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<TerrainViewModel>> GetAllTerrainsAsync()
-        {
-            return await context.Terrains
-                .Select(t => new TerrainViewModel
-                {
-                    Id = t.Id,
-                    Name = t.Name
                 })
                 .ToListAsync();
         }
@@ -215,9 +159,19 @@ namespace Horizons.Services
                 TerrainId = destination.TerrainId,
                 TicketPrice = destination.TicketPrice,
                 Season = destination.Season,
-                PublisherId = destination.PublisherId,
-                Terrains = await GetAllTerrainsAsync()
+                PublisherId = destination.PublisherId
             };
+        }
+
+        public async Task<IEnumerable<TerrainViewModel>> GetAllTerrainsAsync()
+        {
+            return await context.Terrains
+                .Select(t => new TerrainViewModel
+                {
+                    Id = t.Id,
+                    Name = t.Name
+                })
+                .ToListAsync();
         }
 
         public async Task AddToFavoritesAsync(int destinationId, string userId)
@@ -249,35 +203,33 @@ namespace Horizons.Services
             }
         }
 
-        public async Task AddRatingAsync(string userId, int destinationId, int stars, string comment)
+        public async Task<IEnumerable<FavoriteDestinationViewModel>> GetFavoriteDestinationsAsync(string userId)
         {
-            var existing = await context.Ratings
-                .FirstOrDefaultAsync(r => r.UserId == userId && r.DestinationId == destinationId);
-
-            if (existing != null)
-            {
-                existing.Stars = stars;
-                existing.Comment = comment;
-                existing.CreatedOn = DateTime.Now;
-            }
-            else
-            {
-                await context.Ratings.AddAsync(new Rating
+            return await context.UserDestinations
+                .Where(x => x.UserId == userId)
+                .Select(x => new FavoriteDestinationViewModel
                 {
-                    UserId = userId,
-                    DestinationId = destinationId,
-                    Stars = stars,
-                    Comment = comment,
-                    CreatedOn = DateTime.Now
-                });
-            }
-
-            await context.SaveChangesAsync();
+                    Id = x.Destination.Id,
+                    Name = x.Destination.Name,
+                    ImageUrl = x.Destination.ImageUrl,
+                    TicketPrice = x.Destination.TicketPrice
+                })
+                .ToListAsync();
         }
 
-        public Task<IEnumerable<FavoriteDestinationViewModel>> GetFavoriteDestinationsAsync(string userId)
+        public async Task AddRatingAsync(string userId, int destinationId, int stars, string comment)
         {
-            throw new NotImplementedException();
+            var rating = new Rating
+            {
+                UserId = userId,
+                DestinationId = destinationId,
+                Stars = stars,
+                Comment = comment,
+                CreatedOn = DateTime.Now
+            };
+
+            await context.Ratings.AddAsync(rating);
+            await context.SaveChangesAsync();
         }
     }
 }

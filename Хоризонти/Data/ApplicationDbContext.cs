@@ -8,24 +8,24 @@ using Horizons.Data.Models;
 
     namespace Horizons.Data
     {
-        public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
         {
-            public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-                : base(options)
-            {
-            }
+        }
 
-            public DbSet<Destination> Destinations { get; set; } = null!;
-            public DbSet<UserDestination> UserDestinations { get; set; } = null!;
-            public DbSet<Terrain> Terrains { get; set; } = null!;
-            public DbSet<Reservation> Reservations { get; set; } = null!;
-            public DbSet<Rating> Ratings { get; set; } = null!;
-            public DbSet<Message> Messages { get; set; } = null!;
+        public DbSet<Destination> Destinations { get; set; } = null!;
+        public DbSet<UserDestination> UserDestinations { get; set; } = null!;
+        public DbSet<Terrain> Terrains { get; set; } = null!;
+        public DbSet<Reservation> Reservations { get; set; } = null!;
+        public DbSet<Rating> Ratings { get; set; } = null!;
+        public DbSet<Message> Messages { get; set; } = null!;
         public DbSet<Tour> Tours { get; set; }
         public DbSet<TourReservation> TourReservations { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
-         {
+        {
             base.OnModelCreating(builder);
 
             // =============================
@@ -118,28 +118,28 @@ using Horizons.Data.Models;
 
             const string adminId = "7699db7d-964f-4782-8209-d76562e0fece";
 
-                // ✅ ВАЖНО: ApplicationUser вместо IdentityUser
-                var defaultUser = new ApplicationUser
-                {
-                    Id = adminId,
-                    UserName = "admin@horizons.com",
-                    NormalizedUserName = "ADMIN@HORIZONS.COM",
-                    Email = "admin@horizons.com",
-                    NormalizedEmail = "ADMIN@HORIZONS.COM",
-                    EmailConfirmed = true,
-                    SecurityStamp = "STATIC_SECURITY_STAMP",
-                    Age = 30,
-                    Bio = "Main administrator of Horizons.",
-                    IsGuide = false,
-                    ProfileImageUrl = null
-                };
+            // ✅ ВАЖНО: ApplicationUser вместо IdentityUser
+            var defaultUser = new ApplicationUser
+            {
+                Id = adminId,
+                UserName = "admin@horizons.com",
+                NormalizedUserName = "ADMIN@HORIZONS.COM",
+                Email = "admin@horizons.com",
+                NormalizedEmail = "ADMIN@HORIZONS.COM",
+                EmailConfirmed = true,
+                SecurityStamp = "STATIC_SECURITY_STAMP",
+                Age = 30,
+                Bio = "Main administrator of Horizons.",
+                IsGuide = false,
+                ProfileImageUrl = null
+            };
 
-                var passwordHasher = new PasswordHasher<ApplicationUser>();
-                defaultUser.PasswordHash =
-                    passwordHasher.HashPassword(defaultUser, "Admin123!");
+            var passwordHasher = new PasswordHasher<ApplicationUser>();
+            defaultUser.PasswordHash =
+                passwordHasher.HashPassword(defaultUser, "Admin123!");
 
-                // ✅ ВАЖНО: ApplicationUser
-                builder.Entity<ApplicationUser>().HasData(defaultUser);
+            // ✅ ВАЖНО: ApplicationUser
+            builder.Entity<ApplicationUser>().HasData(defaultUser);
 
             // ===== GUIDES SEED =====
 
@@ -251,114 +251,116 @@ using Horizons.Data.Models;
                     new Terrain { Id = 10, Name = "Светилище / Историческо място" }
                 );
 
-                var now = new DateTime(2024, 1, 1);
+            var now = new DateTime(2024, 1, 1);
 
 
 
             // ПЕЩЕРИ
             builder.Entity<Destination>().HasData(
 
-                new Destination
-                {
-                    Id = 1,
-                    Name = "Ягодинска пещера",
-                    Description = "Дяволското гърло е мистична пропастна пещера, известна със своя огромен подземен водопад — най-големият на Балканите. Легендата разказва, че именно тук Орфей е слязъл в подземния свят, за да търси любимата си Евридика. Входната зала е колосална и създава оглушителен тътен от водата, която изчезва в неизследван сифон. Пещерата вдъхновява с драматична атмосфера, величествени скални форми и усещане за древна, сурова мощ.",
-                    ImageUrl = "https://th.bing.com/th/id/R.0f6956b90ab335551ef69581b5fb249c?rik=isKYGcW46QN7Wg&riu=http%3a%2f%2fwww.torre-bg.com%2fimages%2ftravel_offer_images%2fsm.jpg&ehk=A4tcxFAyfCoYpcrgn%2bBHb5mJLTDytaoeZw4chEgjM7U%3d&risl=&pid=ImgRaw&r=0",
-                    PublisherId = adminId,
-                    TerrainId = 1,
-                    PublishedOn = now,
-                    TicketPrice = 12m,
-                    IsDeleted = false,
-                    Location = "Ягодинската пещера е разположена в Родопите, само на 3 км от село Ягодина.",
-                    LocationUrl = "/images/ЯП.png",
-                    Season = Season.Autumn, 
-                    VideoUrl = "https://www.youtube.com/embed/7eBi4Bq85xE"
-                },
-                new Destination
-                {
-                    Id = 2,
-                    Name = "Пещера Дяволското гърло",
-                    Description = "Дяволското гърло е мистична пропастна пещера, известна със своя огромен подземен водопад — най-големият на Балканите. Легендата разказва, че именно тук Орфей е слязъл в подземния свят, за да търси любимата си Евридика. Входната зала е колосална и създава оглушителен тътен от водата, която изчезва в неизследван сифон. Пещерата вдъхновява с драматична атмосфера, величествени скални форми и усещане за древна, сурова мощ.",
-                    ImageUrl = "https://th.bing.com/th/id/R.069ba412d447d50a586d1836cc84c66f?rik=dN5O%2b4J3ghtCwA&pid=ImgRaw&r=0",
-                    PublisherId = adminId,
-                    TerrainId = 1,
-                    PublishedOn = now,
-                    TicketPrice = 15m,
-                    IsDeleted = false,
-                    Location = "Област Смолян, Западни Родопи, на по-малко от 2км от Триград, на 25км от Девин и на 34км от Доспат",
-                    LocationUrl = "/images/ДГ.png",
-                    Season = Season.Autumn,
-                    VideoUrl = "https://www.youtube.com/embed/_dg8xrSLYcw?start=28"
+// ПЕЩЕРИ
+new Destination
+{
+    Id = 1,
+    Name = "Ягодинска пещера",
+    Description = "Ягодинската пещера е една от най-дългите и красиви пещери в България, разположена в живописното Буйновско ждрело в Родопите. Общата ѝ дължина е над 10 километра, но за посетители е достъпна специално изградена туристическа част. Пещерата впечатлява с разнообразни сталактити, сталагмити, сталактони и уникални скални форми, образувани в продължение на милиони години.",
+    ImageUrl = "https://th.bing.com/th/id/R.0f6956b90ab335551ef69581b5fb249c?rik=isKYGcW46QN7Wg&riu=http%3a%2f%2fwww.torre-bg.com%2fimages%2ftravel_offer_images%2fsm.jpg&ehk=A4tcxFAyfCoYpcrgn%2bBHb5mJLTDytaoeZw4chEgjM7U%3d&risl=&pid=ImgRaw&r=0",
+    PublisherId = adminId,
+    TerrainId = 1,
+    PublishedOn = now,
+    TicketPrice = 12m,
+    IsDeleted = false,
+    Location = "Ягодинската пещера се намира в Западните Родопи, на около 3 км южно от село Ягодина и близо до Буйновското ждрело. Районът е част от Триградския карстов район и е лесно достъпен по асфалтов път.",
+    LocationUrl = "/images/ЯП.png",
+    Season = Season.Autumn,
+    VideoUrl = "https://www.youtube.com/embed/7eBi4Bq85xE"
+},
 
-                },
-                new Destination
-                {
-                    Id = 3,
-                    Name = "Ухловица",
-                    Description = "Ухловица е една от най-красивите пещери в Родопите, често наричана „подземната фея“. Тя се отличава с кристално бели калцитни форми, каскадни тераси и уникални подземни езера. Най-впечатляващата част е „Сребърният водопад“ — варовикова каскада, която блести при осветяване. Пещерата се достига по стръмни стълби, но усилието си заслужава заради изумителните природни картини.",
-                    ImageUrl = "https://tse4.mm.bing.net/th/id/OIP.w6SkxFzGIvY4ESdZwcs3mwHaE3?rs=1&pid=ImgDetMain&o=7&rm=3",
-                    PublisherId = adminId,
-                    TerrainId = 1,
-                    PublishedOn = now,
-                    TicketPrice = 10m,
-                    IsDeleted = false,
-                    Location = "Ухловица е село в Южна България. То се намира в община Смолян, област Смолян",
-                    LocationUrl = "/images/У.png",
-                    Season = Season.Autumn,
-                    VideoUrl = "https://www.youtube.com/embed/KyUtzNQmQ_I"
-                },
+new Destination
+{
+    Id = 2,
+    Name = "Пещера Дяволското гърло",
+    Description = "Дяволското гърло е една от най-мистичните пещери в България, известна със своя огромен подземен водопад.",
+    ImageUrl = "https://th.bing.com/th/id/R.069ba412d447d50a586d1836cc84c66f?rik=dN5O%2b4J3ghtCwA&pid=ImgRaw&r=0",
+    PublisherId = adminId,
+    TerrainId = 1,
+    PublishedOn = now,
+    TicketPrice = 15m,
+    IsDeleted = false,
+    Location = "Пещерата Дяволското гърло се намира в Триградското ждрело в Западните Родопи, на около 2 км от село Триград и на 25 км от град Девин.",
+    LocationUrl = "/images/ДГ.png",
+    Season = Season.Autumn,
+    VideoUrl = "https://www.youtube.com/embed/_dg8xrSLYcw?start=28"
+},
 
-                // ЖДРЕЛА / КАНЬОНИ
-                new Destination
-                {
-                    Id = 4,
-                    Name = "Триградско ждрело",
-                    Description = "Триградското ждрело е величествен карстов каньон...",
-                    ImageUrl = "https://tse4.mm.bing.net/th/id/OIP.XcL7FSfxMczbaMFwc4YEPgHaJ4?rs=1&pid=ImgDetMain&o=7&rm=3",
-                    PublisherId = adminId,
-                    TerrainId = 2,
-                    PublishedOn = now,
-                    TicketPrice = 0m,
-                    IsDeleted = false,
-                    Location = "Започва на около 1,5 km северно от село Триград...",
-                    LocationUrl = "/images/ТЖ.png",
-                    Season = Season.Summer,
-                    VideoUrl = "https://www.youtube.com/embed/wmxbIB5JuCI?start=56"
-                },
-                new Destination
-                {
-                    Id = 5,
-                    Name = "Буйновско ждрело",
-                    Description = "Буйновското ждрело е най-дългото ждрело в България...",
-                    ImageUrl = "https://tse4.mm.bing.net/th/id/OIP.LLbqun3yJfkPrZZD7Ie6xAHaDC?rs=1&pid=ImgDetMain&o=7&rm=3",
-                    PublisherId = adminId,
-                    TerrainId = 2,
-                    PublishedOn = now,
-                    TicketPrice = 0m,
-                    IsDeleted = false,
-                    Location = "Буйновското ждрело се намира в Родопите...",
-                    LocationUrl = "/images/БЖ.png",
-                    Season = Season.Summer,
-                    VideoUrl = "https://www.youtube.com/embed/RXMaOdj88B4"
-                },
-                new Destination
-                {
-                    Id = 6,
-                    Name = "Каньонът на водопадите",
-                    Description = "Каньонът на водопадите е природен резерват...",
-                    ImageUrl = "https://th.bing.com/th/id/R.a5291d2e52f73c8001355d5eb15368ca?rik=R0DvhlMQg3M4bA&riu=http%3a%2f%2fwww.bestplacesinbulgaria.com%2fwp-content%2fuploads%2f2016%2f07%2fthe-waterfall-canyon-tourist-eco-route-04.jpg&ehk=oCv5V7rhnBFogS4%2fm7xRsyWvJs0xKlq0uAwRHdAb%2fZI%3d&risl=&pid=ImgRaw&r=0",
-                    PublisherId = adminId,
-                    TerrainId = 2,
-                    PublishedOn = now,
-                    TicketPrice = 0m,
-                    IsDeleted = false,
-                    Location = "Каньонът на водопадите се намира в Родопите...",
-                    LocationUrl = "/images/КВ.png",
-                    Season = Season.Summer,
-                    VideoUrl = "https://www.youtube.com/embed/3GhaDD5iaXk"
-                },
+new Destination
+{
+    Id = 3,
+    Name = "Ухловица",
+    Description = "Ухловица е една от най-красивите пещери в Родопите, известна със своите калцитни образувания.",
+    ImageUrl = "https://tse4.mm.bing.net/th/id/OIP.w6SkxFzGIvY4ESdZwcs3mwHaE3?rs=1&pid=ImgDetMain&o=7&rm=3",
+    PublisherId = adminId,
+    TerrainId = 1,
+    PublishedOn = now,
+    TicketPrice = 10m,
+    IsDeleted = false,
+    Location = "Пещера Ухловица се намира близо до село Могилица в Западните Родопи, на около 37 км южно от град Смолян.",
+    LocationUrl = "/images/У.png",
+    Season = Season.Autumn,
+    VideoUrl = "https://www.youtube.com/embed/KyUtzNQmQ_I"
+},
 
-                // СКАЛНИ ОБРАЗУВАНИЯ
+// ЖДРЕЛА
+new Destination
+{
+    Id = 4,
+    Name = "Триградско ждрело",
+    Description = "Триградското ждрело е величествен карстов каньон...",
+    ImageUrl = "https://tse4.mm.bing.net/th/id/OIP.XcL7FSfxMczbaMFwc4YEPgHaJ4?rs=1&pid=ImgDetMain&o=7&rm=3",
+    PublisherId = adminId,
+    TerrainId = 2,
+    PublishedOn = now,
+    TicketPrice = 0m,
+    IsDeleted = false,
+    Location = "Триградското ждрело се намира в Западните Родопи между селата Триград и Девин и е издълбано от река Триградска.",
+    LocationUrl = "/images/ТЖ.png",
+    Season = Season.Summer,
+    VideoUrl = "https://www.youtube.com/embed/wmxbIB5JuCI?start=56"
+},
+
+new Destination
+{
+    Id = 5,
+    Name = "Буйновско ждрело",
+    Description = "Буйновското ждрело е най-дългото ждрело в България...",
+    ImageUrl = "https://tse4.mm.bing.net/th/id/OIP.LLbqun3yJfkPrZZD7Ie6xAHaDC?rs=1&pid=ImgDetMain&o=7&rm=3",
+    PublisherId = adminId,
+    TerrainId = 2,
+    PublishedOn = now,
+    TicketPrice = 0m,
+    IsDeleted = false,
+    Location = "Буйновското ждрело се намира в Западните Родопи между селата Тешел и Ягодина и следва течението на река Буйновска.",
+    LocationUrl = "/images/БЖ.png",
+    Season = Season.Summer,
+    VideoUrl = "https://www.youtube.com/embed/RXMaOdj88B4"
+},
+
+new Destination
+{
+    Id = 6,
+    Name = "Каньонът на водопадите",
+    Description = "Каньонът на водопадите е природен резерват...",
+    ImageUrl = "https://th.bing.com/th/id/R.a5291d2e52f73c8001355d5eb15368ca?rik=R0DvhlMQg3M4bA&riu=http%3a%2f%2fwww.bestplacesinbulgaria.com%2fwp-content%2fuploads%2f2016%2f07%2fthe-waterfall-canyon-tourist-eco-route-04.jpg&ehk=oCv5V7rhnBFogS4%2fm7xRsyWvJs0xKlq0uAwRHdAb%2fZI%3d&risl=&pid=ImgRaw&r=0",
+    PublisherId = adminId,
+    TerrainId = 2,
+    PublishedOn = now,
+    TicketPrice = 0m,
+    IsDeleted = false,
+    Location = "Каньонът на водопадите се намира в местността Сосковчето на около 3 км южно от град Смолян.",
+    LocationUrl = "/images/КВ.png",
+    Season = Season.Summer,
+    VideoUrl = "https://www.youtube.com/embed/3GhaDD5iaXk"
+},// СКАЛНИ ОБРАЗУВАНИЯ
 new Destination
 {
     Id = 7,
@@ -370,11 +372,12 @@ new Destination
     PublishedOn = now,
     TicketPrice = 0m,
     IsDeleted = false,
-    Location = "Чудните мостове са разположени на около 16 км...",
+    Location = "Чудните мостове се намират в Западните Родопи, на около 16 км от село Забърдо и приблизително 50 км от град Пловдив.",
     LocationUrl = "/images/ЧМ.png",
     Season = Season.Summer,
     VideoUrl = "https://www.youtube.com/embed/sGwA9KiQL-s?start=20"
 },
+
 new Destination
 {
     Id = 8,
@@ -386,11 +389,12 @@ new Destination
     PublishedOn = now,
     TicketPrice = 0m,
     IsDeleted = false,
-    Location = "Намира се на 5 км източно от центъра на град Кърджали...",
+    Location = "Каменната сватба се намира в Източните Родопи, на около 5 км източно от град Кърджали, близо до село Зимзелен.",
     LocationUrl = "/images/ВС.png",
     Season = Season.Summer,
     VideoUrl = "https://www.youtube.com/embed/qWWHbqvgodI"
 },
+
 new Destination
 {
     Id = 9,
@@ -402,7 +406,7 @@ new Destination
     PublishedOn = now,
     TicketPrice = 0m,
     IsDeleted = false,
-    Location = "Орфееви скали се намира в сърцето на Родопите...",
+    Location = "Орфееви скали се намират в Източните Родопи над язовир Студен кладенец, близо до град Кърджали.",
     LocationUrl = "/images/ОС.png",
     Season = Season.Summer,
     VideoUrl = "https://www.youtube.com/embed/TquHEt3VnNA?start=24"
@@ -420,11 +424,12 @@ new Destination
     PublishedOn = now,
     TicketPrice = 2m,
     IsDeleted = false,
-    Location = "Екопътека “Невястата” се намира в сърцето на Родопи...",
+    Location = "Екопътека Невястата се намира над град Смолян в Западните Родопи и започва близо до квартал Райково.",
     LocationUrl = "/images/Н.png",
     Season = Season.Spring,
     VideoUrl = "https://www.youtube.com/embed/ZKz12LqDtEo"
 },
+
 new Destination
 {
     Id = 11,
@@ -436,11 +441,12 @@ new Destination
     PublishedOn = now,
     TicketPrice = 0m,
     IsDeleted = false,
-    Location = "В Родопите, на около 3км от центъра на град Девин...",
+    Location = "Екопътеката Девин – Лъки се намира в Родопите и преминава през красиви горски райони близо до град Девин.",
     LocationUrl = "/images/ЕДЛ.png",
     Season = Season.Spring,
     VideoUrl = "https://www.youtube.com/embed/OnwO_cKrtOk"
 },
+
 new Destination
 {
     Id = 12,
@@ -452,12 +458,11 @@ new Destination
     PublishedOn = now,
     TicketPrice = 2m,
     IsDeleted = false,
-    Location = "Само на 2-3 км от Смолян...",
+    Location = "Екопътека Каньонът на водопадите се намира в местността Сосковчето на около 3 км южно от град Смолян.",
     LocationUrl = "/images/ЕКВ.png",
     Season = Season.Spring,
     VideoUrl = "https://www.youtube.com/embed/KfT4eUp56Vc"
-},
-// ВОДОПАДИ
+},// ВОДОПАДИ
 new Destination
 {
     Id = 13,
@@ -469,11 +474,12 @@ new Destination
     PublishedOn = now,
     TicketPrice = 0m,
     IsDeleted = false,
-    Location = "Водопадът се намира на около 15 километра южно от Асеновград",
+    Location = "Сливодолското падало се намира в Родопите, на около 15 км южно от град Асеновград, в защитената местност Сливодолско падало.",
     LocationUrl = "/images/ВСПП.png",
     Season = Season.Spring,
     VideoUrl = "https://www.youtube.com/embed/C7tUIZPyLgM?start=46"
 },
+
 new Destination
 {
     Id = 14,
@@ -485,11 +491,12 @@ new Destination
     PublishedOn = now,
     TicketPrice = 0m,
     IsDeleted = false,
-    Location = "В Родопите, в близост до град Девин...",
+    Location = "Самодивското пръскало се намира в Родопите близо до град Девин, сред гъсти гори и планински склонове.",
     LocationUrl = "/images/ВСП.png",
     Season = Season.Spring,
     VideoUrl = "https://www.youtube.com/embed/xkymhO4rF6o?start=71"
 },
+
 new Destination
 {
     Id = 15,
@@ -501,7 +508,7 @@ new Destination
     PublishedOn = now,
     TicketPrice = 0m,
     IsDeleted = false,
-    Location = "Водопад Орфей се намира в местност Сосковчето...",
+    Location = "Водопад Орфей се намира по маршрута на екопътеката Каньонът на водопадите в местността Сосковчето край град Смолян.",
     LocationUrl = "/images/ВО.png",
     Season = Season.Spring,
     VideoUrl = "https://www.youtube.com/embed/vtiVLTa6CWY"
@@ -519,11 +526,12 @@ new Destination
     PublishedOn = now,
     TicketPrice = 0m,
     IsDeleted = false,
-    Location = "В покрайнините на град Смолян...",
+    Location = "Смолянските езера се намират в северната част на град Смолян, разположени по склоновете на Родопите на височина около 1500 метра.",
     LocationUrl = "/images/СЕ.png",
     Season = Season.Summer,
     VideoUrl = "https://www.youtube.com/embed/yeXTCyjg2lE"
 },
+
 new Destination
 {
     Id = 17,
@@ -535,11 +543,12 @@ new Destination
     PublishedOn = now,
     TicketPrice = 0m,
     IsDeleted = false,
-    Location = "Разположен в посока северозапад – югоизток...",
+    Location = "Язовир Доспат се намира в Западните Родопи между град Доспат и село Сърница и е един от най-големите язовири в планината.",
     LocationUrl = "/images/ЯД.png",
     Season = Season.Summer,
     VideoUrl = "https://www.youtube.com/embed/JkWGJC_kjZk?start=24"
 },
+
 new Destination
 {
     Id = 18,
@@ -551,13 +560,11 @@ new Destination
     PublishedOn = now,
     TicketPrice = 0m,
     IsDeleted = false,
-    Location = "Язовир Широка поляна се намира в борова гора...",
+    Location = "Язовир Широка поляна се намира в Западните Родопи, на около 30 км от град Батак, заобиколен от гъсти борови гори.",
     LocationUrl = "/images/ЯШ.png",
     Season = Season.Summer,
     VideoUrl = "https://www.youtube.com/embed/ZlgSpXgvPQ4?start=53"
-},
-
-// ГОРИ / РЕЗЕРВАТИ
+},// ГОРИ / РЕЗЕРВАТИ
 new Destination
 {
     Id = 19,
@@ -569,11 +576,12 @@ new Destination
     PublishedOn = now,
     TicketPrice = 0m,
     IsDeleted = false,
-    Location = "Разположен в Родопите",
+    Location = "Резерват Кормисош се намира в централната част на Родопите и е част от защитените територии на България, известен със своите обширни гори и богато биоразнообразие.",
     LocationUrl = "/images/ЯП.png",
     Season = Season.Autumn,
     VideoUrl = "https://www.youtube.com/embed/yAmSJVYXewY"
 },
+
 new Destination
 {
     Id = 20,
@@ -585,11 +593,12 @@ new Destination
     PublishedOn = now,
     TicketPrice = 0m,
     IsDeleted = false,
-    Location = "В сърцето на Родопите...",
+    Location = "Резерват Червената стена се намира в Западните Родопи близо до град Асеновград и е един от най-известните биосферни резервати в България.",
     LocationUrl = "/images/ЧС.png",
     Season = Season.Autumn,
     VideoUrl = "https://www.youtube.com/embed/Tbo4FVD8e0w?start=22"
 },
+
 new Destination
 {
     Id = 21,
@@ -601,11 +610,12 @@ new Destination
     PublishedOn = now,
     TicketPrice = 0m,
     IsDeleted = false,
-    Location = "Намира се близо до зимния курорт...",
+    Location = "Боровите гори се намират около курорта Пампорово в Западните Родопи, близо до град Смолян, и са известни със своя чист въздух и красиви планински пейзажи.",
     LocationUrl = "/images/БГ.png",
     Season = Season.Autumn,
     VideoUrl = "https://www.youtube.com/embed/B0vsbEh8jtk"
 },
+
 // ВЪРХОВЕ
 new Destination
 {
@@ -618,11 +628,12 @@ new Destination
     PublishedOn = now,
     TicketPrice = 0m,
     IsDeleted = false,
-    Location = "Връх Голям Перелик е най-високата точка на Родопите...",
+    Location = "Връх Голям Перелик се намира в централната част на Родопите и е най-високият връх в планината с височина 2191 метра.",
     LocationUrl = "/images/ПЕР.png",
     Season = Season.Winter,
     VideoUrl = "https://www.youtube.com/embed/uARzLBZ4_UA"
 },
+
 new Destination
 {
     Id = 23,
@@ -634,11 +645,12 @@ new Destination
     PublishedOn = now,
     TicketPrice = 0m,
     IsDeleted = false,
-    Location = "Намира се в Родопи, близо до Пампорово...",
+    Location = "Връх Снежанка се намира над курорта Пампорово в Западните Родопи и е известен със своята телевизионна кула и панорамна площадка.",
     LocationUrl = "/images/СНЕЖ.png",
     Season = Season.Winter,
     VideoUrl = "https://www.youtube.com/embed/aFIq2S2fXEI"
 },
+
 new Destination
 {
     Id = 24,
@@ -650,13 +662,11 @@ new Destination
     PublishedOn = now,
     TicketPrice = 0m,
     IsDeleted = false,
-    Location = "Най-високият в Родопския дял Чернатица...",
+    Location = "Връх Голям Персенк се намира в Родопския дял Чернатица и е един от най-високите върхове в този район.",
     LocationUrl = "/images/ГП.png",
     Season = Season.Summer,
     VideoUrl = "https://www.youtube.com/embed/IJbpxlSFawg"
-},
-
-// ПАНОРАМИ
+},// ПАНОРАМИ
 new Destination
 {
     Id = 25,
@@ -668,11 +678,12 @@ new Destination
     PublishedOn = now,
     TicketPrice = 6m,
     IsDeleted = false,
-    Location = "Орлово око се намира в Западните Родопи...",
+    Location = "Панорамната площадка Орлово око се намира над Буйновското ждрело в Западните Родопи на височина около 1560 метра, близо до село Ягодина.",
     LocationUrl = "/images/ОО.png",
     Season = Season.Summer,
     VideoUrl = "https://www.youtube.com/embed/uARzLBZ4_UA"
 },
+
 new Destination
 {
     Id = 26,
@@ -684,11 +695,12 @@ new Destination
     PublishedOn = now,
     TicketPrice = 4m,
     IsDeleted = false,
-    Location = "Намира се над град Смолян...",
+    Location = "Панорамната площадка Невястата се намира над град Смолян в Западните Родопи и предлага гледка към града и околните планински върхове.",
     LocationUrl = "/images/ППН.png",
     Season = Season.Summer,
     VideoUrl = "https://www.youtube.com/embed/9FvP5rcw6kk"
 },
+
 new Destination
 {
     Id = 27,
@@ -700,7 +712,7 @@ new Destination
     PublishedOn = now,
     TicketPrice = 0m,
     IsDeleted = false,
-    Location = "В Западните Родопи, област Смолян.",
+    Location = "Панорамните ридове над село Мугла се намират в Западните Родопи, област Смолян, и разкриват красиви гледки към планинските долини.",
     LocationUrl = "/images/М.png",
     Season = Season.Summer,
     VideoUrl = "https://www.youtube.com/embed/94xSOxLhuXY?start=46"
@@ -718,11 +730,12 @@ new Destination
     PublishedOn = now,
     TicketPrice = 6m,
     IsDeleted = false,
-    Location = "Белинташ се намира в Родопите...",
+    Location = "Белинташ се намира в Западните Родопи близо до село Мостово и е едно от най-големите тракийски светилища в България.",
     LocationUrl = "/images/Б.png",
     Season = Season.Spring,
     VideoUrl = "https://www.youtube.com/embed/b55bpx1JN48"
 },
+
 new Destination
 {
     Id = 29,
@@ -734,11 +747,12 @@ new Destination
     PublishedOn = now,
     TicketPrice = 6m,
     IsDeleted = false,
-    Location = "Намира се в близост до село Мостово...",
+    Location = "Караджов камък се намира в Родопите близо до село Мостово, недалеч от тракийското светилище Белинташ.",
     LocationUrl = "/images/KK.png",
     Season = Season.Spring,
     VideoUrl = "https://www.youtube.com/embed/s4iG2ux2gQc?start=28"
 },
+
 new Destination
 {
     Id = 30,
@@ -750,13 +764,17 @@ new Destination
     PublishedOn = now,
     TicketPrice = 6m,
     IsDeleted = false,
-    Location = "Татул се намира в м. Кая Башъ...",
+    Location = "Тракийското светилище Татул се намира в Източните Родопи близо до село Татул, на около 15 км от град Момчилград.",
     LocationUrl = "/images/Т.png",
     Season = Season.Spring,
     VideoUrl = "https://www.youtube.com/embed/7cAKSl69e5U?start=564"
-}
 
-            );
+        
+    }
+    
+                );
+
         }
+
     }
 }

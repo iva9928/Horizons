@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Хоризонти.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -184,15 +184,15 @@ namespace Хоризонти.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TicketPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LocationUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PublishedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     TerrainId = table.Column<int>(type: "int", nullable: false),
                     PublisherId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TicketPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Season = table.Column<int>(type: "int", nullable: false),
                     VideoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LocationUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -271,6 +271,36 @@ namespace Хоризонти.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tours",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DestinationId = table.Column<int>(type: "int", nullable: false),
+                    GuideId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MaxPeople = table.Column<int>(type: "int", nullable: false),
+                    PricePerPerson = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tours", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tours_AspNetUsers_GuideId",
+                        column: x => x.GuideId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Tours_Destinations_DestinationId",
+                        column: x => x.DestinationId,
+                        principalTable: "Destinations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserDestinations",
                 columns: table => new
                 {
@@ -294,10 +324,92 @@ namespace Хоризонти.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SenderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ReceiverId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Content = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    SentOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
+                    DestinationId = table.Column<int>(type: "int", nullable: true),
+                    TourId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_AspNetUsers_ReceiverId",
+                        column: x => x.ReceiverId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Messages_AspNetUsers_SenderId",
+                        column: x => x.SenderId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Messages_Destinations_DestinationId",
+                        column: x => x.DestinationId,
+                        principalTable: "Destinations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Messages_Tours_TourId",
+                        column: x => x.TourId,
+                        principalTable: "Tours",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TourReservations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TourId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PeopleCount = table.Column<int>(type: "int", nullable: false),
+                    PricePerPerson = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsApproved = table.Column<bool>(type: "bit", nullable: false),
+                    IsCancelled = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TourReservations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TourReservations_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_TourReservations_Tours_TourId",
+                        column: x => x.TourId,
+                        principalTable: "Tours",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Age", "Bio", "ConcurrencyStamp", "Email", "EmailConfirmed", "IsGuide", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "ProfileImageUrl", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "7699db7d-964f-4782-8209-d76562e0fece", 0, 30, "Main administrator of Horizons.", "071d6f64-4489-4b38-a670-a2226701b3a9", "admin@horizons.com", true, false, false, null, "ADMIN@HORIZONS.COM", "ADMIN@HORIZONS.COM", "AQAAAAIAAYagAAAAEOvrvoIeILjsgffsvS6xj18tuLwIjISIYNvhuh9uAPGzX4HKbDlvAUVeW4MCsGIaww==", null, false, null, "STATIC_SECURITY_STAMP", false, "admin@horizons.com" });
+                values: new object[,]
+                {
+                    { "11111111-1111-1111-1111-111111111111", 0, 34, "Планински гид с над 10 години опит в Родопите. Специализира в пещерни маршрути и високопланински преходи.", "766dd66e-5580-42ad-a12d-10652c0053bc", "ivan.petrov@horizons.com", true, true, false, null, "IVAN.PETROV@HORIZONS.COM", "IVAN.PETROV@HORIZONS.COM", "AQAAAAIAAYagAAAAEOf+DW+k214AxS3mrLsVI5uTvsLVmrFRuPTbQ6sI9qap0prrbLm2NfH1LPPG76W+Sg==", null, false, "/images/planinaM.png", "GUIDE1_SECURITY", false, "ivan.petrov@horizons.com" },
+                    { "22222222-2222-2222-2222-222222222222", 0, 29, "Лицензиран екскурзовод и любител на екопътеките. Организира турове до водопади и панорамни площадки.", "f975cdc1-1893-4f4d-9400-2646ccdaf4d7", "maria.stoyanova@horizons.com", true, true, false, null, "MARIA.STOYANOVA@HORIZONS.COM", "MARIA.STOYANOVA@HORIZONS.COM", "AQAAAAIAAYagAAAAEALL2BWH97+zP/v/nfu6Ii2KHs0D7z5XwvvRmGCqRDqnxx0h9XfEJWVRgnz1VWITFw==", null, false, "/images/jenaE.png", "GUIDE2_SECURITY", false, "maria.stoyanova@horizons.com" },
+                    { "33333333-3333-3333-3333-333333333333", 0, 41, "Специалист по исторически маршрути и тракийски светилища. Разказвач на легенди и местен фолклор.", "2dcf8a3c-3a5d-409e-a1e6-3b01363205c8", "georgi.dimitrov@horizons.com", true, true, false, null, "GEORGI.DIMITROV@HORIZONS.COM", "GEORGI.DIMITROV@HORIZONS.COM", "AQAAAAIAAYagAAAAEKhUjqvNLaZskCHNwsmHyDLsYZJ6S7IWbfbBZcIMpBIchNg7qZt1onJjudxMzxZFoA==", null, false, "/images/svetilishtaM.png", "GUIDE3_SECURITY", false, "georgi.dimitrov@horizons.com" },
+                    { "44444444-4444-4444-4444-444444444444", 0, 32, "Професионален планински водач, сертифициран за зимни преходи и снежни маршрути.", "ccbc6e2b-1944-49e5-bc98-06f88817c005", "elena.ivanova@horizons.com", true, true, false, null, "ELENA.IVANOVA@HORIZONS.COM", "ELENA.IVANOVA@HORIZONS.COM", "AQAAAAIAAYagAAAAEAQyP8p6bRXoDNh20Y3KpXxcd2w+0qfbiv72Yf/wx1pYBv6pRgy/i6ouLwokLb/9pQ==", null, false, "/images/vurhh.png", "GUIDE4_SECURITY", false, "elena.ivanova@horizons.com" },
+                    { "55555555-5555-5555-5555-555555555555", 0, 38, "Еко-туризъм и приключенски маршрути. Организира групови експедиции до върхове и резервати.", "91f76700-d5ed-4ea6-a3d0-2086ecd414ca", "nikolay.kolev@horizons.com", true, true, false, null, "NIKOLAY.KOLEV@HORIZONS.COM", "NIKOLAY.KOLEV@HORIZONS.COM", "AQAAAAIAAYagAAAAEIs7neW+ovPUQWr07eIaKQlmCSFgoElh3noeFMTw8gZeOI0U3Y/U6Zyu+oMrnMhUig==", null, false, "/images/parkoveM.png", "GUIDE5_SECURITY", false, "nikolay.kolev@horizons.com" },
+                    { "7699db7d-964f-4782-8209-d76562e0fece", 0, 30, "Main administrator of Horizons.", "39d28dde-6300-4d80-8085-5e66152e5a5a", "admin@horizons.com", true, false, false, null, "ADMIN@HORIZONS.COM", "ADMIN@HORIZONS.COM", "AQAAAAIAAYagAAAAEApyBU+9yrym7h1oVU9PVw9btP44d52KWaECGpOzayiBQ854vNFRpcnWp9c2VX/HfA==", null, false, null, "STATIC_SECURITY_STAMP", false, "admin@horizons.com" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Terrains",
@@ -403,6 +515,26 @@ namespace Хоризонти.Migrations
                 column: "TerrainId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Messages_DestinationId",
+                table: "Messages",
+                column: "DestinationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_ReceiverId",
+                table: "Messages",
+                column: "ReceiverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_SenderId",
+                table: "Messages",
+                column: "SenderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_TourId",
+                table: "Messages",
+                column: "TourId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Ratings_DestinationId",
                 table: "Ratings",
                 column: "DestinationId");
@@ -421,6 +553,26 @@ namespace Хоризонти.Migrations
                 name: "IX_Reservations_UserId",
                 table: "Reservations",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TourReservations_TourId",
+                table: "TourReservations",
+                column: "TourId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TourReservations_UserId",
+                table: "TourReservations",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tours_DestinationId",
+                table: "Tours",
+                column: "DestinationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tours_GuideId",
+                table: "Tours",
+                column: "GuideId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserDestinations_DestinationId",
@@ -447,16 +599,25 @@ namespace Хоризонти.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Messages");
+
+            migrationBuilder.DropTable(
                 name: "Ratings");
 
             migrationBuilder.DropTable(
                 name: "Reservations");
 
             migrationBuilder.DropTable(
+                name: "TourReservations");
+
+            migrationBuilder.DropTable(
                 name: "UserDestinations");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Tours");
 
             migrationBuilder.DropTable(
                 name: "Destinations");

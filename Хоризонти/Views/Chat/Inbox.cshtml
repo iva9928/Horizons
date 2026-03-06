@@ -1,21 +1,51 @@
-﻿@model List<string>
+﻿@model List<Horizons.Data.Models.Message>
+@using System.Security.Claims
 
-<h2>Потребители, които са ви писали</h2>
-
-@if (!Model.Any())
-{
-    <p>Няма съобщения.</p>
+@{
+    ViewData["Title"] = "Съобщения";
+    var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 }
-else
-{
-    foreach (var userId in Model)
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">📥 Съобщения</h2>
+
+    @if (!Model.Any())
     {
-        <div>
-            <a asp-controller="Chat"
-               asp-action="Conversation"
-               asp-route-userId="@userId">
-                Отвори разговор с @userId
-            </a>
+        <div class="alert alert-info">
+            Нямате съобщения.
         </div>
     }
-}
+    else
+    {
+        <div class="list-group">
+
+            @foreach (var msg in Model)
+            {
+                var isMine = msg.SenderId == currentUserId;
+
+                <div class="list-group-item">
+
+                    <div class="d-flex justify-content-between">
+
+                        <strong>
+                            @(isMine ? "Вие" : msg.Sender?.Email)
+                        </strong>
+
+                        <small class="text-muted">
+                            @msg.SentOn.ToLocalTime().ToString("dd.MM.yyyy HH:mm")
+                        </small>
+
+                    </div>
+
+                    <div class="mt-2">
+                        @msg.Content
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>

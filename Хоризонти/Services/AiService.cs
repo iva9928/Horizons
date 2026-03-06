@@ -2,26 +2,30 @@
 using OpenAI.Chat;
 using Microsoft.Extensions.Configuration;
 
-public class AiService : IAiService
+namespace Horizons.Services
 {
-    private readonly string _apiKey;
-
-    public AiService(IConfiguration configuration)
+    public class AiService : IAiService
     {
-        _apiKey = configuration["OpenAI:ApiKey"];
-    }
+        private readonly string apiKey;
 
-    public async Task<string> AskAsync(string question)
-    {
-        var client = new OpenAIClient(_apiKey);
+        public AiService(IConfiguration configuration)
+        {
+            apiKey = configuration["OpenAI:ApiKey"];
+        }
 
-        var chat = client.GetChatClient("gpt-4o-mini");
+        public async Task<string> AskAsync(string question)
+        {
+            var client = new OpenAIClient(apiKey);
 
-        var response = await chat.CompleteChatAsync(
-            $"You are a travel assistant for a Bulgarian tourism website called Horizons. " +
-            $"Recommend destinations only from the Rhodope mountains. Be friendly.\n\nUser: {question}"
-        );
+            var chat = client.GetChatClient("gpt-4o-mini");
 
-        return response.Value.Content[0].Text;
+            var response = await chat.CompleteChatAsync(
+                $"Ти си туристически AI асистент за сайт Horizons. " +
+                $"Препоръчвай дестинации от Родопите. " +
+                $"Отговаряй на български.\n\nПотребител: {question}"
+            );
+
+            return response.Value.Content[0].Text;
+        }
     }
 }

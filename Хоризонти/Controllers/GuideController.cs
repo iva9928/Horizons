@@ -1,62 +1,59 @@
-﻿using Horizons.Data.Models;
+﻿using Horizons.Data;
+using Horizons.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-public class GuideController : Controller
+namespace Horizons.Controllers
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-
-
-public GuideController(UserManager<ApplicationUser> userManager)
+    public class GuideController : Controller
     {
-        _userManager = userManager;
-    }
+        private readonly ApplicationDbContext context;
+        private readonly UserManager<ApplicationUser> userManager;
 
-    public async Task<IActionResult> Index()
-    {
-        if (User.Identity?.IsAuthenticated == true)
+        public GuideController(ApplicationDbContext context,
+                               UserManager<ApplicationUser> userManager)
         {
-            var current = await _userManager.GetUserAsync(User);
-
-            if (current != null && current.IsGuide)
-            {
-                return RedirectToAction(nameof(Dashboard));
-            }
+            this.context = context;
+            this.userManager = userManager;
         }
 
-        var guides = await _userManager.Users
-            .Where(u => u.IsGuide)
-            .ToListAsync();
+        public async Task<IActionResult> Index()
+        {
+            if (User.IsInRole("Guide"))
+            {
+                var currentUser = await userManager.GetUserAsync(User);
+                return RedirectToAction("Profile", new { id = currentUser.Id });
+            }
 
-        return View(guides);
+            var guides = await context.Users
+                .Where(u => u.Bio != null)
+                .ToListAsync();
+
+            return View(guides);
+        }
+
+        public async Task<IActionResult> Profile(string id)
+        {
+            var guide = await context.Users
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (guide == null)
+                return NotFound();
+
+            return View(guide);
+        }
+
+        [Authorize(Roles = "Guide")]
+        public async Task<IActionResult> MyProfile()
+        {
+            var user = await userManager.GetUserAsync(User);
+
+            if (user == null)
+                return NotFound();
+
+            return View("Profile", user);
+        }
     }
-
-    public async Task<IActionResult> Profile(string id)
-    {
-        if (string.IsNullOrWhiteSpace(id))
-            return NotFound();
-
-        var guide = await _userManager.Users
-            .FirstOrDefaultAsync(u => u.Id == id && u.IsGuide);
-
-        if (guide == null)
-            return NotFound();
-
-        return View(guide);
-    }
-
-    [Authorize]
-    public async Task<IActionResult> Dashboard()
-    {
-        var user = await _userManager.GetUserAsync(User);
-
-        if (user == null || !user.IsGuide)
-            return RedirectToAction("Index", "Home");
-
-        return View(user);
-    }
-
-
 }

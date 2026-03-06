@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Horizons.Models.ReservationListViewModel>
+
+@{
+    ViewData["Title"] = "Всички резервации";
+}
+
+<h2>Всички резервации</h2>
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Дестинация</th>
+            <th>Потребител</th>
+            <th>Дата</th>
+            <th>Брой хора</th>
+            <th>Цена</th>
+            <th>Общо</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.Id</td>
+                <td>@r.DestinationName</td>
+                <td>@r.UserName</td>
+                <td>@r.Date.ToString("dd.MM.yyyy")</td>
+                <td>@r.PeopleCount</td>
+                <td>@r.TicketPrice</td>
+                <td>@r.TotalPrice</td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

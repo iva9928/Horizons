@@ -81,15 +81,6 @@
             text-decoration: underline;
         }
 
-    .reply-box {
-        background: #f5f7fb;
-        border-left: 4px solid #2e7dff;
-        padding: 8px;
-        margin-bottom: 6px;
-        border-radius: 6px;
-        font-size: 12px;
-    }
-
     .chat-form {
         margin-top: 15px;
         display: flex;
@@ -175,13 +166,9 @@
 <script>
 
     function replyTo(text){
-
-    var box = document.getElementById("messageBox");
-
-    box.value="↩ Отговор на: " + text + "\n";
-
+    var box=document.getElementById("messageBox");
+    box.value="↩ Отговор на: "+text+"\n";
     box.focus();
-
     }
 
     var chat=document.getElementById("chatBox");
