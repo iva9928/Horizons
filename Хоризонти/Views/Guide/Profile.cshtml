@@ -1,28 +1,99 @@
-﻿@using Horizons.Data.Models
-@model ApplicationUser
+﻿@model ApplicationUser
 
-<h2>Guide Profile</h2>
-
-@if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
-{
-    <img src="@Model.ProfileImageUrl" width="200" />
+@{
+    ViewData["Title"] = "Guide Profile";
 }
 
-<p><strong>Email:</strong> @Model.Email</p>
-<p><strong>Bio:</strong> @Model.Bio</p>
-<br />
-<a asp-controller="Chat"
-   asp-action="ChatWithGuide"
-   asp-route-guideId="@Model.Id"
-   class="btn btn-primary">
-    Пиши съобщение
-</a>
+<style>
 
-@if (User.Identity!.Name == Model.Email)
-{
-    <a asp-controller="Chat"
-       asp-action="GuideBoard"
-       asp-route-guideId="@Model.Id">
-        Съобщения
-    </a>
-}
+    .profile-wrapper {
+        max-width: 900px;
+        margin: auto;
+        margin-top: 40px;
+        background: white;
+        border-radius: 25px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        padding: 40px;
+        display: flex;
+        gap: 40px;
+        align-items: center;
+    }
+
+    .profile-img {
+        width: 260px;
+        height: 320px;
+        object-fit: cover;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .profile-info {
+        flex: 1;
+    }
+
+    .profile-title {
+        font-size: 34px;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .profile-email {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    .profile-bio {
+        font-size: 16px;
+        color: #6c757d;
+        margin-bottom: 25px;
+    }
+
+    .message-btn {
+        background: linear-gradient(135deg,#1e90ff,#0066ff);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 500;
+        transition: 0.3s;
+    }
+
+        .message-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+</style>
+
+<div class="profile-wrapper">
+
+    <img src="@(Model.ProfileImageUrl ?? "/images/default-guide.jpg")"
+         class="profile-img" />
+
+    <div class="profile-info">
+
+        <div class="profile-title">
+            Guide Profile
+        </div>
+
+        <div class="profile-email">
+            <b>Email:</b> @Model.Email
+        </div>
+
+        <div class="profile-bio">
+            <b>Bio:</b> @Model.Bio
+        </div>
+
+        <a asp-controller="Chat"
+           asp-action="ChatWithGuide"
+           asp-route-guideId="@Model.Id"
+           class="message-btn">
+
+            Пиши съобщение
+
+        </a>
+
+    </div>
+
+</div>

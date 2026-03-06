@@ -9,8 +9,7 @@ namespace Horizons.Services
     {
         private readonly ApplicationDbContext context;
 
-
-    public DestinationService(ApplicationDbContext context)
+        public DestinationService(ApplicationDbContext context)
         {
             this.context = context;
         }
@@ -72,7 +71,15 @@ namespace Horizons.Services
                 throw new UnauthorizedAccessException();
 
             destination.IsDeleted = true;
+
             await context.SaveChangesAsync();
+        }
+
+        public async Task<Destination?> GetDestinationByIdAsync(int id)
+        {
+            return await context.Destinations
+                .Include(d => d.Publisher)
+                .FirstOrDefaultAsync(d => d.Id == id && !d.IsDeleted);
         }
 
         public async Task<DestinationDetailsViewModel?> GetDestinationDetailsAsync(int id, string userId)
@@ -177,11 +184,40 @@ namespace Horizons.Services
                 .ToListAsync();
         }
 
-        public async Task<Destination?> GetDestinationByIdAsync(int id)
+        public async Task<IEnumerable<TerrainViewModel>> GetAllTerrainsAsync()
         {
-            return await context.Destinations
-                .Include(d => d.Publisher)
+            return await context.Terrains
+                .Select(t => new TerrainViewModel
+                {
+                    Id = t.Id,
+                    Name = t.Name
+                })
+                .ToListAsync();
+        }
+
+        public async Task<DestinationEditViewModel?> GetEditModelAsync(int id)
+        {
+            var destination = await context.Destinations
                 .FirstOrDefaultAsync(d => d.Id == id && !d.IsDeleted);
+
+            if (destination == null)
+                return null;
+
+            return new DestinationEditViewModel
+            {
+                Id = destination.Id,
+                Name = destination.Name,
+                Description = destination.Description,
+                ImageUrl = destination.ImageUrl,
+                Location = destination.Location,
+                LocationUrl = destination.LocationUrl,
+                PublishedOn = destination.PublishedOn.ToString("dd-MM-yyyy"),
+                TerrainId = destination.TerrainId,
+                TicketPrice = destination.TicketPrice,
+                Season = destination.Season,
+                PublisherId = destination.PublisherId,
+                Terrains = await GetAllTerrainsAsync()
+            };
         }
 
         public async Task AddToFavoritesAsync(int destinationId, string userId)
@@ -213,61 +249,6 @@ namespace Horizons.Services
             }
         }
 
-        public async Task<IEnumerable<FavoriteDestinationViewModel>> GetFavoriteDestinationsAsync(string userId)
-        {
-            return await context.UserDestinations
-                .Where(x => x.UserId == userId && !x.Destination.IsDeleted)
-                .Select(x => new FavoriteDestinationViewModel
-                {
-                    Id = x.Destination.Id,
-                    Name = x.Destination.Name,
-                    ImageUrl = x.Destination.ImageUrl,
-                    Terrain = context.Terrains
-                        .Where(t => t.Id == x.Destination.TerrainId)
-                        .Select(t => t.Name)
-                        .FirstOrDefault()
-                })
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<TerrainViewModel>> GetAllTerrainsAsync()
-        {
-            return await context.Terrains
-                .Select(t => new TerrainViewModel
-                {
-                    Id = t.Id,
-                    Name = t.Name
-                })
-                .ToListAsync();
-        }
-
-        public async Task<DestinationEditViewModel?> GetEditModelAsync(int id)
-        {
-            return await context.Destinations
-                .Where(d => d.Id == id && !d.IsDeleted)
-                .Select(d => new DestinationEditViewModel
-                {
-                    Id = d.Id,
-                    Name = d.Name,
-                    Description = d.Description,
-                    ImageUrl = d.ImageUrl,
-                    Location = d.Location,
-                    LocationUrl = d.LocationUrl,
-                    PublishedOn = d.PublishedOn.ToString("dd-MM-yyyy"),
-                    TerrainId = d.TerrainId,
-                    TicketPrice = d.TicketPrice,
-                    Season = d.Season,
-                    PublisherId = d.PublisherId,
-                    Terrains = context.Terrains
-                        .Select(t => new TerrainViewModel
-                        {
-                            Id = t.Id,
-                            Name = t.Name
-                        }).ToList()
-                })
-                .FirstOrDefaultAsync();
-        }
-
         public async Task AddRatingAsync(string userId, int destinationId, int stars, string comment)
         {
             var existing = await context.Ratings
@@ -293,7 +274,10 @@ namespace Horizons.Services
 
             await context.SaveChangesAsync();
         }
+
+        public Task<IEnumerable<FavoriteDestinationViewModel>> GetFavoriteDestinationsAsync(string userId)
+        {
+            throw new NotImplementedException();
+        }
     }
-
-
 }

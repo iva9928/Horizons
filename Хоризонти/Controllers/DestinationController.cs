@@ -9,16 +9,16 @@ using Хоризонти.Models;
 
 namespace Horizons.Controllers
 {
-    [Authorize]
     public class DestinationController : BaseController
     {
         private readonly IDestinationService service;
 
-    public DestinationController(IDestinationService service)
+        public DestinationController(IDestinationService service)
         {
             this.service = service;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Add()
         {
@@ -31,6 +31,7 @@ namespace Horizons.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(DestinationAddViewModel model)
@@ -44,6 +45,33 @@ namespace Horizons.Controllers
 
             await service.AddDestinationAsync(model, GetUserId());
             return RedirectToAction(nameof(Index));
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var model = await service.GetEditModelAsync(id);
+
+            if (model == null)
+                return NotFound();
+
+            return View(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(DestinationEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Terrains = await service.GetAllTerrainsAsync();
+                return View(model);
+            }
+
+            await service.EditDestinationAsync(model, GetUserId());
+            return RedirectToAction(nameof(Details), new { id = model.Id });
         }
 
         [AllowAnonymous]
@@ -117,20 +145,15 @@ namespace Horizons.Controllers
                         d.Name.ToLower().Contains("ждрел") ||
                         d.Name.ToLower().Contains("каньон")).ToList(),
 
-                    "skalni" => destinations.Where(d =>
-                        d.Name.ToLower().Contains("скал")).ToList(),
+                    "skalni" => destinations.Where(d => d.Name.ToLower().Contains("скал")).ToList(),
 
-                    "ekopateki" => destinations.Where(d =>
-                        d.Name.ToLower().Contains("еко")).ToList(),
+                    "ekopateki" => destinations.Where(d => d.Name.ToLower().Contains("еко")).ToList(),
 
-                    "vodopadi" => destinations.Where(d =>
-                        d.Name.ToLower().Contains("водопад")).ToList(),
+                    "vodopadi" => destinations.Where(d => d.Name.ToLower().Contains("водопад")).ToList(),
 
-                    "ezera" => destinations.Where(d =>
-                        d.Name.ToLower().Contains("езер")).ToList(),
+                    "ezera" => destinations.Where(d => d.Name.ToLower().Contains("езер")).ToList(),
 
-                    "varhove" => destinations.Where(d =>
-                        d.Name.ToLower().Contains("връх")).ToList(),
+                    "varhove" => destinations.Where(d => d.Name.ToLower().Contains("връх")).ToList(),
 
                     "gori" => destinations.Where(d =>
                         d.Name.ToLower().Contains("гора") ||
@@ -160,8 +183,6 @@ namespace Horizons.Controllers
             return View(destination);
         }
 
-        // ADD FAVORITE
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult AddToFavorites(int id)
@@ -178,13 +199,10 @@ namespace Horizons.Controllers
             if (!list.Contains(id))
                 list.Add(id);
 
-            HttpContext.Session.SetString("favorites",
-                JsonSerializer.Serialize(list));
+            HttpContext.Session.SetString("favorites", JsonSerializer.Serialize(list));
 
             return RedirectToAction(nameof(Details), new { id });
         }
-
-        // REMOVE FAVORITE
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -195,17 +213,13 @@ namespace Horizons.Controllers
             if (favorites != null)
             {
                 var list = JsonSerializer.Deserialize<List<int>>(favorites)!;
-
                 list.Remove(id);
 
-                HttpContext.Session.SetString("favorites",
-                    JsonSerializer.Serialize(list));
+                HttpContext.Session.SetString("favorites", JsonSerializer.Serialize(list));
             }
 
             return RedirectToAction(nameof(Details), new { id });
         }
-
-        // FAVORITES PAGE
 
         public async Task<IActionResult> Favorites()
         {
@@ -257,6 +271,4 @@ namespace Horizons.Controllers
                 });
         }
     }
-
-
 }
