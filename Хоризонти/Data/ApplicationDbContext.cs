@@ -28,24 +28,18 @@ using Horizons.Data.Models;
         {
             base.OnModelCreating(builder);
 
-            // =============================
-            // USER DESTINATION (Many-to-Many)
-            // =============================
+          
             builder.Entity<UserDestination>()
                 .HasKey(ud => new { ud.UserId, ud.DestinationId });
 
-            // =============================
-            // DESTINATION → PUBLISHER
-            // =============================
+           
             builder.Entity<Destination>()
                 .HasOne(d => d.Publisher)
                 .WithMany()
                 .HasForeignKey(d => d.PublisherId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // =============================
-            // DECIMAL PRECISION FIX
-            // =============================
+           
             builder.Entity<Destination>()
                 .Property(d => d.TicketPrice)
                 .HasColumnType("decimal(18,2)");
@@ -58,9 +52,6 @@ using Horizons.Data.Models;
                 .Property(tr => tr.PricePerPerson)
                 .HasColumnType("decimal(18,2)");
 
-            // =============================
-            // MESSAGE RELATIONS
-            // =============================
             builder.Entity<Message>()
                 .HasOne(m => m.Sender)
                 .WithMany()
@@ -85,9 +76,7 @@ using Horizons.Data.Models;
                 .HasForeignKey(m => m.DestinationId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // =============================
-            // TOUR RELATIONS
-            // =============================
+           
             builder.Entity<Tour>()
                 .HasOne(t => t.Guide)
                 .WithMany()
@@ -100,9 +89,7 @@ using Horizons.Data.Models;
                 .HasForeignKey(t => t.DestinationId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // =============================
-            // TOUR RESERVATION (FIX MULTIPLE CASCADE)
-            // =============================
+         
             builder.Entity<TourReservation>()
     .HasOne(tr => tr.Tour)
     .WithMany(t => t.Reservations)
@@ -118,7 +105,6 @@ using Horizons.Data.Models;
 
             const string adminId = "7699db7d-964f-4782-8209-d76562e0fece";
 
-            // ✅ ВАЖНО: ApplicationUser вместо IdentityUser
             var defaultUser = new ApplicationUser
             {
                 Id = adminId,
@@ -138,7 +124,6 @@ using Horizons.Data.Models;
             defaultUser.PasswordHash =
                 passwordHasher.HashPassword(defaultUser, "Admin123!");
 
-            // ✅ ВАЖНО: ApplicationUser
             builder.Entity<ApplicationUser>().HasData(defaultUser);
 
             // ===== GUIDES SEED =====

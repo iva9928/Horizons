@@ -1,30 +1,37 @@
-﻿@model List<Horizons.Data.Models.Message>
+﻿@using Horizons.Data.Models
+@model List<ApplicationUser>
 
-<div class="board">
+@{
+    ViewData["Title"] = "Съобщения";
+}
 
-    @foreach (var msg in Model)
-    {
-        <div class="message-card">
+<h2 class="mb-4">📩 Потребители които са ви писали</h2>
 
-            <div class="sender">
-                От: @msg.Sender?.Email
-            </div>
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Нямате съобщения.
+    </div>
+}
+else
+{
+    <ul class="list-group">
 
-            <div>
-                @msg.Content
-            </div>
+        @foreach (var user in Model)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
 
-            <div class="time">
-                @msg.SentOn
-            </div>
+                <span>@user.Email</span>
 
-            <a asp-controller="Chat"
-               asp-action="ChatWithGuide"
-               asp-route-guideId="@msg.SenderId">
-                Отговор
-            </a>
+                <a asp-controller="Chat"
+                   asp-action="ChatWithUser"
+                   asp-route-userId="@user.Id"
+                   class="btn btn-primary btn-sm">
+                    Отвори чат
+                </a>
 
-        </div>
-    }
+            </li>
+        }
 
-</div>
+    </ul>
+}

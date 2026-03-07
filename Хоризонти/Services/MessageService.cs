@@ -42,28 +42,28 @@ namespace Horizons.Services
         public async Task<List<string>> GetUsersWhoMessagedGuideAsync(string guideId)
         {
             return await context.Messages
-                .Where(m => !m.IsPublic && m.ReceiverId == guideId)
-                .Select(m => m.SenderId)
+                .Where(m => !m.IsPublic &&
+                    (m.ReceiverId == guideId || m.SenderId == guideId))
+                .Select(m => m.SenderId == guideId ? m.ReceiverId! : m.SenderId)
                 .Distinct()
                 .ToListAsync();
         }
 
-        public async Task<List<Message>> GetPublicMessagesAsync(int destinationId)
+        public async Task<List<Message>> GetPublicMessagesAsync()
         {
             return await context.Messages
                 .Include(m => m.Sender)
-                .Where(m => m.IsPublic && m.DestinationId == destinationId)
-                .OrderBy(m => m.SentOn)
+                .Where(m => m.IsPublic)
+                .OrderByDescending(m => m.SentOn)
                 .ToListAsync();
         }
 
-        public async Task SendPublicMessageAsync(string senderId, int destinationId, string content)
+        public async Task SendPublicMessageAsync(string senderId, string content)
         {
             var message = new Message
             {
                 SenderId = senderId,
                 Content = content,
-                DestinationId = destinationId,
                 IsPublic = true
             };
 

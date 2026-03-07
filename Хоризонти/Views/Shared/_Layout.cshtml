@@ -73,53 +73,38 @@
 
             <ul class="navbar-nav me-auto">
 
-                <li class="nav-item">
-                    <a class="nav-link"
-                       asp-controller="Destination"
-                       asp-action="Index">
-                        Дестинации
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link"
-                       asp-controller="Destination"
-                       asp-action="Favorites">
-                        ❤️ Любими
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link"
-                       asp-controller="Destination"
-                       asp-action="Seasons">
-                        🌤 Сезонност
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link"
-                       asp-controller="Guide"
-                       asp-action="Index">
-                        🧭 Тур гайдове
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link"
-                       asp-controller="Ai"
-                       asp-action="Index">
-                        🤖 AI Помощник
-                    </a>
-                </li>
-
                 @if (User.IsInRole("Admin"))
                 {
+
                     <li class="nav-item">
                         <a class="nav-link"
-                           asp-controller="Reservation"
-                           asp-action="All">
-                            📋 Всички резервации
+                           asp-controller="Destination"
+                           asp-action="Index">
+                            Дестинации
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-controller="Destination"
+                           asp-action="Favorites">
+                            ❤️ Любими
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-controller="Destination"
+                           asp-action="Seasons">
+                            🌤 Сезонност
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-controller="Guide"
+                           asp-action="Index">
+                            🧭 Тур гайдове
                         </a>
                     </li>
 
@@ -130,6 +115,92 @@
                             ➕ Добави дестинация
                         </a>
                     </li>
+
+                }
+
+                else if (User.IsInRole("Guide"))
+                {
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-controller="Guide"
+                           asp-action="MyProfile">
+                            🧭 Моят профил
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-controller="Chat"
+                           asp-action="GuideBoard">
+                            📩 Съобщения
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-controller="Chat"
+                           asp-action="PublicChat">
+                            📢 Публични съобщения
+                        </a>
+                    </li>
+
+                }
+
+                else
+                {
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-controller="Destination"
+                           asp-action="Index">
+                            Дестинации
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-controller="Destination"
+                           asp-action="Favorites">
+                            ❤️ Любими
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-controller="Destination"
+                           asp-action="Seasons">
+                            🌤 Сезонност
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-controller="Guide"
+                           asp-action="Index">
+                            🧭 Тур гайдове
+                        </a>
+                    </li>
+
+                    <!-- ТОВА Е НОВОТО -->
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-controller="Chat"
+                           asp-action="ChatWithGuide"
+                           asp-route-guideId="22222222-2222-2222-2222-222222222222">
+                            📩 Съобщения
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-controller="Chat"
+                           asp-action="PublicChat">
+                            📢 Публични съобщения
+                        </a>
+                    </li>
+
                 }
 
             </ul>

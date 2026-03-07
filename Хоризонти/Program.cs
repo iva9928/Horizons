@@ -27,6 +27,9 @@ builder.Services.AddScoped<IAiService, AiService>();
 
 var app = builder.Build();
 
+
+// ================= CREATE ROLES + ASSIGN =================
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -34,23 +37,60 @@ using (var scope = app.Services.CreateScope())
     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
+    // ---------- CREATE ROLES ----------
+
     if (!await roleManager.RoleExistsAsync("Admin"))
-    {
         await roleManager.CreateAsync(new IdentityRole("Admin"));
-    }
+
+    if (!await roleManager.RoleExistsAsync("Guide"))
+        await roleManager.CreateAsync(new IdentityRole("Guide"));
+
+    if (!await roleManager.RoleExistsAsync("User"))
+        await roleManager.CreateAsync(new IdentityRole("User"));
+
+
+    // ---------- ADMIN ROLE ----------
 
     var adminEmail = "admin@horizons.com";
 
-    var user = await userManager.FindByEmailAsync(adminEmail);
+    var admin = await userManager.FindByEmailAsync(adminEmail);
 
-    if (user != null)
+    if (admin != null)
     {
-        if (!await userManager.IsInRoleAsync(user, "Admin"))
+        if (!await userManager.IsInRoleAsync(admin, "Admin"))
         {
-            await userManager.AddToRoleAsync(user, "Admin");
+            await userManager.AddToRoleAsync(admin, "Admin");
+        }
+    }
+
+
+    // ---------- GUIDE ROLES ----------
+
+    var guideEmails = new[]
+    {
+        "ivan.petrov@horizons.com",
+        "maria.stoyanova@horizons.com",
+        "georgi.dimitrov@horizons.com",
+        "elena.ivanova@horizons.com",
+        "nikolay.kolev@horizons.com"
+    };
+
+    foreach (var email in guideEmails)
+    {
+        var guide = await userManager.FindByEmailAsync(email);
+
+        if (guide != null)
+        {
+            if (!await userManager.IsInRoleAsync(guide, "Guide"))
+            {
+                await userManager.AddToRoleAsync(guide, "Guide");
+            }
         }
     }
 }
+
+
+// ================= PIPELINE =================
 
 if (app.Environment.IsDevelopment())
 {

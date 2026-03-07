@@ -10,8 +10,8 @@ namespace Horizons.Services
 
         Task<List<string>> GetUsersWhoMessagedGuideAsync(string guideId);
 
-        Task<List<Message>> GetPublicMessagesAsync(int destinationId);
+        Task<List<Message>> GetPublicMessagesAsync();
 
-        Task SendPublicMessageAsync(string senderId, int destinationId, string content);
+        Task SendPublicMessageAsync(string senderId, string content);
     }
 }

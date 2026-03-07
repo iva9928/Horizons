@@ -2,7 +2,7 @@
 @model ApplicationUser
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Guide Profile";
 }
 
 <!DOCTYPE html>
@@ -66,21 +66,6 @@
             margin-bottom: 25px;
         }
 
-        .message-btn {
-            background: linear-gradient(135deg,#1e90ff,#0066ff);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 12px;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-            .message-btn:hover {
-                transform: scale(1.05);
-                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            }
-
     </style>
 
 </head>
@@ -90,8 +75,8 @@
     <div class="profile-card">
 
         <img src="@(string.IsNullOrEmpty(Model.ProfileImageUrl)
-                         ? "/images/default-guide.jpg"
-                         : Model.ProfileImageUrl)"
+             ? "/images/default-guide.jpg"
+             : Model.ProfileImageUrl)"
              class="profile-img" />
 
         <div class="profile-info">
@@ -107,15 +92,6 @@
             <div class="profile-bio">
                 <b>Bio:</b> @Model.Bio
             </div>
-
-            <a asp-controller="Chat"
-               asp-action="ChatWithGuide"
-               asp-route-guideId="@Model.Id"
-               class="message-btn">
-
-                Пиши съобщение
-
-            </a>
 
         </div>
 

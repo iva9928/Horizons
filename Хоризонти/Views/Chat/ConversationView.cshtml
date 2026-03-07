@@ -1,163 +1,110 @@
 ﻿@model List<Horizons.Data.Models.Message>
-@using System.Security.Claims
 
 @{
-    var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    var guideEmail = ViewBag.GuideEmail;
+    var userEmail = ViewBag.UserEmail;
+    var guideId = ViewBag.GuideId;
+    var userId = ViewBag.UserId;
+    var currentUser = User.Identity!.Name;
 }
 
 <style>
 
-    body {
-        background: linear-gradient(135deg,#eef2f7,#f8fafc);
-        font-family: Segoe UI;
-    }
-
-    .chat-wrapper {
-        max-width: 900px;
-        margin: 40px auto;
-    }
-
-    .chat-header {
-        font-size: 28px;
-        font-weight: 600;
-        margin-bottom: 20px;
+    .chat-container {
+        background: #f8f9fa;
+        padding: 25px;
+        border-radius: 20px;
+        min-height: 400px;
     }
 
     .chat-box {
-        background: white;
-        border-radius: 20px;
-        padding: 25px;
-        height: 500px;
-        overflow-y: auto;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
     }
 
     .message {
-        padding: 14px 18px;
-        margin: 15px 0;
+        max-width: 420px;
+        padding: 12px 18px;
         border-radius: 18px;
-        max-width: 70%;
-        transition: 0.25s;
-        position: relative;
     }
 
-        .message:hover {
-            transform: scale(1.02);
-            box-shadow: 0 5px 12px rgba(0,0,0,0.08);
-        }
+    .user-message {
+        background: #e4e6eb;
+    }
 
-    .my {
-        background: linear-gradient(135deg,#4CAF50,#2e7d32);
+    .guide-message {
+        background: #1877f2;
         color: white;
         margin-left: auto;
     }
 
-    .other {
-        background: #f1f3f6;
-    }
-
-    .sender {
-        font-size: 13px;
-        font-weight: bold;
-        margin-bottom: 4px;
-    }
-
-    .time {
-        font-size: 11px;
-        opacity: 0.6;
-        margin-top: 6px;
-    }
-
-    .reply {
-        font-size: 12px;
-        color: #2e7dff;
-        margin-top: 6px;
-        cursor: pointer;
-        opacity: 0.8;
-    }
-
-        .reply:hover {
-            opacity: 1;
-            text-decoration: underline;
-        }
-
-    .chat-form {
-        margin-top: 15px;
+    .chat-input {
+        margin-top: 20px;
         display: flex;
         gap: 10px;
     }
 
-        .chat-form textarea {
-            flex: 1;
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid #ddd;
-            resize: none;
-        }
-
-        .chat-form button {
-            background: linear-gradient(135deg,#2e7dff,#1c54d6);
-            border: none;
-            color: white;
-            padding: 12px 22px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: 0.25s;
-        }
-
-            .chat-form button:hover {
-                transform: scale(1.05);
-                box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-            }
-
 </style>
 
-<div class="chat-wrapper">
+@if (guideEmail != null)
+{
+    <h2>💬 Чат с @guideEmail</h2>
+}
+else if (userEmail != null)
+{
+    <h2>💬 Чат с @userEmail</h2>
+}
+else
+{
+    <h2>💬 Разговор</h2>
+}
 
-    <div class="chat-header">
-        💬 Разговор
-    </div>
+<div class="chat-container">
 
     <div class="chat-box" id="chatBox">
 
         @foreach (var msg in Model)
         {
-            var css = msg.SenderId == currentUserId ? "my" : "other";
+            bool isMine = msg.Sender.Email == currentUser;
 
-            <div class="message @css">
+            <div class="message @(isMine ? "guide-message" : "user-message")">
 
-                <div class="sender">
-                    @msg.Sender?.Email
-                </div>
+                <div>@msg.Content</div>
 
-                <div>
-                    @msg.Content
-                </div>
-
-                <div class="time">
-                    @msg.SentOn.ToLocalTime()
-                </div>
-
-                <div class="reply" onclick="replyTo('@msg.Content')">
-                    ↩ Отговор
-                </div>
+                <small>@msg.SentOn.ToLocalTime()</small>
 
             </div>
         }
 
     </div>
 
-    <form asp-action="SendToGuide" method="post" class="chat-form">
+    <form method="post"
+          asp-controller="Chat"
+          asp-action="@(guideId != null ? "SendToGuide" : "SendToUser")">
 
-        @Html.AntiForgeryToken()
+        @if (guideId != null)
+        {
+            <input type="hidden" name="guideId" value="@guideId" />
+        }
 
-        <input type="hidden" name="guideId" value="@ViewBag.GuideId" />
+        @if (userId != null)
+        {
+            <input type="hidden" name="userId" value="@userId" />
+        }
 
-<textarea id="messageBox" name="content" rows="2" placeholder="Напиши съобщение..." required></textarea>
+        <div class="chat-input">
 
-        <button type="submit">
-            Изпрати
-        </button>
+<textarea name="content"
+          class="form-control"
+          placeholder="Напиши съобщение..."
+          required></textarea>
+
+            <button class="btn btn-primary">
+                Изпрати
+            </button>
+
+        </div>
 
     </form>
 
@@ -165,13 +112,7 @@
 
 <script>
 
-    function replyTo(text){
-    var box=document.getElementById("messageBox");
-    box.value="↩ Отговор на: "+text+"\n";
-    box.focus();
-    }
-
-    var chat=document.getElementById("chatBox");
-    chat.scrollTop=chat.scrollHeight;
+    var chatBox = document.getElementById("chatBox");
+    chatBox.scrollTop = chatBox.scrollHeight;
 
 </script>
